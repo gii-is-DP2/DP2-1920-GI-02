@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>306</x>
+      <y>90</y>
+      <w>153</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>Person
+--
++ firstName: String
++ lastName: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>297</x>
+      <y>261</y>
+      <w>153</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>Owner
+--
++ address: String
++ city: String
++ telephone: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>369</x>
+      <y>162</y>
+      <w>27</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>513</x>
+      <y>261</y>
+      <w>153</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>Vet
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>369</x>
+      <y>162</y>
+      <w>243</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;250.0;60.0;250.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>513</x>
+      <y>441</y>
+      <w>153</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>Specialty
+--
++ name: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>585</x>
+      <y>333</y>
+      <w>45</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..*
+m2=0..*</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>297</x>
+      <y>441</y>
+      <w>153</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>Pet
+--
++ name: String
++ birthDate: LocalDate</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>369</x>
+      <y>333</y>
+      <w>45</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-&gt;
+m1=0..*
+m2=1</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>297</x>
+      <y>621</y>
+      <w>153</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>PetType
+--
++ name: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>369</x>
+      <y>513</y>
+      <w>45</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=0..*</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>27</x>
+      <y>261</y>
+      <w>153</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>User
+--
++ username: String
++ password: String
++ enabled: Boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>171</x>
+      <y>297</y>
+      <w>144</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>18</x>
+      <y>441</y>
+      <w>153</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>Visit
+--
++ date: LocalDate
++ description: String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>162</x>
+      <y>477</y>
+      <w>153</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=0..*</panel_attributes>
+    <additional_attributes>150.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
