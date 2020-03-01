@@ -1,4 +1,4 @@
-# Datos a usar de la base de datos
+﻿# Datos a usar de la base de datos
 
 Admins
 
@@ -39,6 +39,7 @@ lastName: Sánchez
 VisitTypes
 
 name: consultation
+price: 20€
 
 
 
@@ -53,3 +54,9 @@ Visits
 
 dejar libre todos los huecos en agosto de 2020 para poder hacer pruebas.
 
+
+
+Secretaries
+
+user: secretary1
+password: s3cr3tary
