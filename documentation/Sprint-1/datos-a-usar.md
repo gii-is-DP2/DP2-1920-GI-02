@@ -80,7 +80,7 @@ Nombres reservados para vets que no se pueden usar:
 
 
 
-Medicine**
+**Medicine**
 
 name: Betadine
 Ese medicamento debe de estar en alguna receta para que no se pueda borrar en la prueba de US17-N1.
