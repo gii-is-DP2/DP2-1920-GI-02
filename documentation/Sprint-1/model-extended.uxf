@@ -199,7 +199,7 @@ m2=0..*</panel_attributes>
 --
 + name: String
 + duration: Integer
-+ price: Integer
++ price: Double
 
 bg=yellow</panel_attributes>
     <additional_attributes/>
@@ -329,7 +329,7 @@ m2=0..*</panel_attributes>
 --
 + method: String
 + moment: LocalDate
-+ quantity: Integer
++ finalPrice: Double
 
 bg=yellow</panel_attributes>
     <additional_attributes/>
@@ -339,7 +339,7 @@ bg=yellow</panel_attributes>
     <coordinates>
       <x>273</x>
       <y>70</y>
-      <w>35</w>
+      <w>42</w>
       <h>336</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
