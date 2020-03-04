@@ -32,9 +32,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
+	// ATTRIBUTES -------------------------------------------------------------
+
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate	birthDate;
+
+	// RELATIONSHIPS ----------------------------------------------------------
 
 	@ManyToOne
 	@JoinColumn(name = "type_id")
@@ -47,6 +51,8 @@ public class Pet extends NamedEntity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
 	private Set<Visit>	visits;
 
+
+	// GETTERS / SETTERS ------------------------------------------------------
 
 	public void setBirthDate(final LocalDate birthDate) {
 		this.birthDate = birthDate;

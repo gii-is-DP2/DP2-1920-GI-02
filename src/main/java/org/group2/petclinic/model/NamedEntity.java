@@ -15,9 +15,15 @@ import javax.validation.constraints.Size;
 @MappedSuperclass
 public class NamedEntity extends BaseEntity {
 
+	// ATTRIBUTES -------------------------------------------------------------
+
 	@Size(min = 3, max = 50)
 	@Column(name = "name")
 	private String name;
+
+	// RELATIONSHIPS ----------------------------------------------------------
+
+	// GETTERS / SETTERS ------------------------------------------------------
 
 
 	public String getName() {

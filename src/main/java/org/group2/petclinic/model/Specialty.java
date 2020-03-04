@@ -13,4 +13,10 @@ import javax.persistence.Table;
 @Table(name = "specialties")
 public class Specialty extends NamedEntity {
 
+	// ATTRIBUTES -------------------------------------------------------------
+
+	// RELATIONSHIPS ----------------------------------------------------------
+
+	// GETTERS / SETTERS ------------------------------------------------------
+
 }

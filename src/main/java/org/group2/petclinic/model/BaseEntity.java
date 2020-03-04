@@ -16,10 +16,16 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class BaseEntity {
 
+	// ATTRIBUTES -------------------------------------------------------------
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 
+	// RELATIONSHIPS ----------------------------------------------------------
+
+
+	// GETTERS / SETTERS ------------------------------------------------------
 
 	public Integer getId() {
 		return this.id;
