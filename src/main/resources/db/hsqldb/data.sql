@@ -7,13 +7,28 @@ INSERT INTO authorities VALUES ('owner1','owner');
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities VALUES ('vet1','veterinarian');
+-- One vet user, named vet2 with passwor vet2
+INSERT INTO users(username,password,enabled) VALUES ('vet2','vet2',TRUE);
+INSERT INTO authorities VALUES ('vet2','veterinarian');
+-- One vet user, named vet3 with passwor vet3
+INSERT INTO users(username,password,enabled) VALUES ('vet3','vet3',TRUE);
+INSERT INTO authorities VALUES ('vet3','veterinarian');
+-- One vet user, named vet4 with passwor vet4
+INSERT INTO users(username,password,enabled) VALUES ('vet4','vet4',TRUE);
+INSERT INTO authorities VALUES ('vet4','veterinarian');
+-- One vet user, named vet5 with passwor vet5
+INSERT INTO users(username,password,enabled) VALUES ('vet5','vet5',TRUE);
+INSERT INTO authorities VALUES ('vet5','veterinarian');
+-- One vet user, named vet6 with passwor vet6
+INSERT INTO users(username,password,enabled) VALUES ('vet6','vet6',TRUE);
+INSERT INTO authorities VALUES ('vet6','veterinarian');
 
-INSERT INTO vets VALUES (1, 'James', 'Carter');
-INSERT INTO vets VALUES (2, 'Helen', 'Leary');
-INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
-INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
-INSERT INTO vets VALUES (5, 'Henry', 'Stevens');
-INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins');
+INSERT INTO vets VALUES (1, 'James', 'Carter', 'vet1');
+INSERT INTO vets VALUES (2, 'Helen', 'Leary', 'vet2');
+INSERT INTO vets VALUES (3, 'Linda', 'Douglas', 'vet3');
+INSERT INTO vets VALUES (4, 'Rafael', 'Ortega', 'vet4');
+INSERT INTO vets VALUES (5, 'Henry', 'Stevens', 'vet5');
+INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins', 'vet6');
 
 INSERT INTO specialties VALUES (1, 'radiology');
 INSERT INTO specialties VALUES (2, 'surgery');
