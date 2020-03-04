@@ -21,6 +21,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "visits")
 public class Visit extends BaseEntity {
 
+	// CONSTRUCTOR ------------------------------------------------------------
+
+	/**
+	 * Creates a new instance of Visit for the current date
+	 */
+	public Visit() {
+		this.date = LocalDate.now();
+	}
+
+
+	// ATTRIBUTES -------------------------------------------------------------
+
 	/**
 	 * Holds value of property date.
 	 */
@@ -35,6 +47,8 @@ public class Visit extends BaseEntity {
 	@Column(name = "description")
 	private String		description;
 
+	// RELATIONSHIPS ----------------------------------------------------------
+
 	/**
 	 * Holds value of property pet.
 	 */
@@ -43,16 +57,11 @@ public class Visit extends BaseEntity {
 	private Pet			pet;
 
 
-	/**
-	 * Creates a new instance of Visit for the current date
-	 */
-	public Visit() {
-		this.date = LocalDate.now();
-	}
+	// GETTERS / SETTERS ------------------------------------------------------
 
 	/**
 	 * Getter for property date.
-	 * 
+	 *
 	 * @return Value of property date.
 	 */
 	public LocalDate getDate() {
@@ -61,7 +70,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Setter for property date.
-	 * 
+	 *
 	 * @param date
 	 *            New value of property date.
 	 */
@@ -71,7 +80,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Getter for property description.
-	 * 
+	 *
 	 * @return Value of property description.
 	 */
 	public String getDescription() {
@@ -80,7 +89,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Setter for property description.
-	 * 
+	 *
 	 * @param description
 	 *            New value of property description.
 	 */
@@ -90,7 +99,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Getter for property pet.
-	 * 
+	 *
 	 * @return Value of property pet.
 	 */
 	public Pet getPet() {
@@ -99,7 +108,7 @@ public class Visit extends BaseEntity {
 
 	/**
 	 * Setter for property pet.
-	 * 
+	 *
 	 * @param pet
 	 *            New value of property pet.
 	 */

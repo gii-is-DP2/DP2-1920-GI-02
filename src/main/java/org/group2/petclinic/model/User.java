@@ -1,3 +1,4 @@
+
 package org.group2.petclinic.model;
 
 import javax.persistence.Entity;
@@ -9,11 +10,19 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "users")
-public class User{
+public class User {
+
+	// ATTRIBUTES -------------------------------------------------------------
+
 	@Id
-	String username;
-	
-	String password;
-	
-	boolean enabled;
+	String	username;
+
+	String	password;
+
+	boolean	enabled;
+
+	// RELATIONSHIPS ----------------------------------------------------------
+
+	// GETTERS / SETTERS ------------------------------------------------------
+
 }

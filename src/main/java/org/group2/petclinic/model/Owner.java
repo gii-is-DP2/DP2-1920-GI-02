@@ -52,28 +52,12 @@ public class Owner extends Person {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet>	pets;
 
-	//TODO delete:
-	//
-	//@OneToOne(cascade = CascadeType.ALL)
-	//@JoinColumn(name = "username", referencedColumnName = "username")
-	//private User		user;
-	//
 
 	// GETTERS / SETTERS ------------------------------------------------------
-
 
 	public String getAddress() {
 		return this.address;
 	}
-
-	//TODO delete:
-	//	public User getUser() {
-	//		return this.user;
-	//	}
-	//
-	//	public void setUser(final User user) {
-	//		this.user = user;
-	//	}
 
 	public void setAddress(final String address) {
 		this.address = address;

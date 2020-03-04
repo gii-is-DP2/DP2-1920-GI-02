@@ -1,3 +1,4 @@
+
 package org.group2.petclinic.model;
 
 import javax.persistence.Entity;
@@ -10,7 +11,15 @@ import lombok.Data;
 @Entity
 @Table(name = "authorities")
 public class Authorities {
+
+	// ATTRIBUTES -------------------------------------------------------------
+
 	@Id
-	String username;
-	String authority;
+	String	username;
+	String	authority;
+
+	// RELATIONSHIPS ----------------------------------------------------------
+
+	// GETTERS / SETTERS ------------------------------------------------------
+
 }
