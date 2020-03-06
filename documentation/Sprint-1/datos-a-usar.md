@@ -1,4 +1,4 @@
-# Datos a usar de la base de datos
+﻿# Datos a usar de la base de datos
 
 **Admins**
 
@@ -72,6 +72,8 @@ Escenarios: US1-P1, US1-N1, US2-P1, US2-N1, US3-P1, US3-N1, US4-P1, USA-N1, USA-
 name: revision
 Escenarios: US1-N1
 
+name: free
+price: 0€
 
 
 Nombres reservados para vets que no se pueden usar:
