@@ -76,7 +76,7 @@ name: free
 price: 0€
 
 name: unused visit type
-Escenario: US21-P1
+Escenario: US21-P1 y US21-N1
 
 
 Nombres reservados para vets que no se pueden usar:
