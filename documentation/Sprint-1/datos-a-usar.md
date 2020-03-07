@@ -75,6 +75,9 @@ Escenarios: US1-N1
 name: free
 price: 0€
 
+name: unused visit type
+Escenario: US21-P1
+
 
 Nombres reservados para vets que no se pueden usar:
 
@@ -83,6 +86,9 @@ Nombres reservados para vets que no se pueden usar:
 
 
 **Medicine**
+
+name: Unused drug
+Este medicamento no está en ninguna receta para que se pueda borrar en la prueba de US17-P1.
 
 name: Betadine
 Ese medicamento debe de estar en alguna receta para que no se pueda borrar en la prueba de US17-N1.
