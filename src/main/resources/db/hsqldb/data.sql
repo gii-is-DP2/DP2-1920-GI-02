@@ -181,12 +181,12 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly',
 --                                VISITS                                      --
 --------------------------------------------------------------------------------
 
-INSERT INTO visits(id,pet_id,visit_date,description) VALUES (1, 7, '2013-01-01',
+INSERT INTO visits(id,pet_id,visit_moment,description) VALUES (1, 7, '2013-01-01 10:00',
 	'rabies shot');
-INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
+INSERT INTO visits(id,pet_id,visit_moment,description) VALUES (2, 8, '2013-01-02 10:00',
 	'rabies shot');
-INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03',
+INSERT INTO visits(id,pet_id,visit_moment,description) VALUES (3, 8, '2013-01-03 10:00',
 	'neutered');
-INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
+INSERT INTO visits(id,pet_id,visit_moment,description) VALUES (4, 7, '2013-01-04 10:00',
 	'spayed');
 
