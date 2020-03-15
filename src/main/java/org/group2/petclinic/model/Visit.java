@@ -1,7 +1,7 @@
 
 package org.group2.petclinic.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,18 +40,18 @@ public class Visit extends BaseEntity {
 	// ATTRIBUTES -------------------------------------------------------------
 
 	/**
-	 * Holds value of property moment.
+	 * Holds value of property date.
 	 */
-	@Column(name = "visit_moment")
-	@DateTimeFormat(pattern = "yyyy/MM/dd hh:mm")
-	private LocalDateTime	moment;
+	@Column(name = "visit_date")
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	private LocalDate	date;
 
 	/**
 	 * Holds value of property description.
 	 */
 	@NotEmpty
 	@Column(name = "description")
-	private String			description;
+	private String		description;
 
 	// RELATIONSHIPS ----------------------------------------------------------
 
@@ -60,7 +60,7 @@ public class Visit extends BaseEntity {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "pet_id")
-	private Pet				pet;
+	private Pet			pet;
 
 	// GETTERS / SETTERS ------------------------------------------------------
 
