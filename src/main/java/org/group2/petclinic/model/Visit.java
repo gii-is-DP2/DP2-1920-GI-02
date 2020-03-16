@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,38 +30,31 @@ public class Visit extends BaseEntity {
 
 	// CONSTRUCTOR ------------------------------------------------------------
 
-	/**
-	 * Creates a new instance of Visit for the current date
-	 */
 	public Visit() {
-		//this.moment = LocalDate.now();
+
 	}
 
 
 	// ATTRIBUTES -------------------------------------------------------------
 
-	/**
-	 * Holds value of property date.
-	 */
 	@Column(name = "visit_date")
+	@NotNull
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private LocalDate	date;
 
-	/**
-	 * Holds value of property description.
-	 */
 	@NotEmpty
 	@Column(name = "description")
 	private String		description;
 
 	// RELATIONSHIPS ----------------------------------------------------------
 
-	/**
-	 * Holds value of property pet.
-	 */
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "pet_id")
 	private Pet			pet;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "vet_id")
+	private Vet			vet;
 
 	// GETTERS / SETTERS ------------------------------------------------------
 
