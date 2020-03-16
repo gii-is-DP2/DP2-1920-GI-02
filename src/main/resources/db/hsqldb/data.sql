@@ -1,4 +1,12 @@
 --------------------------------------------------------------------------------
+--                             VISIT TYPES                                    --
+--------------------------------------------------------------------------------
+
+INSERT INTO visit_types(id,name,duration,price) VALUES (1, 'consultation', 30, 20.0);
+INSERT INTO visit_types(id,name,duration,price) VALUES (2, 'revision', 30, 15.0);
+INSERT INTO visit_types(id,name,duration,price) VALUES (3, 'operation', 60, 100.0);
+
+--------------------------------------------------------------------------------
 --                               PET TYPES                                    --
 --------------------------------------------------------------------------------
 
@@ -181,12 +189,8 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly',
 --                                VISITS                                      --
 --------------------------------------------------------------------------------
 
-INSERT INTO visits(id,pet_id,visit_date,description) VALUES (1, 7, '2013-01-01',
-	'rabies shot');
-INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
-	'rabies shot');
-INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03',
-	'neutered');
-INSERT INTO visits(id,pet_id,vet_id,visit_date,description) VALUES (4, 7, 1,
-'2013-01-04', 'spayed');
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_date,description) VALUES (1, 7, 2, 1, '2013-01-01', 'rabies shot');
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_date,description) VALUES (2, 8, 2, 1, '2013-01-02', 'rabies shot');
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_date,description) VALUES (3, 8, 2, 2, '2013-01-03', 'neutered');
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_date,description) VALUES (4, 7, 1, 3, '2013-01-04', 'spayed');
 

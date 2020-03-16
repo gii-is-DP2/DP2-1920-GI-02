@@ -41,9 +41,14 @@
                 <petclinic:inputField label="Date" name="date" />
                 <petclinic:inputField label="Description" name="description" />
                 
-                <!-- Vets dropdown -->
+                <!-- Vet dropdown -->
                	<div class="control-group">
                     <petclinic:selectField name="vet" label="Vet " names="${vets}" size="1"/>
+                </div>
+                
+                <!-- VisitType dropdown -->
+               	<div class="control-group">
+                    <petclinic:selectField name="visitType" label="Visit type " names="${visitTypes}" size="1"/>
                 </div>
 				
             </div>

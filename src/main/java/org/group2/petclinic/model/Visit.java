@@ -56,6 +56,10 @@ public class Visit extends BaseEntity {
 	@JoinColumn(name = "vet_id")
 	private Vet			vet;
 
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "visit_type_id")
+	private VisitType	visitType;
+
 	// GETTERS / SETTERS ------------------------------------------------------
 
 }
