@@ -82,44 +82,33 @@ INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins', 'vet6');
 --------------------------------------------------------------------------------
 
 -- gfranklin/gfranklin
-INSERT INTO users(username,password,enabled) VALUES ('gfranklin','gfranklin',
-	TRUE);
+INSERT INTO users(username,password,enabled) VALUES ('gfranklin','gfranklin', TRUE);
 INSERT INTO authorities VALUES ('gfranklin','owner');
-INSERT INTO owners VALUES (1, 'George', 'Franklin', '110 W. Liberty St.',
-	'Madison', '6085551023', 'gfranklin');
+INSERT INTO owners VALUES (1, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023', 'gfranklin');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo',
-	'2010-09-07', 1, 1);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 
 -- bdavis/bdavis
 INSERT INTO users(username,password,enabled) VALUES ('bdavis','bdavis',TRUE);
 INSERT INTO authorities VALUES ('bdavis','owner');
-INSERT INTO owners VALUES (2, 'Betty', 'Davis', '638 Cardinal Ave.',
-	'Sun Prairie', '6085551749', 'bdavis');
+INSERT INTO owners VALUES (2, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749', 'bdavis');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil',
-	'2012-08-06', 6, 2);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
 
 -- erodriguez/erodriguez
-INSERT INTO users(username,password,enabled) VALUES ('erodriguez','erodriguez',
-	TRUE);
+INSERT INTO users(username,password,enabled) VALUES ('erodriguez','erodriguez', TRUE);
 INSERT INTO authorities VALUES ('erodriguez','owner');
-INSERT INTO owners VALUES (3, 'Eduardo', 'Rodriquez', '2693 Commerce St.',
-	'McFarland', '6085558763', 'erodriguez');
+INSERT INTO owners VALUES (3, 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', '6085558763', 'erodriguez');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (3, 'Rosy',
-	'2011-04-17', 2, 3);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (4, 'Jewel',
-	'2010-03-07', 2, 3);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (3, 'Rosy', '2011-04-17', 2, 3);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (4, 'Jewel', '2010-03-07', 2, 3);
 
 -- hdavis/hdavis
 INSERT INTO users(username,password,enabled) VALUES ('hdavis','hdavis',TRUE);
 INSERT INTO authorities VALUES ('hdavis','owner');
-INSERT INTO owners VALUES (4, 'Harold', 'Davis', '563 Friendly St.', 'Windsor',
-	'6085553198', 'hdavis');
+INSERT INTO owners VALUES (4, 'Harold', 'Davis', '563 Friendly St.', 'Windsor', '6085553198', 'hdavis');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (5, 'Iggy',
-	'2010-11-30', 3, 4);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (5, 'Iggy', '2010-11-30', 3, 4);
 
 -- pmctavish/pmctavish
 INSERT INTO users(username,password,enabled) VALUES ('pmctavish','pmctavish',
@@ -132,57 +121,41 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (6, 'George',
 	'2010-01-20', 4, 5);
 
 -- jcoleman/jcoleman
-INSERT INTO users(username,password,enabled) VALUES ('jcoleman','jcoleman',
-	TRUE);
+INSERT INTO users(username,password,enabled) VALUES ('jcoleman','jcoleman', TRUE);
 INSERT INTO authorities VALUES ('jcoleman','owner');
-INSERT INTO owners VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona',
-	'6085552654', 'jcoleman');
+INSERT INTO owners VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654', 'jcoleman');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (7, 'Samantha',
-	'2012-09-04', 1, 6);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (8, 'Max',
-	'2012-09-04', 1, 6);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (7, 'Samantha', '2012-09-04', 1, 6);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (8, 'Max', '2012-09-04', 1, 6);
 
 -- jblack/jblack
 INSERT INTO users(username,password,enabled) VALUES ('jblack','jblack',TRUE);
 INSERT INTO authorities VALUES ('jblack','owner');
-INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona',
-	'6085555387', 'jblack');
+INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387', 'jblack');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (9, 'Lucky',
-	'2011-08-06', 5, 7);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (9, 'Lucky', '2011-08-06', 5, 7);
 
 -- mescobito/mescobito
-INSERT INTO users(username,password,enabled) VALUES ('mescobito','mescobito',
-	TRUE);
+INSERT INTO users(username,password,enabled) VALUES ('mescobito','mescobito', TRUE);
 INSERT INTO authorities VALUES ('mescobito','owner');
-INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison',
-	'6085557683', 'mescobito');
+INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683', 'mescobito');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (10, 'Mulligan',
-	'2007-02-24', 2, 8);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (10, 'Mulligan', '2007-02-24', 2, 8);
 
 -- dschroeder/dschroeder
-INSERT INTO users(username,password,enabled) VALUES ('dschroeder','dschroeder',
-	TRUE);
+INSERT INTO users(username,password,enabled) VALUES ('dschroeder','dschroeder', TRUE);
 INSERT INTO authorities VALUES ('dschroeder','owner');
-INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail',
-	'Madison', '6085559435', 'dschroeder');
+INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435', 'dschroeder');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (11, 'Freddy',
-	'2010-03-09', 5, 9);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (11, 'Freddy', '2010-03-09', 5, 9);
 
 -- cestaban/cestaban
-INSERT INTO users(username,password,enabled) VALUES ('cestaban','cestaban',
-	TRUE);
+INSERT INTO users(username,password,enabled) VALUES ('cestaban','cestaban', TRUE);
 INSERT INTO authorities VALUES ('cestaban','owner');
-INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.',
-	'Waunakee', '6085555487', 'cestaban');
+INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'cestaban');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky',
-	'2010-06-24', 2, 10);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly',
-	'2012-06-08', 1, 10);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky', '2010-06-24', 2, 10);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 1, 10);
 
 
 --------------------------------------------------------------------------------
