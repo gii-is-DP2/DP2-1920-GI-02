@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
+
 <petclinic:layout pageName="owners">
 
     <h2>Owner Information</h2>
@@ -67,7 +68,7 @@
                         </thead>
                         <c:forEach var="visit" items="${pet.visits}">
                             <tr>
-                                <td><petclinic:localDate date="${visit.date}" pattern="yyyy-MM-dd"/></td>
+                     			<td><petclinic:localDateTime moment="${visit.moment}" pattern="yyyy-MM-dd HH:mm"/></td>
                                 <td><c:out value="${visit.description}"/></td>
                             </tr>
                         </c:forEach>

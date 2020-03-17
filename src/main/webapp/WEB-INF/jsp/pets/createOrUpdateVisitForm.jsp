@@ -4,20 +4,28 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
-
 <petclinic:layout pageName="owners">
+
+	<!-- JS and CSS -->
 	<jsp:attribute name="customScript">
+	
+		<!-- jquery datetimepicker addon -->
+		<script src="/resources/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="/resources/css/jquery-ui-timepicker-addon.css">
+		
+		<!-- datetimepicker for moment selection -->
         <script>
             $(function () {
-                $("#date").datepicker({dateFormat: 'yy/mm/dd'});
+                $("#moment").datetimepicker({dateFormat: 'yy/mm/dd',timeFormat:'hh:mm'});
             });
         </script>
     </jsp:attribute>
-	<jsp:body>
     
-        <h2>
-			<c:if test="${visit['new']}">New </c:if>Visit</h2>
-
+    <!-- body -->
+	<jsp:body>
+        <h2><c:if test="${visit['new']}">New </c:if>Visit</h2>
+		
+		<!-- Pet table -->
         <b>Pet</b>
         <table class="table table-striped">
             <thead>
@@ -36,9 +44,10 @@
             </tr>
         </table>
 
+		<!-- Create/edit visit form -->
         <form:form modelAttribute="visit" class="form-horizontal">
             <div class="form-group has-feedback">
-                <petclinic:inputField label="Date" name="date" />
+                <petclinic:inputField label="Moment" name="moment" />
                 <petclinic:inputField label="Description" name="description" />
                 
                 <!-- Vet dropdown -->

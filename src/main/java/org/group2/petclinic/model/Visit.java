@@ -1,7 +1,7 @@
 
 package org.group2.petclinic.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,12 +16,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * Simple JavaBean domain object representing a visit.
- *
- * @author Ken Krebs
- * @author Miguel Macarro
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
@@ -37,28 +31,28 @@ public class Visit extends BaseEntity {
 
 	// ATTRIBUTES -------------------------------------------------------------
 
-	@Column(name = "visit_date")
+	@Column(name = "visit_moment")
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate	date;
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+	private LocalDateTime	moment;
 
 	@NotEmpty
 	@Column(name = "description")
-	private String		description;
+	private String			description;
 
 	// RELATIONSHIPS ----------------------------------------------------------
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "pet_id")
-	private Pet			pet;
+	private Pet				pet;
 
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "vet_id")
-	private Vet			vet;
+	private Vet				vet;
 
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "visit_type_id")
-	private VisitType	visitType;
+	private VisitType		visitType;
 
 	// GETTERS / SETTERS ------------------------------------------------------
 
