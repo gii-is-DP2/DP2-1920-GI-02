@@ -190,3 +190,56 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
 	'spayed');
 
+
+--------------------------------------------------------------------------------
+--                                SECRETARIES                                 --
+--------------------------------------------------------------------------------
+
+-- secretary1 / s3cr3tary
+INSERT INTO users(username,password,enabled) VALUES ('secretary1','s3cr3tary',TRUE);
+INSERT INTO authorities VALUES ('secretary1','secretary');
+INSERT INTO secretaries VALUES (1, 'Maria', 'Fernandez', 'secretary1');
+
+-- secretary2 / secretary2
+INSERT INTO users(username,password,enabled) VALUES ('secretary2','secretary2',TRUE);
+INSERT INTO authorities VALUES ('secretary2','secretary');
+INSERT INTO secretaries VALUES (2, 'Lucas', 'Rodriguez', 'secretary2');
+
+
+
+--------------------------------------------------------------------------------
+--                            CREDITCARD                                      --
+--------------------------------------------------------------------------------
+
+INSERT INTO creditcards(id,holder,brand,number,exp_month,exp_year,security_code) VALUES 
+	(1, 'Claudia Guerrero', 'visa', '1111 2222 3333 4444', 05, 21, 082);
+	
+INSERT INTO creditcards(id,holder,brand,number,exp_month,exp_year,security_code) VALUES 
+	(2, 'Miguel Macarro', 'visa', '1144 5522 3366 8899', 10, 22, 144);
+	
+INSERT INTO creditcards(id,holder,brand,number,exp_month,exp_year,security_code) VALUES 
+	(3, 'Josema Gonzalez', 'visa', '9999 8888 7777 4444', 01, 25, 455);
+
+
+
+--------------------------------------------------------------------------------
+--                            PAYMENTS                                        --
+--------------------------------------------------------------------------------
+
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(1, 'creditcard', '2019-06-05', 30, 1, 1);
+
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(2, 'creditcard', '2017-02-01', 50, 2, 2);
+	
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(3, 'creditcard', '2019-01-06', 80, 1, 3);
+	
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(4, 'cash', '2019-10-20', 20, 1, null);
+	
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(5, 'cash', '2018-09-09', 50, 2, null);
+	
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(6, 'cash', '2019-11-12', 75, 1, null);
