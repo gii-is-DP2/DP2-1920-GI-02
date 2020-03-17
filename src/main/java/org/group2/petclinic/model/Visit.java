@@ -1,7 +1,7 @@
 
 package org.group2.petclinic.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,111 +9,51 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * Simple JavaBean domain object representing a visit.
- *
- * @author Ken Krebs
- */
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "visits")
 public class Visit extends BaseEntity {
 
 	// CONSTRUCTOR ------------------------------------------------------------
 
-	/**
-	 * Creates a new instance of Visit for the current date
-	 */
 	public Visit() {
-		this.date = LocalDate.now();
+
 	}
 
 
 	// ATTRIBUTES -------------------------------------------------------------
 
-	/**
-	 * Holds value of property date.
-	 */
-	@Column(name = "visit_date")
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate	date;
+	@Column(name = "visit_moment")
+	@NotNull
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+	private LocalDateTime	moment;
 
-	/**
-	 * Holds value of property description.
-	 */
 	@NotEmpty
 	@Column(name = "description")
-	private String		description;
+	private String			description;
 
 	// RELATIONSHIPS ----------------------------------------------------------
 
-	/**
-	 * Holds value of property pet.
-	 */
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "pet_id")
-	private Pet			pet;
+	private Pet				pet;
 
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "vet_id")
+	private Vet				vet;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "visit_type_id")
+	private VisitType		visitType;
 
 	// GETTERS / SETTERS ------------------------------------------------------
-
-	/**
-	 * Getter for property date.
-	 *
-	 * @return Value of property date.
-	 */
-	public LocalDate getDate() {
-		return this.date;
-	}
-
-	/**
-	 * Setter for property date.
-	 *
-	 * @param date
-	 *            New value of property date.
-	 */
-	public void setDate(final LocalDate date) {
-		this.date = date;
-	}
-
-	/**
-	 * Getter for property description.
-	 *
-	 * @return Value of property description.
-	 */
-	public String getDescription() {
-		return this.description;
-	}
-
-	/**
-	 * Setter for property description.
-	 *
-	 * @param description
-	 *            New value of property description.
-	 */
-	public void setDescription(final String description) {
-		this.description = description;
-	}
-
-	/**
-	 * Getter for property pet.
-	 *
-	 * @return Value of property pet.
-	 */
-	public Pet getPet() {
-		return this.pet;
-	}
-
-	/**
-	 * Setter for property pet.
-	 *
-	 * @param pet
-	 *            New value of property pet.
-	 */
-	public void setPet(final Pet pet) {
-		this.pet = pet;
-	}
 
 }

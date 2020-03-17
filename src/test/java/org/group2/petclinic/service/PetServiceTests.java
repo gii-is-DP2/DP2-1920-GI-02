@@ -223,7 +223,7 @@ class PetServiceTests {
 		assertThat(visits.size()).isEqualTo(2);
 		Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
 		assertThat(visitArr[0].getPet()).isNotNull();
-		assertThat(visitArr[0].getDate()).isNotNull();
+		assertThat(visitArr[0].getMoment()).isNotNull();
 		assertThat(visitArr[0].getPet().getId()).isEqualTo(7);
 	}
 
