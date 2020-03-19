@@ -33,6 +33,14 @@
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find owners</span>
 				</petclinic:menuItem>
+				
+				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'schedule-visit'}" url="/owner/schedule-visit"
+					title="schedule visit">
+					<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+					<span>Schedule new visit</span>
+				</petclinic:menuItem>
+				</sec:authorize>
 
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
