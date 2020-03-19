@@ -5,14 +5,10 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="owners">
-
-	<!-- JS and CSS -->
 	<jsp:attribute name="customScript">
-	
 		<!-- jquery datetimepicker addon -->
 		<script src="/resources/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
 		<link rel="stylesheet" href="/resources/css/jquery-ui-timepicker-addon.css">
-		
 		<!-- datetimepicker for moment selection -->
         <script>
             $(function () {
@@ -20,8 +16,6 @@
             });
         </script>
     </jsp:attribute>
-    
-    <!-- body -->
 	<jsp:body>
         <h2><c:if test="${visit['new']}">New </c:if>Visit</h2>
 		
