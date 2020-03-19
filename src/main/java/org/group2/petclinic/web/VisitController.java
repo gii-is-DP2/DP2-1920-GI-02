@@ -54,6 +54,13 @@ public class VisitController {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	//VALIDATOR ---------------------------------------------------------------
+
+	@InitBinder("visit")
+	public void initVisitBinder(final WebDataBinder dataBinder) {
+		dataBinder.setValidator(new VisitValidator());
+	}
+
 	// MODEL ATTRIBUTES -------------------------------------------------------
 
 	/**
@@ -121,8 +128,13 @@ public class VisitController {
 	}
 
 	@PostMapping(value = "owner/schedule-visit")
-	public String processScheduleVisitForm(@Valid final Visit visit, final BindingResult result) {
+	public String processScheduleVisitForm(@Valid final Visit visit, final BindingResult result, final ModelMap modelMap) {
 		if (result.hasErrors()) {
+			String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+			Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
+			Collection<Pet> petsOfOwner = this.petService.findPetsByOwnerId(owner.getId());
+			modelMap.addAttribute("petsOfOwner", petsOfOwner);
+
 			return "owner/scheduleVisitForm";
 		} else {
 			this.petService.saveVisit(visit);

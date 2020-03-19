@@ -12,7 +12,7 @@
 		<!-- datetimepicker for moment selection -->
         <script>
             $(function () {
-                $("#moment").datetimepicker({dateFormat: 'yy/mm/dd',timeFormat:'hh:mm'});
+                $("#moment").datetimepicker({dateFormat: 'yy/mm/dd',timeFormat:'HH:mm'});
             });
         </script>
     </jsp:attribute>
