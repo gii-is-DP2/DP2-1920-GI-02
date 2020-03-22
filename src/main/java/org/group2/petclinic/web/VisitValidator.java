@@ -12,6 +12,8 @@ import org.springframework.validation.Validator;
 
 public class VisitValidator implements Validator {
 
+	// SERVICES ---------------------------------------------------------------
+
 	private VisitService visitService;
 
 
@@ -20,6 +22,15 @@ public class VisitValidator implements Validator {
 	public VisitValidator(final VisitService visitService) {
 		this.visitService = visitService;
 	}
+
+	// SUPPORTS ---------------------------------------------------------------
+
+	@Override
+	public boolean supports(final Class<?> clazz) {
+		return Visit.class.isAssignableFrom(clazz);
+	}
+
+	// VALIDATE ---------------------------------------------------------------
 
 	@Override
 	public void validate(final Object obj, final Errors errors) {
@@ -73,14 +84,6 @@ public class VisitValidator implements Validator {
 			}
 		}
 
-	}
-
-	/**
-	 * This Validator validates *just* Visit instances
-	 */
-	@Override
-	public boolean supports(final Class<?> clazz) {
-		return Visit.class.isAssignableFrom(clazz);
 	}
 
 }
