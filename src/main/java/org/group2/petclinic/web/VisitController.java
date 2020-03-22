@@ -58,7 +58,7 @@ public class VisitController {
 
 	@InitBinder("visit")
 	public void initVisitBinder(final WebDataBinder dataBinder) {
-		dataBinder.setValidator(new VisitValidator());
+		dataBinder.setValidator(new VisitValidator(this.visitService));
 	}
 
 	// MODEL ATTRIBUTES -------------------------------------------------------

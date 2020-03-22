@@ -2,16 +2,28 @@
 package org.group2.petclinic.web;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.group2.petclinic.model.Visit;
+import org.group2.petclinic.service.VisitService;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 public class VisitValidator implements Validator {
 
+	private VisitService visitService;
+
+
+	// CONSTRUCTOR ------------------------------------------------------------
+
+	public VisitValidator(final VisitService visitService) {
+		this.visitService = visitService;
+	}
+
 	@Override
 	public void validate(final Object obj, final Errors errors) {
+
 		Visit visit = (Visit) obj;
 
 		//Validate required fields
@@ -41,6 +53,23 @@ public class VisitValidator implements Validator {
 			}
 			if (!errors.hasFieldErrors("moment") && beginning.getDayOfWeek().getValue() > 5) {
 				errors.rejectValue("moment", "Visit cannot be during the weekend.", "Visit cannot be during the weekend.");
+			}
+		}
+
+		//Validate that the visit's vet doesn't already have a visit scheduled during the same time
+		if (!errors.hasFieldErrors("vet") && !errors.hasFieldErrors("moment")) {
+			LocalDateTime visitBeginning = visit.getMoment();
+			LocalDateTime visitEnd = visitBeginning.plusMinutes(visit.getVisitType().getDuration());
+
+			List<Visit> visitsByVetOnSameDay = this.visitService.findVisitsByVetOnDate(visit.getVet(), visit.getMoment().toLocalDate());
+			for (Visit v : visitsByVetOnSameDay) {
+				LocalDateTime vBeginning = v.getMoment();
+				LocalDateTime vEnd = vBeginning.plusMinutes(v.getVisitType().getDuration());
+				if (!visitBeginning.isBefore(vBeginning) && !visitBeginning.isAfter(vEnd) ||//
+					!visitEnd.isBefore(vBeginning) && !visitEnd.isAfter(vEnd)) {
+					errors.rejectValue("moment", "Vet is occupied during the given slot.", "Vet is occupied during the given slot.");
+				}
+
 			}
 		}
 
