@@ -7,12 +7,20 @@
 <petclinic:layout pageName="schedule-visit">
 	<jsp:attribute name="customScript">
 		<!-- jquery datetimepicker addon -->
-		<script src="/resources/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
-		<link rel="stylesheet" href="/resources/css/jquery-ui-timepicker-addon.css">
+		<script src="/resources/js/jquery.datetimepicker.full.min.js" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="/resources/css/jquery.datetimepicker.min.css">
 		<!-- datetimepicker for moment selection -->
         <script>
             $(function () {
-                $("#moment").datetimepicker({dateFormat: 'yy/mm/dd',timeFormat:'HH:mm'});
+                $("#moment").datetimepicker({
+                	  format:'Y/m/d H:i',
+                	  inline:true,
+                	  step:30,
+                	  minTime: '08:00',
+                	  maxTime: '20:00',
+                	  disabledWeekDays:[0,6],
+                	  dayOfWeekStart:1
+                	});
             });
         </script>
     </jsp:attribute>
