@@ -54,7 +54,7 @@ public class VisitController {
 		dataBinder.setDisallowedFields("id");
 	}
 
-	//VALIDATOR ---------------------------------------------------------------
+	// VALIDATOR --------------------------------------------------------------
 
 	@InitBinder("visit")
 	public void initVisitBinder(final WebDataBinder dataBinder) {

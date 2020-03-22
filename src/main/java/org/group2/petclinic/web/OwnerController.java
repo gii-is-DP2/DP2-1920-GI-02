@@ -7,12 +7,18 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.group2.petclinic.model.Owner;
+import org.group2.petclinic.model.Pet;
 import org.group2.petclinic.service.AuthoritiesService;
 import org.group2.petclinic.service.OwnerService;
+import org.group2.petclinic.service.PetService;
 import org.group2.petclinic.service.UserService;
+import org.group2.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,29 +27,37 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @author Juergen Hoeller
- * @author Ken Krebs
- * @author Arjen Poutsma
- * @author Michael Isvy
- */
 @Controller
 public class OwnerController {
 
 	private static final String	VIEWS_OWNER_CREATE_OR_UPDATE_FORM	= "owners/createOrUpdateOwnerForm";
 
-	private final OwnerService	ownerService;
+	// SERVICES ---------------------------------------------------------------
 
+	private final OwnerService	ownerService;
+	private final PetService	petService;
+
+
+	// CONSTRUCTOR ------------------------------------------------------------
 
 	@Autowired
-	public OwnerController(final OwnerService ownerService, final UserService userService, final AuthoritiesService authoritiesService) {
+	public OwnerController(final OwnerService ownerService, final PetService petService, final UserService userService, final AuthoritiesService authoritiesService) {
 		this.ownerService = ownerService;
+		this.petService = petService;
 	}
+
+	// SET ALLOWED FIELDS -----------------------------------------------------
 
 	@InitBinder
 	public void setAllowedFields(final WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
+
+	// VALIDATOR --------------------------------------------------------------
+
+	// MODEL ATTRIBUTES -------------------------------------------------------
+
+	// VIEWS ------------------------------------------------------------------
 
 	@GetMapping(value = "/owners/new")
 	public String initCreationForm(final Map<String, Object> model) {
@@ -125,6 +139,129 @@ public class OwnerController {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		mav.addObject(this.ownerService.findOwnerById(ownerId));
 		return mav;
+	}
+
+	//----- NEW METHODS (Miguel)
+
+	/**
+	 *
+	 * (Miguel)
+	 *
+	 * View that shows the profile of the authenticated owner
+	 *
+	 */
+	@GetMapping("/owner/profile")
+	public ModelAndView showOwnerInfo() {
+		ModelAndView mav = new ModelAndView("owner/profileView");
+		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		mav.addObject(this.ownerService.findOwnerByUsername(ownerUsername));
+		return mav;
+	}
+
+	/**
+	 *
+	 * (Miguel)
+	 *
+	 * View that shows lets the authenticated owner edit his profile
+	 *
+	 */
+	@GetMapping(value = "/owner/profile/edit")
+	public String initUpdateOwnerForm(final Model model) {
+		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute(this.ownerService.findOwnerByUsername(ownerUsername));
+		return "owner/profileForm";
+	}
+
+	@PostMapping(value = "/owner/profile/edit")
+	public String processUpdateOwnerForm(@Valid final Owner owner, final BindingResult result) {
+		if (result.hasErrors()) {
+			return "owner/profileForm";
+		} else {
+			String authenticatedOwnerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+			Owner authenticatedOwner = this.ownerService.findOwnerByUsername(authenticatedOwnerUsername);
+			owner.setId(authenticatedOwner.getId());
+			this.ownerService.saveOwner(owner);
+			return "redirect:/owner/profile";
+		}
+	}
+
+	/**
+	 *
+	 * (Miguel)
+	 *
+	 * View that shows the profile of the authenticated owner
+	 *
+	 */
+	@GetMapping("/owner/pets")
+	public ModelAndView showOwnersPets() {
+		ModelAndView mav = new ModelAndView("owner/petsList");
+		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		mav.addObject(this.ownerService.findOwnerByUsername(ownerUsername));
+		return mav;
+	}
+
+	@GetMapping(value = "/owner/pets/new")
+	public String initCreationForm(final ModelMap model) {
+		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
+		Pet pet = new Pet();
+		owner.addPet(pet);
+		model.put("pet", pet);
+		model.addAttribute("types", this.petService.findPetTypes());
+		return "owner/createOrUpdatePetForm";
+	}
+
+	@PostMapping(value = "/owner/pets/new")
+	public String processCreationForm(@Valid final Pet pet, final BindingResult result, final ModelMap model) {
+		if (result.hasErrors()) {
+			String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+			Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
+			owner.addPet(pet);
+			model.put("pet", pet);
+			model.addAttribute("types", this.petService.findPetTypes());
+			return "owner/createOrUpdatePetForm";
+		} else {
+			try {
+				String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+				Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
+				owner.addPet(pet);
+				this.petService.savePet(pet);
+			} catch (DuplicatedPetNameException ex) {
+				result.rejectValue("name", "duplicate", "already exists");
+				return "owner/createOrUpdatePetForm";
+			}
+			return "redirect:/owner/pets";
+		}
+	}
+
+	@GetMapping(value = "/owner/pets/{petId}/edit")
+	public String initUpdateForm(@PathVariable("petId") final int petId, final ModelMap model) {
+		Pet pet = this.petService.findPetById(petId);
+		model.put("pet", pet);
+		model.addAttribute("types", this.petService.findPetTypes());
+		return "owner/createOrUpdatePetForm";
+	}
+
+	@PostMapping(value = "owner/pets/{petId}/edit")
+	public String processUpdateForm(@Valid final Pet pet, final BindingResult result, @PathVariable("petId") final int petId, final ModelMap model) {
+		//String authenticatedOwnerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		//Owner authenticatedOwner = this.ownerService.findOwnerByUsername(authenticatedOwnerUsername);
+		//authenticatedOwner.addPet(pet);
+		model.addAttribute("types", this.petService.findPetTypes());
+		if (result.hasErrors()) {
+			model.put("pet", pet);
+			return "owner/createOrUpdatePetForm";
+		} else {
+			Pet petToUpdate = this.petService.findPetById(petId);
+			BeanUtils.copyProperties(pet, petToUpdate, "id", "owner", "visits");
+			try {
+				this.petService.savePet(petToUpdate);
+			} catch (DuplicatedPetNameException ex) {
+				result.rejectValue("name", "duplicate", "already exists");
+				return "owner/createOrUpdatePetForm";
+			}
+			return "redirect:/owner/pets";
+		}
 	}
 
 }

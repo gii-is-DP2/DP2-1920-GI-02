@@ -27,14 +27,28 @@
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Home</span>
 				</petclinic:menuItem>
-
+	
+				<sec:authorize access="hasAuthority('admin')">
 				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find owners</span>
 				</petclinic:menuItem>
+				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'owner-profile'}" url="/owner/profile"
+					title="profile">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Profile</span>
+				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'owner-pets'}" url="/owner/pets"
+					title="pets">
+					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+					<span>Pets</span>
+				</petclinic:menuItem>
+				
 				<petclinic:menuItem active="${name eq 'schedule-visit'}" url="/owner/schedule-visit"
 					title="schedule visit">
 					<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
