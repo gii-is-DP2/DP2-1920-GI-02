@@ -1,8 +1,11 @@
 
 package org.group2.petclinic.repository;
 
+import org.group2.petclinic.model.Creditcard;
+import org.springframework.dao.DataAccessException;
+
 public interface CreditcardRepository {
 
-	//Collection<Owner> findByLastName(String lastName) throws DataAccessException;
+	void save(Creditcard creditcard) throws DataAccessException;
 
 }

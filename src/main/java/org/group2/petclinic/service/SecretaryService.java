@@ -1,7 +1,10 @@
 
 package org.group2.petclinic.service;
 
-import org.group2.petclinic.repository.SecretaryRepository;
+import javax.transaction.Transactional;
+
+import org.group2.petclinic.model.Secretary;
+import org.group2.petclinic.repository.springdatajpa.SpringDataSecretaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +12,12 @@ import org.springframework.stereotype.Service;
 public class SecretaryService {
 
 	@Autowired
-	private SecretaryRepository secretaryRepository;
+	private SpringDataSecretaryRepository secretaryRepository;
 
-	//@Transactional
-	//public tipoDevuelve nombreMetodo(lo que recibe) {
-	//	return loQueQuiero;
-	//}
+
+	@Transactional
+	public Secretary findSecretaryByName(final String username) {
+		return this.secretaryRepository.findSecretaryByName(username);
+	}
 
 }

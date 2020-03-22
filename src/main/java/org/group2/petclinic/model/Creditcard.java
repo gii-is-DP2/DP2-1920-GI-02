@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "creditcards")
@@ -26,19 +27,21 @@ public class Creditcard extends BaseEntity {
 	@Column(name = "number")
 	private String	number;
 
-	@NotEmpty
+	@NotNull
 	@Min(1)
 	@Max(12)
 	@Column(name = "exp_month")
 	private Integer	expMonth;
 
-	@NotEmpty
+	@NotNull
 	@Column(name = "exp_year")
 	private Integer	expYear;
 
-	@NotEmpty
+	@NotNull
+	@Min(1)
+	@Max(999)
 	@Column(name = "security_code")
-	private String	securityCode;
+	private Integer	securityCode;
 
 	// RELATIONSHIPS ----------------------------------------------------------
 
@@ -85,11 +88,11 @@ public class Creditcard extends BaseEntity {
 		this.expYear = expYear;
 	}
 
-	public String getSecurityCode() {
+	public Integer getSecurityCode() {
 		return this.securityCode;
 	}
 
-	public void setSecurityCode(final String securityCode) {
+	public void setSecurityCode(final Integer securityCode) {
 		this.securityCode = securityCode;
 	}
 }

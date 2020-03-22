@@ -1,7 +1,7 @@
 
 package org.group2.petclinic.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,26 +25,26 @@ public class Payment extends BaseEntity {
 	@NotEmpty
 	@Pattern(regexp = "^creditcard|cash")
 	@Column(name = "method")
-	private String		method;
+	private String			method;
 
 	@Column(name = "moment")
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate	moment;
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+	private LocalDateTime	moment;
 
-	@NotEmpty
+	@NotNull
 	@Min(1)
 	@Column(name = "final_price")
-	private Double		finalPrice;
+	private Double			finalPrice;
 
 	// RELATIONSHIPS ----------------------------------------------------------
 
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "secretary_id")
-	private Secretary	secretary;
+	private Secretary		secretary;
 
-	@OneToOne
+	@OneToOne(optional = true)
 	@JoinColumn(name = "creditcard_id")
-	private Creditcard	creditcard;
+	private Creditcard		creditcard;
 
 
 	// GETTERS / SETTERS ------------------------------------------------------
@@ -56,11 +57,11 @@ public class Payment extends BaseEntity {
 		this.method = method;
 	}
 
-	public LocalDate getMoment() {
+	public LocalDateTime getMoment() {
 		return this.moment;
 	}
 
-	public void setMoment(final LocalDate moment) {
+	public void setMoment(final LocalDateTime moment) {
 		this.moment = moment;
 	}
 
@@ -78,6 +79,14 @@ public class Payment extends BaseEntity {
 
 	public void setCreditcard(final Creditcard creditcard) {
 		this.creditcard = creditcard;
+	}
+
+	public Secretary getSecretary() {
+		return this.secretary;
+	}
+
+	public void setSecretary(final Secretary secretary) {
+		this.secretary = secretary;
 	}
 
 }
