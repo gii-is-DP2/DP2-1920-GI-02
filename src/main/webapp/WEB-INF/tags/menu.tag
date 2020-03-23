@@ -29,39 +29,41 @@
 				</petclinic:menuItem>
 	
 				<sec:authorize access="hasAuthority('admin')">
-				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
-					title="find owners">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Find owners</span>
-				</petclinic:menuItem>
+					<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
+						title="find owners">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						<span>Find owners</span>
+					</petclinic:menuItem>
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('owner')">
-				<petclinic:menuItem active="${name eq 'owner-profile'}" url="/owner/profile"
-					title="profile">
-					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-					<span>Profile</span>
-				</petclinic:menuItem>
+					<petclinic:menuItem active="${name eq 'owner-profile'}" url="/owner/profile"
+						title="profile">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span>Profile</span>
+					</petclinic:menuItem>
+					
+					<petclinic:menuItem active="${name eq 'owner-pets'}" url="/owner/pets"
+						title="pets">
+						<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+						<span>Pets</span>
+					</petclinic:menuItem>
+					
+					<petclinic:menuItem active="${name eq 'schedule-visit'}" url="/owner/schedule-visit"
+						title="schedule visit">
+						<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+						<span>Schedule new visit</span>
+					</petclinic:menuItem>
+				</sec:authorize>
 				
-				<petclinic:menuItem active="${name eq 'owner-pets'}" url="/owner/pets"
-					title="pets">
-					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-					<span>Pets</span>
-				</petclinic:menuItem>
-				
-				<petclinic:menuItem active="${name eq 'schedule-visit'}" url="/owner/schedule-visit"
-					title="schedule visit">
-					<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-					<span>Schedule new visit</span>
-				</petclinic:menuItem>
+				<sec:authorize access="hasAuthority('veterinarian')">
+					<petclinic:menuItem active="${name eq 'vet-visits'}" url="/vet/visits"
+						title="vistis">
+						<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+						<span>Visits</span>
+					</petclinic:menuItem>
 				</sec:authorize>
 
-				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
-					title="veterinarians">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Veterinarians</span>
-				</petclinic:menuItem>
-				
 				<sec:authorize access="hasAuthority('secretary')">
 					<petclinic:menuItem active="${name eq 'visits'}" url="/secretary/visits"
 						title="visits">
@@ -69,6 +71,12 @@
 						<span>Visits</span>
 					</petclinic:menuItem>
 				</sec:authorize>
+				
+				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
+					title="veterinarians">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Veterinarians</span>
+				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
