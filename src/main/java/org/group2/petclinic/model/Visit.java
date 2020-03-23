@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -53,6 +54,10 @@ public class Visit extends BaseEntity {
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "visit_type_id")
 	private VisitType		visitType;
+
+	@OneToOne(optional = true)
+	@JoinColumn(name = "payment_id")
+	private Payment			payment;
 
 	// GETTERS / SETTERS ------------------------------------------------------
 

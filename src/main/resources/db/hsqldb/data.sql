@@ -158,12 +158,68 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky', '2010
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 1, 10);
 
 
+
+--------------------------------------------------------------------------------
+--                                SECRETARIES                                 --
+--------------------------------------------------------------------------------
+
+-- secretary1 / s3cr3tary
+INSERT INTO users(username,password,enabled) VALUES ('secretary1','s3cr3tary',TRUE);
+INSERT INTO authorities VALUES ('secretary1','secretary');
+INSERT INTO secretaries VALUES (1, 'Maria', 'Fernandez', 'secretary1');
+
+-- secretary2 / secretary2
+INSERT INTO users(username,password,enabled) VALUES ('secretary2','secretary2',TRUE);
+INSERT INTO authorities VALUES ('secretary2','secretary');
+INSERT INTO secretaries VALUES (2, 'Lucas', 'Rodriguez', 'secretary2');
+
+
+
+--------------------------------------------------------------------------------
+--                            CREDITCARD                                      --
+--------------------------------------------------------------------------------
+
+INSERT INTO creditcards(id,holder,brand,number,exp_month,exp_year,security_code) VALUES 
+	(1, 'Claudia Guerrero', 'visa', '1111 2222 3333 4444', 05, 21, 082);
+	
+INSERT INTO creditcards(id,holder,brand,number,exp_month,exp_year,security_code) VALUES 
+	(2, 'Miguel Macarro', 'visa', '1144 5522 3366 8899', 10, 22, 144);
+	
+INSERT INTO creditcards(id,holder,brand,number,exp_month,exp_year,security_code) VALUES 
+	(3, 'Josema Gonzalez', 'visa', '9999 8888 7777 4444', 01, 25, 455);
+
+
+
+--------------------------------------------------------------------------------
+--                            PAYMENTS                                        --
+--------------------------------------------------------------------------------
+
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(1, 'creditcard', '2019-06-05 10:20', 30, 1, 1);
+
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(2, 'creditcard', '2017-02-01 15:40', 50, 2, 2);
+	
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(3, 'creditcard', '2019-01-06 11:30', 80, 1, 3);
+	
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(4, 'cash', '2019-10-20 19:20', 20, 1, null);
+	
+INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
+	(5, 'cash', '2018-09-09 16:30', 50, 2, null);
+	
+	
+
 --------------------------------------------------------------------------------
 --                                VISITS                                      --
 --------------------------------------------------------------------------------
 
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description) VALUES (1, 7, 2, 1, '2013-01-01 10:00', 'rabies shot');
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description) VALUES (2, 8, 2, 1, '2013-01-02 10:00', 'rabies shot');
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description) VALUES (3, 8, 2, 2, '2013-01-03 10:00', 'neutered');
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description) VALUES (4, 7, 1, 3, '2013-01-04 10:00', 'spayed');
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (1, 7, 2, 1, '2013-01-01 10:00', 'rabies shot', 1);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (2, 8, 2, 1, '2013-01-02 10:00', 'rabies shot', 2);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (3, 8, 2, 2, '2013-01-03 10:00', 'neutered', 3);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (4, 7, 1, 3, '2013-01-04 10:00', 'spayed', 4);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (5, 7, 1, 3, '2019-03-10 15:30', 'Descrip with', 5);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (6, 8, 1, 2, '2015-05-06 14:00', 'Descrip without', null);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (7, 7, 2, 1, '2016-07-15 10:30', 'Rubies whitout', null);
 
