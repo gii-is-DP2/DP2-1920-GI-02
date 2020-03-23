@@ -1,4 +1,15 @@
+
 package org.group2.petclinic.web;
+
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.assertj.core.util.Lists;
 import org.group2.petclinic.configuration.SecurityConfiguration;
@@ -6,28 +17,16 @@ import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.service.AuthoritiesService;
 import org.group2.petclinic.service.OwnerService;
 import org.group2.petclinic.service.UserService;
-import org.group2.petclinic.service.VetService;
-import org.group2.petclinic.web.OwnerController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.BDDMockito.given;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import org.springframework.test.web.servlet.MockMvc;
 
 /**
  * Test class for {@link OwnerController}
@@ -35,29 +34,28 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
  * @author Colin But
  */
 
-@WebMvcTest(controllers=OwnerController.class,
-		excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-		excludeAutoConfiguration= SecurityConfiguration.class)
+@WebMvcTest(controllers = OwnerController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class OwnerControllerTests {
 
-	private static final int TEST_OWNER_ID = 1;
+	private static final int	TEST_OWNER_ID	= 1;
 
 	@Autowired
-	private OwnerController ownerController;
+	private OwnerController		ownerController;
 
 	@MockBean
-	private OwnerService clinicService;
-        
-        @MockBean
-	private UserService userService;
-        
-        @MockBean
-        private AuthoritiesService authoritiesService; 
+	private OwnerService		clinicService;
+
+	@MockBean
+	private UserService			userService;
+
+	@MockBean
+	private AuthoritiesService	authoritiesService;
 
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc				mockMvc;
 
-	private Owner george;
+	private Owner				george;
+
 
 	@BeforeEach
 	void setup() {
@@ -73,48 +71,41 @@ class OwnerControllerTests {
 
 	}
 
-	@WithMockUser(value = "spring")
-        @Test
+	// Todos los tests de esta clase dan error si el permiso a owners/** está
+	// puesto solo para admins. Si se pone .permitAll en la configuración de
+	// seguridad funciona. Para que se pueda hacer con el permiso solo para
+	// admins, he probado lo siguiente:
+	//@WithMockUser(value = "admin1")
+	//@WithMockUser(value = "admin1", roles = {"admin"})
+	//@WithMockUser(value = "admin1", roles = "admin")
+	//@WithMockUser(value = "admin1", authorities = "admin")
+	@WithMockUser(username = "admin1", authorities = "admin")
+	@Test
 	void testInitCreationForm() throws Exception {
-		mockMvc.perform(get("/owners/new")).andExpect(status().isOk()).andExpect(model().attributeExists("owner"))
-				.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+		mockMvc.perform(get("/owners/new")).andExpect(status().isOk()).andExpect(model().attributeExists("owner")).andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
-	@WithMockUser(value = "spring")
-        @Test
+	@WithMockUser(username = "admin1", authorities = "admin")
+	@Test
 	void testProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/owners/new").param("firstName", "Joe").param("lastName", "Bloggs")
-							.with(csrf())
-							.param("address", "123 Caramel Street")
-							.param("city", "London")
-							.param("telephone", "01316761638"))
-				.andExpect(status().is3xxRedirection());
+		mockMvc.perform(post("/owners/new").param("firstName", "Joe").param("lastName", "Bloggs").with(csrf()).param("address", "123 Caramel Street").param("city", "London").param("telephone", "01316761638")).andExpect(status().is3xxRedirection());
 	}
 
-	@WithMockUser(value = "spring")
-        @Test
+	@WithMockUser(username = "admin1", authorities = "admin")
+	@Test
 	void testProcessCreationFormHasErrors() throws Exception {
-		mockMvc.perform(post("/owners/new")
-							.with(csrf())
-							.param("firstName", "Joe")
-							.param("lastName", "Bloggs")
-							.param("city", "London"))
-				.andExpect(status().isOk())
-				.andExpect(model().attributeHasErrors("owner"))
-				.andExpect(model().attributeHasFieldErrors("owner", "address"))
-				.andExpect(model().attributeHasFieldErrors("owner", "telephone"))
-				.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+		mockMvc.perform(post("/owners/new").with(csrf()).param("firstName", "Joe").param("lastName", "Bloggs").param("city", "London")).andExpect(status().isOk()).andExpect(model().attributeHasErrors("owner"))
+			.andExpect(model().attributeHasFieldErrors("owner", "address")).andExpect(model().attributeHasFieldErrors("owner", "telephone")).andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
 	@WithMockUser(value = "spring")
-        @Test
+	@Test
 	void testInitFindForm() throws Exception {
-		mockMvc.perform(get("/owners/find")).andExpect(status().isOk()).andExpect(model().attributeExists("owner"))
-				.andExpect(view().name("owners/findOwners"));
+		mockMvc.perform(get("/owners/find")).andExpect(status().isOk()).andExpect(model().attributeExists("owner")).andExpect(view().name("owners/findOwners"));
 	}
 
 	@WithMockUser(value = "spring")
-        @Test
+	@Test
 	void testProcessFindFormSuccess() throws Exception {
 		given(this.clinicService.findOwnerByLastName("")).willReturn(Lists.newArrayList(george, new Owner()));
 
@@ -122,75 +113,48 @@ class OwnerControllerTests {
 	}
 
 	@WithMockUser(value = "spring")
-        @Test
+	@Test
 	void testProcessFindFormByLastName() throws Exception {
 		given(this.clinicService.findOwnerByLastName(george.getLastName())).willReturn(Lists.newArrayList(george));
 
-		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
+		mockMvc.perform(get("/owners").param("lastName", "Franklin")).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/owners/" + TEST_OWNER_ID));
 	}
 
-        @WithMockUser(value = "spring")
+	@WithMockUser(value = "spring")
 	@Test
 	void testProcessFindFormNoOwnersFound() throws Exception {
-		mockMvc.perform(get("/owners").param("lastName", "Unknown Surname")).andExpect(status().isOk())
-				.andExpect(model().attributeHasFieldErrors("owner", "lastName"))
-				.andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
-				.andExpect(view().name("owners/findOwners"));
+		mockMvc.perform(get("/owners").param("lastName", "Unknown Surname")).andExpect(status().isOk()).andExpect(model().attributeHasFieldErrors("owner", "lastName")).andExpect(model().attributeHasFieldErrorCode("owner", "lastName", "notFound"))
+			.andExpect(view().name("owners/findOwners"));
 	}
 
-        @WithMockUser(value = "spring")
+	@WithMockUser(value = "spring")
 	@Test
 	void testInitUpdateOwnerForm() throws Exception {
-		mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID)).andExpect(status().isOk())
-				.andExpect(model().attributeExists("owner"))
-				.andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
-				.andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
-				.andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))
-				.andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
-				.andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
-				.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+		mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("owner")).andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
+			.andExpect(model().attribute("owner", hasProperty("firstName", is("George")))).andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St.")))).andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
+			.andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023")))).andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
-        @WithMockUser(value = "spring")
+	@WithMockUser(value = "spring")
 	@Test
 	void testProcessUpdateOwnerFormSuccess() throws Exception {
-		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID)
-							.with(csrf())
-							.param("firstName", "Joe")
-							.param("lastName", "Bloggs")
-							.param("address", "123 Caramel Street")
-							.param("city", "London")
-							.param("telephone", "01616291589"))
-				.andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/owners/{ownerId}"));
+		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).with(csrf()).param("firstName", "Joe").param("lastName", "Bloggs").param("address", "123 Caramel Street").param("city", "London").param("telephone", "01616291589"))
+			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
 
-        @WithMockUser(value = "spring")
+	@WithMockUser(value = "spring")
 	@Test
 	void testProcessUpdateOwnerFormHasErrors() throws Exception {
-		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID)
-							.with(csrf())
-							.param("firstName", "Joe")
-							.param("lastName", "Bloggs")
-							.param("city", "London"))
-				.andExpect(status().isOk())
-				.andExpect(model().attributeHasErrors("owner"))
-				.andExpect(model().attributeHasFieldErrors("owner", "address"))
-				.andExpect(model().attributeHasFieldErrors("owner", "telephone"))
-				.andExpect(view().name("owners/createOrUpdateOwnerForm"));
+		mockMvc.perform(post("/owners/{ownerId}/edit", TEST_OWNER_ID).with(csrf()).param("firstName", "Joe").param("lastName", "Bloggs").param("city", "London")).andExpect(status().isOk()).andExpect(model().attributeHasErrors("owner"))
+			.andExpect(model().attributeHasFieldErrors("owner", "address")).andExpect(model().attributeHasFieldErrors("owner", "telephone")).andExpect(view().name("owners/createOrUpdateOwnerForm"));
 	}
 
-        @WithMockUser(value = "spring")
+	@WithMockUser(value = "spring")
 	@Test
 	void testShowOwner() throws Exception {
-		mockMvc.perform(get("/owners/{ownerId}", TEST_OWNER_ID)).andExpect(status().isOk())
-				.andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))
-				.andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
-				.andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St."))))
-				.andExpect(model().attribute("owner", hasProperty("city", is("Madison"))))
-				.andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
-				.andExpect(view().name("owners/ownerDetails"));
+		mockMvc.perform(get("/owners/{ownerId}", TEST_OWNER_ID)).andExpect(status().isOk()).andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin")))).andExpect(model().attribute("owner", hasProperty("firstName", is("George"))))
+			.andExpect(model().attribute("owner", hasProperty("address", is("110 W. Liberty St.")))).andExpect(model().attribute("owner", hasProperty("city", is("Madison")))).andExpect(model().attribute("owner", hasProperty("telephone", is("6085551023"))))
+			.andExpect(view().name("owners/ownerDetails"));
 	}
 
 }

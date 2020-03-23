@@ -4,56 +4,52 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
-<petclinic:layout pageName="owners">
+<petclinic:layout pageName="schedule-visit">
 	<jsp:attribute name="customScript">
 		<!-- jquery datetimepicker addon -->
-		<script src="/resources/js/jquery-ui-timepicker-addon.js" type="text/javascript"></script>
-		<link rel="stylesheet" href="/resources/css/jquery-ui-timepicker-addon.css">
+		<script src="/resources/js/jquery.datetimepicker.full.min.js" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="/resources/css/jquery.datetimepicker.min.css">
 		<!-- datetimepicker for moment selection -->
         <script>
             $(function () {
-                $("#moment").datetimepicker({dateFormat: 'yy/mm/dd',timeFormat:'HH:mm'});
+                $("#moment").datetimepicker({
+                	  format:'Y/m/d H:i',
+                	  inline:true,
+                	  step:30,
+                	  minTime: '08:00',
+                	  maxTime: '20:00',
+                	  disabledWeekDays:[0,6],
+                	  dayOfWeekStart:1
+                	});
             });
         </script>
     </jsp:attribute>
 	<jsp:body>
-        <h2><c:if test="${visit['new']}">New </c:if>Visit</h2>
-		
-		<!-- Pet table -->
-        <b>Pet</b>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Birth Date</th>
-                <th>Type</th>
-                <th>Owner</th>
-            </tr>
-            </thead>
-            <tr>
-                <td><c:out value="${visit.pet.name}" /></td>
-                <td><petclinic:localDate date="${visit.pet.birthDate}" pattern="yyyy/MM/dd" /></td>
-                <td><c:out value="${visit.pet.type.name}" /></td>
-                <td><c:out value="${visit.pet.owner.firstName} ${visit.pet.owner.lastName}" /></td>
-            </tr>
-        </table>
+        <h2>Schedule a new visit</h2>
 
-		<!-- Create/edit visit form -->
+		<!-- Create visit form -->
         <form:form modelAttribute="visit" class="form-horizontal">
             <div class="form-group has-feedback">
-                <petclinic:inputField label="Moment" name="moment" />
+            	 <!-- Pet dropdown -->
+               	<div class="control-group">
+                    <petclinic:selectField name="pet" label="Pet " names="${petsOfOwner}" size="1"/>
+                </div>
+            
+            	<!-- Description input -->
                 <petclinic:inputField label="Description" name="description" />
+                
+                <!-- VisitType dropdown -->
+               	<div class="control-group">
+                    <petclinic:selectField name="visitType" label="Visit type " names="${visitTypes}" size="1"/>
+                </div>
                 
                 <!-- Vet dropdown -->
                	<div class="control-group">
                     <petclinic:selectField name="vet" label="Vet " names="${vets}" size="1"/>
                 </div>
                 
-                <!-- VisitType dropdown -->
-               	<div class="control-group">
-                    <petclinic:selectField name="visitType" label="Visit type " names="${visitTypes}" size="1"/>
-                </div>
-				
+                <!-- Moment input -->
+				<petclinic:inputField label="Moment" name="moment" />
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
