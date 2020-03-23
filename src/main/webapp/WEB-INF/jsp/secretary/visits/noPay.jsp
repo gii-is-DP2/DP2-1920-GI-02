@@ -31,7 +31,7 @@
                     <c:out value="${visit.pet.name}"/>
                 </td>
                 <td>
-                	<spring:url value="/visits/{visitId}/payments/new" var="addUrl">
+                	<spring:url value="/secretary/visits/{visitId}/payments/new" var="addUrl">
         				<spring:param name="visitId" value="${visit.id}"/>
     				</spring:url>
     				<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add Payment</a>

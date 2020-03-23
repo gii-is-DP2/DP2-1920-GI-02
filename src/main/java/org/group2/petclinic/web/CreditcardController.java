@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/visits/{visitId}/payments/{paymentId}")
+@RequestMapping("/secretary/visits/{visitId}/payments/{paymentId}")
 public class CreditcardController {
 
-	private static final String		VIEWS_CREDITCARD_CREATE_FORM	= "creditcards/createCreditcardForm";
+	private static final String		VIEWS_CREDITCARD_CREATE_FORM	= "secretary/visits/createCreditcardForm";
 
 	@Autowired
 	private PaymentService			paymentService;
@@ -110,7 +110,7 @@ public class CreditcardController {
 
 			this.creditcardService.saveCreditcard(creditcard);
 
-			return "redirect:/visits";
+			return "redirect:/secretary/visits";
 		}
 	}
 

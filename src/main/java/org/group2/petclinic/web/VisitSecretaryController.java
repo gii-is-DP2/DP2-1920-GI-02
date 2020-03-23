@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/visits")
+@RequestMapping("/secretary/visits")
 public class VisitSecretaryController {
 
 	@Autowired
@@ -20,7 +20,7 @@ public class VisitSecretaryController {
 
 	@GetMapping()
 	public String listPayments(final Secretary secretary, final ModelMap modelMap) {
-		String vista = "/visits/noPay";
+		String vista = "secretary/visits/noPay";
 		Iterable<Visit> visits = this.visitSecretaryService.findVisitsNoPayment();
 		modelMap.addAttribute("visits", visits);
 		return vista;

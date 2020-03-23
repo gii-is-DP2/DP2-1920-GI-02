@@ -41,7 +41,7 @@
 				</petclinic:menuItem>
 				
 				<sec:authorize access="hasAuthority('secretary')">
-					<petclinic:menuItem active="${name eq 'visits'}" url="/visits"
+					<petclinic:menuItem active="${name eq 'visits'}" url="/secretary/visits"
 						title="visits">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Visits</span>

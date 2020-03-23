@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/users/new").permitAll().antMatchers("/payments").permitAll()
-			.antMatchers("/visits/**").hasAnyAuthority("secretary").antMatchers("/secretaries/**").hasAnyAuthority("secretary").antMatchers("/admin/**").hasAnyAuthority("admin").antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
+			.antMatchers("/secretary/**").hasAnyAuthority("secretary").antMatchers("/secretaries/**").hasAnyAuthority("secretary").antMatchers("/admin/**").hasAnyAuthority("admin").antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
 			.antMatchers("/vets/**").authenticated().anyRequest().denyAll().and().formLogin()
 			/* .loginPage("/login") */
 			.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");

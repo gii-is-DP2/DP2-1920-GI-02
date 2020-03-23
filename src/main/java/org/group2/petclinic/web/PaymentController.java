@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/visits/{visitId}")
+@RequestMapping("/secretary/visits/{visitId}")
 public class PaymentController {
 
-	private static final String		VIEWS_PAYMENTS_CREATE_FORM	= "payments/createPaymentForm";
+	private static final String		VIEWS_PAYMENTS_CREATE_FORM	= "/secretary/visits/createPaymentForm";
 
 	@Autowired
 	private PaymentService			paymentService;
@@ -103,9 +103,9 @@ public class PaymentController {
 			redirectAttributes.addAttribute("paymentId", payment.getId());
 
 			if (payment.getMethod().contains("creditcard")) {
-				return "redirect:/visits/{visitId}/payments/{paymentId}/creditcards/new";
+				return "redirect:/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new";
 			} else {
-				return "redirect:/visits";
+				return "redirect:/secretary/visits";
 			}
 
 		}
