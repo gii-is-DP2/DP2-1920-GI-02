@@ -56,13 +56,13 @@ public class VisitValidator implements Validator {
 			LocalDateTime beginning = visit.getMoment();
 			LocalDateTime end = beginning.plusMinutes(visit.getVisitType().getDuration());
 
-			if (!errors.hasFieldErrors("moment") && beginning.getHour() < 8) {
+			if (beginning.getHour() < 8) {
 				errors.rejectValue("moment", "Visit cannot begin before 8 a.m.", "Visit cannot begin before 8 a.m.");
 			}
-			if (!errors.hasFieldErrors("moment") && (end.getHour() > 20 || end.getHour() == 20 && end.getMinute() > 0)) {
+			if (end.getHour() > 20 || end.getHour() == 20 && end.getMinute() > 0) {
 				errors.rejectValue("moment", "Visit cannot end after 8 p.m.", "Visit cannot end after 8 p.m.");
 			}
-			if (!errors.hasFieldErrors("moment") && beginning.getDayOfWeek().getValue() > 5) {
+			if (beginning.getDayOfWeek().getValue() > 5) {
 				errors.rejectValue("moment", "Visit cannot be during the weekend.", "Visit cannot be during the weekend.");
 			}
 		}
