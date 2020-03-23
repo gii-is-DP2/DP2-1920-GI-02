@@ -2,18 +2,20 @@
 package org.group2.petclinic.web;
 
 import java.util.Collection;
-import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Pet;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
+import org.group2.petclinic.service.OwnerService;
 import org.group2.petclinic.service.PetService;
 import org.group2.petclinic.service.VetService;
 import org.group2.petclinic.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -32,15 +34,17 @@ public class VisitController {
 	private final VisitService	visitService;
 	private final PetService	petService;
 	private final VetService	vetService;
+	private final OwnerService	ownerService;
 
 
 	// CONSTRUCTOR ------------------------------------------------------------
 
 	@Autowired
-	public VisitController(final VisitService visitService, final PetService petService, final VetService vetService) {
+	public VisitController(final VisitService visitService, final PetService petService, final VetService vetService, final OwnerService ownerService) {
 		this.visitService = visitService;
 		this.petService = petService;
 		this.vetService = vetService;
+		this.ownerService = ownerService;
 	}
 
 	// SET ALLOWED FIELDS -----------------------------------------------------
@@ -50,25 +54,17 @@ public class VisitController {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	// VALIDATOR --------------------------------------------------------------
+
+	@InitBinder("visit")
+	public void initVisitBinder(final WebDataBinder dataBinder) {
+		dataBinder.setValidator(new VisitValidator(this.visitService));
+	}
+
 	// MODEL ATTRIBUTES -------------------------------------------------------
 
 	/**
-	 * Called before each and every @GetMapping or @PostMapping annotated method. 2 goals:
-	 * - Make sure we always have fresh data
-	 * - Since we do not use the session scope, make sure that Pet object always
-	 * has an id (Even though id is not part of the form
-	 * fields)
-	 */
-	@ModelAttribute("visit")
-	public Visit loadPetWithVisit(@PathVariable("petId") final int petId) {
-		Pet pet = this.petService.findPetById(petId);
-		Visit visit = new Visit();
-		pet.addVisit(visit);
-		return visit;
-	}
-
-	/**
-	 * All vets. Necesarry for the dropdown menu in visit/new
+	 * All vets. Necessary for the dropdown menu in visit/new
 	 */
 	@ModelAttribute("vets")
 	public Collection<Vet> populateVets() {
@@ -76,7 +72,7 @@ public class VisitController {
 	}
 
 	/**
-	 * All visit types. Necesarry for the dropdown menu in visit/new
+	 * All visit types. Necessary for the dropdown menu in visit/new
 	 */
 	@ModelAttribute("visitTypes")
 	public Collection<VisitType> populateVisitTypes() {
@@ -85,24 +81,64 @@ public class VisitController {
 
 	// VIEWS ------------------------------------------------------------------
 
-	@GetMapping(value = "/owners/*/pets/{petId}/visits")
-	public String showVisits(@PathVariable final int petId, final Map<String, Object> model) {
-		model.put("visits", this.petService.findPetById(petId).getVisits());
-		return "visitList";
-	}
-
+	/**
+	 *
+	 * owners/{ownerId}/pets/{petId}(visits/new
+	 * View for an admin to schedule a visit for an owner
+	 *
+	 */
 	@GetMapping(value = "/owners/*/pets/{petId}/visits/new")
 	public String initNewVisitForm(@PathVariable("petId") final int petId, final ModelMap modelMap) {
+		Pet pet = this.petService.findPetById(petId);
+		Visit visit = new Visit();
+		pet.addVisit(visit);
+		modelMap.addAttribute("visit", visit);
 		return "pets/createOrUpdateVisitForm";
 	}
 
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@Valid final Visit visit, final BindingResult result) {
+	public String processNewVisitForm(@PathVariable("petId") final int petId, @Valid final Visit visit, final BindingResult result) {
+		Pet pet = this.petService.findPetById(petId);
+		pet.addVisit(visit);
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		} else {
 			this.petService.saveVisit(visit);
 			return "redirect:/owners/{ownerId}";
+		}
+	}
+
+	/**
+	 *
+	 * owner/schedule-visit:
+	 * View for the owner to schedule a visit.
+	 *
+	 */
+	@GetMapping(value = "owner/schedule-visit")
+	public String initScheduleVisitForm(final ModelMap modelMap) {
+		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
+		Collection<Pet> petsOfOwner = this.petService.findPetsByOwnerId(owner.getId());
+		modelMap.addAttribute("petsOfOwner", petsOfOwner);
+
+		Visit visit = new Visit();
+		modelMap.addAttribute("visit", visit);
+
+		return "owner/scheduleVisitForm";
+	}
+
+	@PostMapping(value = "owner/schedule-visit")
+	public String processScheduleVisitForm(@Valid final Visit visit, final BindingResult result, final ModelMap modelMap) {
+		if (result.hasErrors()) {
+			String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+			Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
+			Collection<Pet> petsOfOwner = this.petService.findPetsByOwnerId(owner.getId());
+			modelMap.addAttribute("petsOfOwner", petsOfOwner);
+
+			return "owner/scheduleVisitForm";
+		} else {
+			this.petService.saveVisit(visit);
+			return "redirect:/";
 		}
 	}
 
