@@ -15,11 +15,15 @@ import org.springframework.data.repository.Repository;
 public interface SpringDataVisitRepository extends VisitRepository, Repository<Visit, Integer> {
 
 	@Override
-	@Query("SELECT vt FROM VisitType vt ORDER BY vt.name")
-	List<VisitType> findVisitTypes() throws DataAccessException;
+	@Query("SELECT visit FROM Visit visit WHERE visit.vet = ?1")
+	List<Visit> findVisitsByVet(Vet vet) throws DataAccessException;
 
 	@Override
 	@Query("SELECT visit FROM Visit visit WHERE visit.vet = ?1 AND visit.moment >= ?2 AND visit.moment < ?3 ORDER BY visit.moment")
 	List<Visit> findVisitsByVetOnBetween(Vet vet, LocalDateTime beginning, LocalDateTime end) throws DataAccessException;
+
+	@Override
+	@Query("SELECT vt FROM VisitType vt ORDER BY vt.name")
+	List<VisitType> findVisitTypes() throws DataAccessException;
 
 }

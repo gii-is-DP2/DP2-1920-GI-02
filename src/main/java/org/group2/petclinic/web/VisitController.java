@@ -142,4 +142,14 @@ public class VisitController {
 		}
 	}
 
+	@GetMapping(value = "/vet/visits")
+	public String showVisitsVet(final ModelMap modelMap) {
+		String view = "/vet/visitsList";
+		String vetUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		Vet vet = this.vetService.findVetByUsername(vetUsername);
+		Iterable<Visit> visits = this.visitService.findVisitsByVet(vet);
+		modelMap.addAttribute("visits", visits);
+		return view;
+	}
+
 }

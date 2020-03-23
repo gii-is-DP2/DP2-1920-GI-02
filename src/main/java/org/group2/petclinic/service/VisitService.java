@@ -28,11 +28,11 @@ public class VisitService {
 		this.visitRepository = visitRepository;
 	}
 
-	// METHODS ----------------------------------------------------------------
+	// FIND VISITS ------------------------------------------------------------
 
 	@Transactional(readOnly = true)
-	public Collection<VisitType> findVisitTypes() throws DataAccessException {
-		return this.visitRepository.findVisitTypes();
+	public List<Visit> findVisitsByVet(final Vet vet) throws DataAccessException {
+		return this.visitRepository.findVisitsByVet(vet);
 	}
 
 	@Transactional(readOnly = true)
@@ -40,6 +40,13 @@ public class VisitService {
 		LocalDateTime beginning = date.atStartOfDay();
 		LocalDateTime end = beginning.plusDays(1);
 		return this.visitRepository.findVisitsByVetOnBetween(vet, beginning, end);
+	}
+
+	// OTHER METHODS ----------------------------------------------------------
+
+	@Transactional(readOnly = true)
+	public Collection<VisitType> findVisitTypes() throws DataAccessException {
+		return this.visitRepository.findVisitTypes();
 	}
 
 }
