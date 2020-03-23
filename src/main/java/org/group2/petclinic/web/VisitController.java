@@ -151,5 +151,13 @@ public class VisitController {
 		modelMap.addAttribute("visits", visits);
 		return view;
 	}
+	
+	@GetMapping(value = "/vet/visits/{visitId}")
+	public String showVisitForVet(@PathVariable("visitId") final int visitId, final ModelMap modelMap) {
+		Visit visit = this.visitService.findVisitById(visitId);
+		modelMap.addAttribute("visit", visit);
+		return "vet/visitDetails";
+	}
+	
 
 }

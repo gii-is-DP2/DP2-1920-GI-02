@@ -27,9 +27,21 @@ public class VisitService {
 	public VisitService(final VisitRepository visitRepository) {
 		this.visitRepository = visitRepository;
 	}
+	
+	// SAVE VISIT -------------------------------------------------------------
+	
+	@Transactional
+	public void saveVisit(Visit visit) throws DataAccessException {
+		visitRepository.save(visit);
+	}
 
 	// FIND VISITS ------------------------------------------------------------
 
+	@Transactional(readOnly = true)
+	public Collection<Visit> findVisits() throws DataAccessException {
+		return visitRepository.findAll();
+	}
+	
 	@Transactional(readOnly = true)
 	public List<Visit> findVisitsByVet(final Vet vet) throws DataAccessException {
 		return this.visitRepository.findVisitsByVet(vet);
@@ -40,6 +52,13 @@ public class VisitService {
 		LocalDateTime beginning = date.atStartOfDay();
 		LocalDateTime end = beginning.plusDays(1);
 		return this.visitRepository.findVisitsByVetOnBetween(vet, beginning, end);
+	}
+	
+	// FIND VISIT -------------------------------------------------------------
+	
+	@Transactional(readOnly = true)
+	public Visit findVisitById(int id) throws DataAccessException {
+		return visitRepository.findById(id);
 	}
 
 	// OTHER METHODS ----------------------------------------------------------
