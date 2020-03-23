@@ -72,6 +72,12 @@ public class PaymentController {
 
 	@PostMapping(value = "/payments/new")
 	public String processCreationForm(final Visit visit, @Valid final Payment payment, final BindingResult result, final ModelMap model, final RedirectAttributes redirectAttributes) {
+
+		List<String> listMethod = new ArrayList<String>();
+		listMethod.add("creditcard");
+		listMethod.add("cash");
+		model.addAttribute("method", listMethod);
+
 		if (result.hasErrors()) {
 			model.addAttribute("payment", payment);
 			return PaymentController.VIEWS_PAYMENTS_CREATE_FORM;

@@ -84,6 +84,22 @@ public class CreditcardController {
 
 	@PostMapping(value = "/creditcards/new")
 	public String processCreationForm(final Payment payment, @Valid final Creditcard creditcard, final BindingResult result, final ModelMap model) {
+
+		List<Integer> listExpMonth = new ArrayList<Integer>();
+		listExpMonth.add(1);
+		listExpMonth.add(2);
+		listExpMonth.add(3);
+		listExpMonth.add(4);
+		listExpMonth.add(5);
+		listExpMonth.add(6);
+		listExpMonth.add(7);
+		listExpMonth.add(8);
+		listExpMonth.add(9);
+		listExpMonth.add(10);
+		listExpMonth.add(11);
+		listExpMonth.add(12);
+		model.addAttribute("expMonth", listExpMonth);
+
 		if (result.hasErrors()) {
 			model.addAttribute("creditcard", creditcard);
 			return CreditcardController.VIEWS_CREDITCARD_CREATE_FORM;

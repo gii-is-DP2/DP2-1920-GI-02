@@ -32,7 +32,7 @@ public class Payment extends BaseEntity {
 	private LocalDateTime	moment;
 
 	@NotNull
-	@Min(1)
+	@Min(0)
 	@Column(name = "final_price")
 	private Double			finalPrice;
 

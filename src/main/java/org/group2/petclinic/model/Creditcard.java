@@ -9,6 +9,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 @Table(name = "creditcards")
 public class Creditcard extends BaseEntity {
@@ -34,14 +36,15 @@ public class Creditcard extends BaseEntity {
 	private Integer	expMonth;
 
 	@NotNull
+	@Min(0)
+	@Max(99)
 	@Column(name = "exp_year")
 	private Integer	expYear;
 
 	@NotNull
-	@Min(1)
-	@Max(999)
+	@Length(min = 3, max = 4)
 	@Column(name = "security_code")
-	private Integer	securityCode;
+	private String	securityCode;
 
 	// RELATIONSHIPS ----------------------------------------------------------
 
@@ -88,11 +91,11 @@ public class Creditcard extends BaseEntity {
 		this.expYear = expYear;
 	}
 
-	public Integer getSecurityCode() {
+	public String getSecurityCode() {
 		return this.securityCode;
 	}
 
-	public void setSecurityCode(final Integer securityCode) {
+	public void setSecurityCode(final String securityCode) {
 		this.securityCode = securityCode;
 	}
 }
