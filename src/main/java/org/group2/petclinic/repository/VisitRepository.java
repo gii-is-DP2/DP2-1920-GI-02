@@ -17,7 +17,7 @@ public interface VisitRepository {
 
 	List<Visit> findVisitsByVet(Vet vet) throws DataAccessException;
 
-	List<Visit> findVisitsByVetOnBetween(Vet vet, LocalDateTime beginning, LocalDateTime end) throws DataAccessException;
+	List<Visit> findVisitsByVetBetween(Vet vet, LocalDateTime beginning, LocalDateTime end) throws DataAccessException;
 
 	List<VisitType> findVisitTypes() throws DataAccessException;
 

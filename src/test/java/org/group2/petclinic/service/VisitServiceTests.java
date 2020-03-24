@@ -99,7 +99,7 @@ class VisitServiceTests {
 		LocalDateTime date_end = LocalDateTime.parse("2020-02-03T00:00:00.00");
 		LocalDate date = LocalDate.parse("2020-02-02");
 
-		when(stubVisitRepository.findVisitsByVetOnBetween(vet, date_start, date_end)).thenReturn(toReturn);
+		when(stubVisitRepository.findVisitsByVetBetween(vet, date_start, date_end)).thenReturn(toReturn);
 
 		visitService = new VisitService(stubVisitRepository);
 		//2. Act
@@ -125,7 +125,7 @@ class VisitServiceTests {
 		LocalDateTime date_end = LocalDateTime.parse("2020-02-03T00:00:00.00");
 		LocalDate date = LocalDate.parse("2020-02-02");
 
-		when(stubVisitRepository.findVisitsByVetOnBetween(vet, date_start, date_end)).thenReturn(toReturn);
+		when(stubVisitRepository.findVisitsByVetBetween(vet, date_start, date_end)).thenReturn(toReturn);
 
 		visitService = new VisitService(stubVisitRepository);
 		//2. Act

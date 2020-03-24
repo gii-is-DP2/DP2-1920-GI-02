@@ -46,7 +46,7 @@ public class VisitService {
 	public List<Visit> findVisitsByVetOnDate(final Vet vet, final LocalDate date) throws DataAccessException {
 		LocalDateTime beginning = date.atStartOfDay();
 		LocalDateTime end = beginning.plusDays(1);
-		return this.visitRepository.findVisitsByVetOnBetween(vet, beginning, end);
+		return this.visitRepository.findVisitsByVetBetween(vet, beginning, end);
 	}
 
 	// OTHER METHODS ----------------------------------------------------------
