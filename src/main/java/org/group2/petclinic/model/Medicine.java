@@ -24,10 +24,6 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "medicines")
 public class Medicine extends NamedEntity {
  
-    @Column(name = "name")
-    @NotEmpty
-    private String name;
- 
     @Column(name = "brand")
     @NotEmpty
     private String brand;

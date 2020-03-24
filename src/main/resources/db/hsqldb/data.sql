@@ -209,17 +209,48 @@ INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VA
 INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VALUES 
 	(5, 'cash', '2018-09-09 16:30', 50, 2, null);
 	
+--------------------------------------------------------------------------------
+--                                MEDICINES                                   --
+--------------------------------------------------------------------------------
+INSERT INTO medicines(id,brand,name) VALUES (1, 'Bayer', 'Betadine');
+INSERT INTO medicines(id,brand,name) VALUES (2, 'Pfizer', 'Medicine X');
+INSERT INTO medicines(id,brand,name) VALUES (3, 'Roche', 'Medicine Y');
+INSERT INTO medicines(id,brand,name) VALUES (4, 'Sanofi', 'Medicine Z');	
+
+--------------------------------------------------------------------------------
+--                                PRESCRIPTIONS                               --
+--------------------------------------------------------------------------------
+INSERT INTO prescriptions(id,medicine_id,frequency,duration) VALUES (1, 1, '2 times per day', '1 week');
+INSERT INTO prescriptions(id,medicine_id,frequency,duration) VALUES (2, 2, '2 times per day', '2 weeks');
+INSERT INTO prescriptions(id,medicine_id,frequency,duration) VALUES (3, 3, '2 times per day', '3 weeks');
+INSERT INTO prescriptions(id,medicine_id,frequency,duration) VALUES (4, 4, '2 times per day', '1 month');
+
+--------------------------------------------------------------------------------
+--                                DIAGNOSTICS                                 --
+--------------------------------------------------------------------------------
+INSERT INTO diagnostics(id, moment,description) VALUES (1, '2013-01-01', 'rabies shot');
+INSERT INTO diagnostics(id, moment,description) VALUES (2, '2013-01-02', 'rabies shot');
+INSERT INTO diagnostics(id, moment,description) VALUES (3, '2013-01-03', 'neutered');
+INSERT INTO diagnostics(id, moment,description) VALUES (4, '2013-01-04', 'spayed');
+
+--------------------------------------------------------------------------------
+--                          DIAGNOSIS-PRESCRIPTION                            --
+--------------------------------------------------------------------------------
+INSERT INTO diagnosis_prescriptions VALUES (1, 1);
+INSERT INTO diagnosis_prescriptions VALUES (1, 2);
+INSERT INTO diagnosis_prescriptions VALUES (3, 3);
+INSERT INTO diagnosis_prescriptions VALUES (4, 4);
 	
 
 --------------------------------------------------------------------------------
 --                                VISITS                                      --
 --------------------------------------------------------------------------------
 
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (1, 7, 2, 1, '2013-01-01 10:00', 'rabies shot', 1);
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (2, 8, 2, 1, '2013-01-02 10:00', 'rabies shot', 2);
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (3, 8, 2, 2, '2013-01-03 10:00', 'neutered', 3);
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (4, 7, 1, 3, '2013-01-04 10:00', 'spayed', 4);
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (5, 7, 1, 3, '2019-03-10 15:30', 'Descrip with', 5);
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (6, 8, 1, 2, '2015-05-06 14:00', 'Descrip without', null);
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id) VALUES (7, 7, 2, 1, '2016-07-15 10:30', 'Rubies whitout', null);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (1, 7, 2, 1, '2013-01-01 10:00', 'rabies shot', 1, 1);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (2, 8, 2, 1, '2013-01-02 10:00', 'rabies shot', 2, 2);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (3, 8, 2, 2, '2013-01-03 10:00', 'neutered', 3, null);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (4, 7, 1, 3, '2013-01-04 10:00', 'spayed', 4, null);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (5, 7, 1, 3, '2019-03-10 15:30', 'Descrip with', 5, null);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (6, 8, 1, 2, '2015-05-06 14:00', 'Descrip without', null, null);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (7, 7, 2, 1, '2016-07-15 10:30', 'Rubies whitout', null, null);
 

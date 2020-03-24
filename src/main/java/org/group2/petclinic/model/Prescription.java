@@ -24,7 +24,7 @@ import javax.validation.constraints.NotEmpty;
  
 @Entity
 @Table(name = "prescriptions")
-public class Prescription extends NamedEntity {
+public class Prescription extends BaseEntity {
  
     @Column(name = "frequency")
     @NotEmpty
@@ -37,5 +37,29 @@ public class Prescription extends NamedEntity {
     @ManyToOne(optional=true)
     @JoinColumn(name = "medicine_id")
     private Medicine medicine;
+
+	public String getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	public Medicine getMedicine() {
+		return medicine;
+	}
+
+	public void setMedicine(Medicine medicine) {
+		this.medicine = medicine;
+	}
  
 }

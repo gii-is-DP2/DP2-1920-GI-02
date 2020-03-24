@@ -9,11 +9,10 @@
 
     <h2>Visit Information</h2>
 
-
     <table class="table table-striped">
         <tr>
             <th>Moment</th>
-            <td><b><c:out value="${visit.moment}"/></b></td>
+            <td><b><petclinic:localDateTime moment="${visit.moment}" pattern="yyyy-MM-dd HH:mm"/></b></td>
         </tr>
         <tr>
             <th>Description</th>
@@ -25,6 +24,34 @@
         </tr>
     </table>
 
+	<h2>Prescription Information</h2>
+
+	<table id="prescriptionsTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Frequency</th>
+            <th>Duration</th>
+            <th>Medicine</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${prescriptions}" var="prescription">
+        	<input type="hidden" name="id" value="${prescription.id}"/>
+            <tr>
+				<td>
+                    <c:out value="${prescription.frequency}"/>
+                </td>
+                <td>
+                    <c:out value="${prescription.duration}"/>
+                </td>
+                <td>
+                    <c:out value="${prescription.medicine.name}"/>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+
 	<jstl:if test="${visit.diagnosis==null}">
     <spring:url value="{visitId}/diagnosis/new" var="addUrl">
         <spring:param name="diagnosisId" value="${diagnosis.id}"/>
@@ -34,9 +61,8 @@
     </jstl:if>
 
 <jstl:if test="${visit.diagnosis!=null}">
-    <spring:url value="{visitId}/diagnostics/{diagnosisId}/prescriptions/new" var="addUrl">
+    <spring:url value="{visitId}/prescriptions/new" var="addUrl">
 		<spring:param name="prescriptionId" value="${prescription.id}"/>
-        <spring:param name="diagnosisId" value="${diagnosis.id}"/>
 		<spring:param name="visitId" value="${visit.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add prescription</a>
