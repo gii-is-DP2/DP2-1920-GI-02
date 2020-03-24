@@ -28,6 +28,13 @@ public class VisitService {
 		this.visitRepository = visitRepository;
 	}
 
+	// SAVE VISITS ------------------------------------------------------------
+
+	@Transactional
+	public void saveVisit(final Visit visit) throws DataAccessException {
+		this.visitRepository.save(visit);
+	}
+
 	// FIND VISITS ------------------------------------------------------------
 
 	@Transactional(readOnly = true)
