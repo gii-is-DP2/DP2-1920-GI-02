@@ -2,136 +2,154 @@
 package org.group2.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.User;
+import org.group2.petclinic.repository.OwnerRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@ExtendWith(MockitoExtension.class)
 class OwnerServiceTests {
 
-	@Autowired
-	protected OwnerService ownerService;
+	@Mock
+	private OwnerRepository	stubOwnerRepository;
+
+	protected OwnerService	ownerService;
+
+	// saveOwner(final Owner owner) NOT TESTED (implemented by springframework)
 
 
+	// findOwnerById(final int id) POSITIVE TEST
 	@Test
-	@Transactional
-	void shouldSaveNewOwner() {
+	void shouldFindOwnerById() {
+		//1. Arrange
+		Owner toReturn = new Owner();
+		toReturn.setId(1);
+		toReturn.setFirstName("Juan");
+		toReturn.setLastName("García");
+		toReturn.setUser(mock(User.class));
+		toReturn.setAddress("Calle Larga 1");
+		toReturn.setCity("Sevilla");
+		toReturn.setTelephone("954123123");
+
+		when(stubOwnerRepository.findById(1)).thenReturn(toReturn);
+
+		ownerService = new OwnerService(stubOwnerRepository);
+		//2. Act
+		Owner owner = ownerService.findOwnerById(1);
+		//3. Assert
+		assertThat(owner).isEqualTo(toReturn);
+	}
+
+	// findOwnerById(final int id) NEGATIVE TEST
+	// id for which no owner exists in the repository. Should return null.
+	@Test
+	void shouldNotFindOwnerById() {
+		//1. Arrange
+		when(stubOwnerRepository.findById(1)).thenReturn(null);
+
+		ownerService = new OwnerService(stubOwnerRepository);
+		//2. Act
+		Owner owner = ownerService.findOwnerById(1);
+		//3. Assert
+		assertThat(owner).isNull();
+	}
+
+	// findOwnerByUsername(final String username) POSITIVE TEST
+	@Test
+	void shouldFindOwnerByUsername() {
 		//1. Arrange
 		User user = new User();
 		user.setUsername("jgarcia");
 		user.setPassword("jgarcia");
 		user.setEnabled(true);
 
-		Owner owner = new Owner();
-		owner.setFirstName("Juan");
-		owner.setLastName("García");
-		owner.setUser(user);
-		owner.setAddress("Calle Larga 1");
-		owner.setCity("Sevilla");
-		owner.setTelephone("954123123");
+		Owner toReturn = new Owner();
+		toReturn.setId(1);
+		toReturn.setFirstName("Juan");
+		toReturn.setLastName("García");
+		toReturn.setUser(user);
+		toReturn.setAddress("Calle Larga 1");
+		toReturn.setCity("Sevilla");
+		toReturn.setTelephone("954123123");
+
+		when(stubOwnerRepository.findByUsername("jgarcia")).thenReturn(toReturn);
+
+		ownerService = new OwnerService(stubOwnerRepository);
 		//2. Act
-		ownerService.saveOwner(owner);
+		Owner owner = ownerService.findOwnerByUsername("jgarcia");
 		//3. Assert
-		Owner retrieved = ownerService.findOwnerByUsername("jgarcia");
-		assertThat(retrieved).isEqualTo(owner);
+		assertThat(owner).isEqualTo(toReturn);
 	}
 
+	// findOwnerByUsername(final String username) NEGATIVE TEST
+	// username for which no owner exists in the repository. Should return null.
 	@Test
-	void shouldFindOwnerById() {
+	void shouldNotFindOwnerByUsername() {
 		//1. Arrange
+		when(stubOwnerRepository.findByUsername("jgarcia")).thenReturn(null);
+
+		ownerService = new OwnerService(stubOwnerRepository);
 		//2. Act
-		Owner owner = ownerService.findOwnerById(1);
+		Owner owner = ownerService.findOwnerByUsername("jgarcia");
 		//3. Assert
-		assertThat(owner.getFirstName()).isEqualTo("George");
-		assertThat(owner.getLastName()).isEqualTo("Franklin");
+		assertThat(owner).isNull();
 	}
 
+	// findOwnerByLastName(final String lastName) POSITIVE TEST
 	@Test
-	void shouldFindOwnerByUsername() {
+	void shouldFindOwnerByLastName() {
 		//1. Arrange
+		Owner o1 = new Owner();
+		o1.setFirstName("Juan");
+		o1.setLastName("García");
+
+		Owner o2 = new Owner();
+		o2.setFirstName("María");
+		o2.setLastName("García");
+
+		Owner o3 = new Owner();
+		o3.setFirstName("Juan");
+		o3.setLastName("Pérez");
+
+		List<Owner> owners_garcia = Arrays.asList(o1, o2);
+
+		when(stubOwnerRepository.findByLastName("García")).thenReturn(owners_garcia);
+
+		ownerService = new OwnerService(stubOwnerRepository);
 		//2. Act
-		Owner owner = ownerService.findOwnerByUsername("gfranklin");
+		Collection<Owner> owners = ownerService.findOwnerByLastName("García");
 		//3. Assert
-		assertThat(owner.getFirstName()).isEqualTo("George");
-		assertThat(owner.getLastName()).isEqualTo("Franklin");
+		assertThat(owners).hasSize(2);
+		assertThat(owners).contains(o1);
+		assertThat(owners).contains(o2);
+		assertThat(owners).doesNotContain(o3);
 	}
 
+	// findOwnerByLastName(final String lastName) POSITIVE TEST
+	// Last name that doesn't exist in the repository. Should return an empty
+	// list of owners.
 	@Test
-	void shouldFindOwnersByLastName() {
+	void shouldNotFindOwnerByLastName() {
 		//1. Arrange
+		List<Owner> owners_garcia = Arrays.asList();
+
+		when(stubOwnerRepository.findByLastName("García")).thenReturn(owners_garcia);
+
+		ownerService = new OwnerService(stubOwnerRepository);
 		//2. Act
-		Collection<Owner> owners = this.ownerService.findOwnerByLastName("Davis");
+		Collection<Owner> owners = ownerService.findOwnerByLastName("García");
 		//3. Assert
-		assertThat(owners.size()).isEqualTo(2);
-
-		owners = this.ownerService.findOwnerByLastName("Daviss");
-		assertThat(owners.isEmpty()).isTrue();
-	}
-
-	@Test
-	void shouldFindNoOwnersByLastName() {
-		//1. Arrange
-		//2. Act
-		Collection<Owner> owners = this.ownerService.findOwnerByLastName("Daviss");
-		//3. Assert
-		assertThat(owners.isEmpty()).isTrue();
-	}
-
-	@Test
-	void shouldFindSingleOwnerWithPet() {
-		Owner owner = this.ownerService.findOwnerById(1);
-		assertThat(owner.getLastName()).startsWith("Franklin");
-		assertThat(owner.getPets().size()).isEqualTo(1);
-		assertThat(owner.getPets().get(0).getType()).isNotNull();
-		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
-	}
-
-	@Test
-	@Transactional
-	public void shouldInsertOwner() {
-		Collection<Owner> owners = this.ownerService.findOwnerByLastName("Schultz");
-		int found = owners.size();
-
-		Owner owner = new Owner();
-		owner.setFirstName("Sam");
-		owner.setLastName("Schultz");
-		owner.setAddress("4, Evans Street");
-		owner.setCity("Wollongong");
-		owner.setTelephone("4444444444");
-		User user = new User();
-		user.setUsername("Sam");
-		user.setPassword("supersecretpassword");
-		user.setEnabled(true);
-		owner.setUser(user);
-
-		this.ownerService.saveOwner(owner);
-		assertThat(owner.getId().longValue()).isNotEqualTo(0);
-
-		owners = this.ownerService.findOwnerByLastName("Schultz");
-		assertThat(owners.size()).isEqualTo(found + 1);
-	}
-
-	@Test
-	@Transactional
-	void shouldUpdateOwner() {
-		Owner owner = this.ownerService.findOwnerById(1);
-		String oldLastName = owner.getLastName();
-		String newLastName = oldLastName + "X";
-
-		owner.setLastName(newLastName);
-		this.ownerService.saveOwner(owner);
-
-		// retrieving new name from database
-		owner = this.ownerService.findOwnerById(1);
-		assertThat(owner.getLastName()).isEqualTo(newLastName);
+		assertThat(owners).hasSize(0);
 	}
 
 }
