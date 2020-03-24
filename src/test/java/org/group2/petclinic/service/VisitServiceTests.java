@@ -25,9 +25,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class VisitServiceTests {
 
 	@Mock
-	VisitRepository					stubVisitRepository;
+	private VisitRepository	stubVisitRepository;
 
-	protected static VisitService	visitService;
+	protected VisitService	visitService;
 
 
 	// findVisitsByVet(final Vet vet) POSITIVE TEST
