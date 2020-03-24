@@ -29,6 +29,8 @@ class VisitServiceTests {
 
 	protected VisitService	visitService;
 
+	// saveVisit(final Visit visit) NOT TESTED (implemented by springframework)
+
 
 	// findVisitsByVet(final Vet vet) POSITIVE TEST
 	@Test
