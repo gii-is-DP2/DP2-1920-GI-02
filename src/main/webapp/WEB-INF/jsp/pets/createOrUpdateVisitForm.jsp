@@ -41,6 +41,7 @@
 		<!-- Create/edit visit form -->
         <form:form modelAttribute="visit" class="form-horizontal">
             <div class="form-group has-feedback">
+            	<input type="hidden" name="pet" value="${visit.pet.name}"/>
                 <petclinic:inputField label="Moment" name="moment" />
                 <petclinic:inputField label="Description" name="description" />
                 
