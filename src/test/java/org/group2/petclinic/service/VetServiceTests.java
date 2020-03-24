@@ -2,45 +2,107 @@
 package org.group2.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import org.group2.petclinic.model.User;
 import org.group2.petclinic.model.Vet;
-import org.group2.petclinic.util.EntityUtils;
+import org.group2.petclinic.repository.VetRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Service;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@ExtendWith(MockitoExtension.class)
 class VetServiceTests {
 
-	@Autowired
-	protected VetService vetService;
+	@Mock
+	private VetRepository	stubVetRepository;
+
+	protected VetService	vetService;
 
 
+	// findVetByUsername(final String username) POSITIVE TEST
 	@Test
 	void shouldFindVetByUsername() {
 		//1. Arrange
+		User user = new User();
+		user.setUsername("jgarcia");
+		user.setPassword("jgarcia");
+		user.setEnabled(true);
+
+		Vet toReturn = new Vet();
+		toReturn.setId(1);
+		toReturn.setFirstName("Juan");
+		toReturn.setLastName("García");
+		toReturn.setUser(user);
+
+		when(stubVetRepository.findByUsername("jgarcia")).thenReturn(toReturn);
+
+		vetService = new VetService(stubVetRepository);
 		//2. Act
-		Vet vet = vetService.findVetByUsername("vet1");
+		Vet vet = vetService.findVetByUsername("jgarcia");
 		//3. Assert
-		assertThat(vet.getFirstName()).isEqualTo("James");
-		assertThat(vet.getLastName()).isEqualTo("Carter");
+		assertThat(vet).isEqualTo(toReturn);
 	}
 
+	// findVetByUsername(final String username) NEGATIVE TEST
+	// username for which no vet exists in the repository. Should return null.
+	@Test
+	void shouldNotFindVetByUsername() {
+		//1. Arrange
+		when(stubVetRepository.findByUsername("jgarcia")).thenReturn(null);
+
+		vetService = new VetService(stubVetRepository);
+		//2. Act
+		Vet vet = vetService.findVetByUsername("jgarcia");
+		//3. Assert
+		assertThat(vet).isNull();
+	}
+
+	// findVets() POSITIVE TEST
 	@Test
 	void shouldFindVets() {
-		//1. Arange
+		//1. Arrange
+		Vet v1 = new Vet();
+		v1.setId(1);
+		Vet v2 = new Vet();
+		v2.setId(2);
+		Vet v3 = new Vet();
+		v3.setId(3);
+		Vet v4 = new Vet();
+		v4.setId(4);
+
+		List<Vet> toReturn = Arrays.asList(v1, v2, v3);
+
+		when(stubVetRepository.findAll()).thenReturn(toReturn);
+
+		vetService = new VetService(stubVetRepository);
 		//2. Act
-		Collection<Vet> vets = this.vetService.findVets();
+		Collection<Vet> vets = vetService.findVets();
 		//3. Assert
-		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
-		assertThat(vet.getLastName()).isEqualTo("Douglas");
-		assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+		assertThat(vets).hasSize(3);
+		assertThat(vets).contains(v1, v2, v3);
+		assertThat(vets).doesNotContain(v4);
+	}
+
+	// findVets() NEGATIVE TEST
+	// No vets in the repository.
+	@Test
+	void shouldNotFindVets() {
+		//1. Arrange
+		List<Vet> toReturn = Arrays.asList();
+
+		when(stubVetRepository.findAll()).thenReturn(toReturn);
+
+		vetService = new VetService(stubVetRepository);
+		//2. Act
+		Collection<Vet> vets = vetService.findVets();
+		//3. Assert
+		assertThat(vets).hasSize(0);
 	}
 
 }
