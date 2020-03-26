@@ -58,6 +58,10 @@ public class Visit extends BaseEntity {
 	@OneToOne(optional = true)
 	@JoinColumn(name = "payment_id")
 	private Payment			payment;
+	
+	@OneToOne(optional=true)
+	@JoinColumn(name = "diagnosis_id")
+	private Diagnosis diagnosis;
 
 	// GETTERS / SETTERS ------------------------------------------------------
 
