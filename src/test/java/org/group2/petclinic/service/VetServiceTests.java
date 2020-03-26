@@ -1,94 +1,108 @@
-/*
- * Copyright 2002-2013 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package org.group2.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
-import org.group2.petclinic.model.Authorities;
-import org.group2.petclinic.model.Owner;
-import org.group2.petclinic.model.Pet;
-import org.group2.petclinic.model.PetType;
 import org.group2.petclinic.model.User;
 import org.group2.petclinic.model.Vet;
-import org.group2.petclinic.model.Visit;
-import org.group2.petclinic.service.VetService;
-import org.group2.petclinic.service.exceptions.DuplicatedPetNameException;
-import org.group2.petclinic.util.EntityUtils;
+import org.group2.petclinic.repository.VetRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-/**
- * Integration test of the Service and the Repository layer.
- * <p>
- * ClinicServiceSpringDataJpaTests subclasses benefit from the following services provided
- * by the Spring TestContext Framework:
- * </p>
- * <ul>
- * <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
- * time between test execution.</li>
- * <li><strong>Dependency Injection</strong> of test fixture instances, meaning that we
- * don't need to perform application context lookups. See the use of
- * {@link Autowired @Autowired} on the <code>{@link
- * ClinicServiceTests#clinicService clinicService}</code> instance variable, which uses
- * autowiring <em>by type</em>.
- * <li><strong>Transaction management</strong>, meaning each test method is executed in
- * its own transaction, which is automatically rolled back by default. Thus, even if tests
- * insert or otherwise change database state, there is no need for a teardown or cleanup
- * script.
- * <li>An {@link org.springframework.context.ApplicationContext ApplicationContext} is
- * also inherited and can be used for explicit bean lookup if necessary.</li>
- * </ul>
- *
- * @author Ken Krebs
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @author Michael Isvy
- * @author Dave Syer
- */
-
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@ExtendWith(MockitoExtension.class)
 class VetServiceTests {
 
-	@Autowired
-	protected VetService vetService;	
+	@Mock
+	private VetRepository	stubVetRepository;
 
+	protected VetService	vetService;
+
+
+	// findVetByUsername(final String username) POSITIVE TEST
 	@Test
-	void shouldFindVets() {
-		Collection<Vet> vets = this.vetService.findVets();
+	void shouldFindVetByUsername() {
+		//1. Arrange
+		User user = new User();
+		user.setUsername("jgarcia");
+		user.setPassword("jgarcia");
+		user.setEnabled(true);
 
-		Vet vet = EntityUtils.getById(vets, Vet.class, 3);
-		assertThat(vet.getLastName()).isEqualTo("Douglas");
-		assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-		assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-		assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+		Vet toReturn = new Vet();
+		toReturn.setId(1);
+		toReturn.setFirstName("Juan");
+		toReturn.setLastName("García");
+		toReturn.setUser(user);
+
+		when(stubVetRepository.findByUsername("jgarcia")).thenReturn(toReturn);
+
+		vetService = new VetService(stubVetRepository);
+		//2. Act
+		Vet vet = vetService.findVetByUsername("jgarcia");
+		//3. Assert
+		assertThat(vet).isEqualTo(toReturn);
 	}
 
+	// findVetByUsername(final String username) NEGATIVE TEST
+	// username for which no vet exists in the repository. Should return null.
+	@Test
+	void shouldNotFindVetByUsername() {
+		//1. Arrange
+		when(stubVetRepository.findByUsername("jgarcia")).thenReturn(null);
+
+		vetService = new VetService(stubVetRepository);
+		//2. Act
+		Vet vet = vetService.findVetByUsername("jgarcia");
+		//3. Assert
+		assertThat(vet).isNull();
+	}
+
+	// findVets() POSITIVE TEST
+	@Test
+	void shouldFindVets() {
+		//1. Arrange
+		Vet v1 = new Vet();
+		v1.setId(1);
+		Vet v2 = new Vet();
+		v2.setId(2);
+		Vet v3 = new Vet();
+		v3.setId(3);
+		Vet v4 = new Vet();
+		v4.setId(4);
+
+		List<Vet> toReturn = Arrays.asList(v1, v2, v3);
+
+		when(stubVetRepository.findAll()).thenReturn(toReturn);
+
+		vetService = new VetService(stubVetRepository);
+		//2. Act
+		Collection<Vet> vets = vetService.findVets();
+		//3. Assert
+		assertThat(vets).hasSize(3);
+		assertThat(vets).contains(v1, v2, v3);
+		assertThat(vets).doesNotContain(v4);
+	}
+
+	// findVets() NEGATIVE TEST
+	// No vets in the repository.
+	@Test
+	void shouldNotFindVets() {
+		//1. Arrange
+		List<Vet> toReturn = Arrays.asList();
+
+		when(stubVetRepository.findAll()).thenReturn(toReturn);
+
+		vetService = new VetService(stubVetRepository);
+		//2. Act
+		Collection<Vet> vets = vetService.findVets();
+		//3. Assert
+		assertThat(vets).hasSize(0);
+	}
 
 }

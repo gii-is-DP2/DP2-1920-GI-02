@@ -95,6 +95,7 @@ public class VisitController {
 		Pet pet = this.petService.findPetById(petId);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
+		visit.setPet(pet);
 		modelMap.addAttribute("visit", visit);
 		return "pets/createOrUpdateVisitForm";
 	}
@@ -103,10 +104,12 @@ public class VisitController {
 	public String processNewVisitForm(@PathVariable("petId") final int petId, @Valid final Visit visit, final BindingResult result) {
 		Pet pet = this.petService.findPetById(petId);
 		pet.addVisit(visit);
+		visit.setPet(pet);
 		if (result.hasErrors()) {
 			return "pets/createOrUpdateVisitForm";
 		} else {
-			this.petService.saveVisit(visit);
+			this.visitService.saveVisit(visit);
+			System.out.println("MIG_SAVE");
 			return "redirect:/owners/{ownerId}";
 		}
 	}
@@ -140,7 +143,7 @@ public class VisitController {
 
 			return "owner/scheduleVisitForm";
 		} else {
-			this.petService.saveVisit(visit);
+			this.visitService.saveVisit(visit);
 			return "redirect:/";
 		}
 	}
