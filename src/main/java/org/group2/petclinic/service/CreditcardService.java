@@ -12,9 +12,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class CreditcardService {
 
-	@Autowired
 	private CreditcardRepository creditcardRepository;
 
+
+	@Autowired
+	public CreditcardService(final CreditcardRepository creditcardRepository) {
+		this.creditcardRepository = creditcardRepository;
+	}
 
 	@Transactional
 	public void saveCreditcard(final Creditcard creditcard) throws DataAccessException {

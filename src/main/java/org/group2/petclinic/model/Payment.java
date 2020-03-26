@@ -9,9 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,8 +29,6 @@ public class Payment extends BaseEntity {
 	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
 	private LocalDateTime	moment;
 
-	@NotNull
-	@Min(0)
 	@Column(name = "final_price")
 	private Double			finalPrice;
 

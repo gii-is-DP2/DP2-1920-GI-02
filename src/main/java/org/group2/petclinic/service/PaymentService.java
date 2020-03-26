@@ -12,9 +12,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentService {
 
-	@Autowired
 	private PaymentRepository paymentRepository;
 
+
+	@Autowired
+	public PaymentService(final PaymentRepository paymentRepository) {
+		this.paymentRepository = paymentRepository;
+	}
 
 	@Transactional
 	public void savePayment(final Payment payment) throws DataAccessException {

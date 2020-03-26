@@ -12,9 +12,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class VisitSecretaryService {
 
-	@Autowired
 	private SpringDataVisitSecretaryRepository visitSecretaryRepository;
 
+
+	@Autowired
+	public VisitSecretaryService(final SpringDataVisitSecretaryRepository visitSecretaryRepository) {
+		this.visitSecretaryRepository = visitSecretaryRepository;
+	}
 
 	@Transactional
 	public Iterable<Visit> findVisitsNoPayment() {

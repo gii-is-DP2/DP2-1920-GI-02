@@ -41,6 +41,11 @@ public class CreditcardController {
 	private VisitSecretaryService	visitSecretaryService;
 
 
+	@InitBinder("creditcard")
+	public void initCreditcardBinder(final WebDataBinder dataBinder) {
+		dataBinder.setValidator(new CreditcardValidator(this.creditcardService));
+	}
+
 	@ModelAttribute("visit")
 	public Visit findVisit(@PathVariable("visitId") final int visitId) {
 		return this.visitSecretaryService.findVisitById(visitId);
