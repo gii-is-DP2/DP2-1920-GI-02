@@ -51,9 +51,9 @@ public class Diagnosis extends BaseEntity {
  
 	
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	@Column(name = "moment")
+	@Column(name = "date")
     @NotNull
-    private LocalDate moment;
+    private LocalDate date;
  
     @Column(name = "description")
     @NotEmpty
@@ -64,12 +64,12 @@ public class Diagnosis extends BaseEntity {
 			inverseJoinColumns = @JoinColumn(name = "prescription_id"))
 	private Set<Prescription> prescriptions;
     
-    public LocalDate getMoment() {
-        return this.moment;
+    public LocalDate getDate() {
+        return this.date;
     }
  
-    public void setMoment(LocalDate moment) {
-        this.moment = moment;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
    
     public String getDescription() {
@@ -115,7 +115,7 @@ public class Diagnosis extends BaseEntity {
     public String toString() {
         return new ToStringCreator(this)
  
-                .append("id", this.getId()).append("new", this.isNew()).append("moment", this.getMoment())
+                .append("id", this.getId()).append("new", this.isNew()).append("date", this.getDate())
                 .append("description", this.getDescription()).toString();
     }
  

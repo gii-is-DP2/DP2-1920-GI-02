@@ -35,7 +35,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${prescriptions}" var="prescription">
+        <c:forEach items="${visit.diagnosis.prescriptions}" var="prescription">
         	<input type="hidden" name="id" value="${prescription.id}"/>
             <tr>
 				<td>
@@ -54,7 +54,6 @@
 
 	<jstl:if test="${visit.diagnosis==null}">
     <spring:url value="{visitId}/diagnosis/new" var="addUrl">
-        <spring:param name="diagnosisId" value="${diagnosis.id}"/>
 		<spring:param name="visitId" value="${visit.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add diagnosis</a>
@@ -62,7 +61,6 @@
 
 <jstl:if test="${visit.diagnosis!=null}">
     <spring:url value="{visitId}/prescriptions/new" var="addUrl">
-		<spring:param name="prescriptionId" value="${prescription.id}"/>
 		<spring:param name="visitId" value="${visit.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add prescription</a>

@@ -45,7 +45,7 @@ public class PrescriptionService {
 	}
 
 	@Transactional(readOnly = true)
-	public Collection<Prescription> findPrescription() throws DataAccessException {
+	public Collection<Prescription> findPrescriptions() throws DataAccessException {
 		return prescriptionRepository.findAll();
 	}
 

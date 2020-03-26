@@ -9,7 +9,7 @@
     <jsp:attribute name="customScript">
         <script>
             $(function () {
-                $("#moment").datepicker({dateFormat: 'yy/mm/dd'});
+                $("#date").datepicker({dateFormat: 'yy/mm/dd'});
             });
         </script>
     </jsp:attribute>
@@ -19,7 +19,7 @@
 
         <form:form modelAttribute="diagnosis" class="form-horizontal">
             <div class="form-group has-feedback">
-                <petclinic:inputField label="Moment" name="moment"/>
+                <petclinic:inputField label="Date" name="date"/>
                 <petclinic:inputField label="Description" name="description"/>
             </div>
 

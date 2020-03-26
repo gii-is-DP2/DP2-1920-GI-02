@@ -228,10 +228,10 @@ INSERT INTO prescriptions(id,medicine_id,frequency,duration) VALUES (4, 4, '2 ti
 --------------------------------------------------------------------------------
 --                                DIAGNOSTICS                                 --
 --------------------------------------------------------------------------------
-INSERT INTO diagnostics(id, moment,description) VALUES (1, '2013-01-01', 'rabies shot');
-INSERT INTO diagnostics(id, moment,description) VALUES (2, '2013-01-02', 'rabies shot');
-INSERT INTO diagnostics(id, moment,description) VALUES (3, '2013-01-03', 'neutered');
-INSERT INTO diagnostics(id, moment,description) VALUES (4, '2013-01-04', 'spayed');
+INSERT INTO diagnostics(id, date,description) VALUES (1, '2013-01-01', 'rabies shot');
+INSERT INTO diagnostics(id, date,description) VALUES (2, '2013-01-02', 'rabies shot');
+INSERT INTO diagnostics(id, date,description) VALUES (3, '2013-01-03', 'neutered');
+INSERT INTO diagnostics(id, date,description) VALUES (4, '2013-01-04', 'spayed');
 
 --------------------------------------------------------------------------------
 --                          DIAGNOSIS-PRESCRIPTION                            --
