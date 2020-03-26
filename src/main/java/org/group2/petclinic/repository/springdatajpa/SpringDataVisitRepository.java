@@ -25,5 +25,9 @@ public interface SpringDataVisitRepository extends VisitRepository, Repository<V
 	@Override
 	@Query("SELECT vt FROM VisitType vt ORDER BY vt.name")
 	List<VisitType> findVisitTypes() throws DataAccessException;
+	
+	@Override
+	@Query("SELECT v FROM Visit v WHERE v.id = ?1")
+	Visit findById(Integer visitId) throws DataAccessException;
 
 }

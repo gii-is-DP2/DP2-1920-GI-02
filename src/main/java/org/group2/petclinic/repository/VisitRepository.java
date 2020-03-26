@@ -13,7 +13,11 @@ public interface VisitRepository {
 
 	void save(Visit visit) throws DataAccessException;
 
-	List<Visit> findByPetId(Integer petId);
+	List<Visit> findByPetId(Integer petId) throws DataAccessException;
+	
+	Visit findById(Integer visitId) throws DataAccessException;
+	
+	List<Visit> findAll() throws DataAccessException;
 
 	List<Visit> findVisitsByVet(Vet vet) throws DataAccessException;
 
