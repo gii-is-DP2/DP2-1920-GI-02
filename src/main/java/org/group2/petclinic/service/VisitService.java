@@ -27,13 +27,6 @@ public class VisitService {
 	public VisitService(final VisitRepository visitRepository) {
 		this.visitRepository = visitRepository;
 	}
-	
-	// SAVE VISIT -------------------------------------------------------------
-	
-	@Transactional
-	public void saveVisit(Visit visit) throws DataAccessException {
-		visitRepository.save(visit);
-	}
 
 	// SAVE VISITS ------------------------------------------------------------
 
