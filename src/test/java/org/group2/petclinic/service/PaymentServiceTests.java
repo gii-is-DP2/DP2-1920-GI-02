@@ -17,8 +17,10 @@ public class PaymentServiceTests {
 	@Autowired
 	protected PaymentService paymentService;
 
+	// -------------------------- savePayment(final Payment payment) ---------------------------
 
-	// savePayment(final Payment payment) POSITIVE TEST
+
+	// POSITIVE TEST
 	@Test
 	void shouldSavePayment() {
 		//1. Arrange
@@ -29,8 +31,8 @@ public class PaymentServiceTests {
 
 	}
 
-	// savePayment(final Payment payment) NEGATIVE TEST
-	// ahsbc
+	// NEGATIVE TEST
+	// Description why is negative
 	@Test
 	void shouldNotSavePayment() {
 		//1. Arrange
@@ -41,7 +43,9 @@ public class PaymentServiceTests {
 
 	}
 
-	// findPaymentById(final int id) POSITIVE TEST
+	// -------------------------- findPaymentById(final int id) ---------------------------
+
+	//POSITIVE TEST
 	@Test
 	void shouldFindPaymentById() {
 		//1. Arrange
@@ -57,7 +61,7 @@ public class PaymentServiceTests {
 		assertThat(payment.getCreditcard().getId()).isEqualTo(1);
 	}
 
-	// findPaymentById(final int id) NEGATIVE TEST
+	// NEGATIVE TEST
 	// Introduce a id not valid (don't exits a payment with this id)
 	@Test
 	void shouldNotFindPaymentById() {

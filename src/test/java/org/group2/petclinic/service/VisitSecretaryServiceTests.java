@@ -28,8 +28,10 @@ public class VisitSecretaryServiceTests {
 	@Autowired
 	protected VisitSecretaryService				visitSecretaryService;
 
+	// -------------------------- findVisitsNoPayment() ---------------------------
 
-	// findVisitsNoPayment() POSITIVE TEST
+
+	// POSITIVE TEST
 	@Test
 	void shouldFindVisitsNoPayment() {
 		//1. Arrange
@@ -42,8 +44,8 @@ public class VisitSecretaryServiceTests {
 
 	}
 
-	// findVisitsNoPayment() NEGATIVE TEST
-	// asd
+	// NEGATIVE TEST
+	// There aren't any visit without payment
 	@Test
 	void shouldNotFindVisitsNoPayment() {
 		//1. Arrange
@@ -58,7 +60,9 @@ public class VisitSecretaryServiceTests {
 		assertThat(visits1).hasSize(0);
 	}
 
-	// findVisitById(int id) POSITIVE TEST
+	// -------------------------- findVisitById(int id) ---------------------------
+
+	// POSITIVE TEST
 	@Test
 	void shouldFindVisitById() {
 		//1. Arrange
@@ -76,7 +80,7 @@ public class VisitSecretaryServiceTests {
 
 	}
 
-	// findVisitById(int id) NEGATIVE TEST
+	// NEGATIVE TEST
 	// Introduce a id not valid (don't exits a secretary with this id)
 	@Test
 	void shouldNotFindVisitById() {

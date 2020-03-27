@@ -17,8 +17,10 @@ public class SecretaryServiceTests {
 	@Autowired
 	protected SecretaryService secretaryService;
 
+	// -------------------------- findSecretaryByName(final String username) ---------------------------
 
-	// findSecretaryByName(final String username) POSITIVE TEST
+
+	// POSITIVE TEST
 	@Test
 	void shouldFindSecretaryByName() {
 		//1. Arrange
@@ -32,7 +34,7 @@ public class SecretaryServiceTests {
 		assertThat(secretary.getUser().getPassword()).isEqualTo("s3cr3tary");
 	}
 
-	// findSecretaryByName(final String username) NEGATIVE TEST
+	// NEGATIVE TEST
 	// Introduce a name not valid (don't exits a secretary with this name)
 	@Test
 	void shouldNotFindSecretaryByName() {

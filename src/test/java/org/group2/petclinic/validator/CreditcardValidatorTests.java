@@ -1,4 +1,4 @@
-package org.group2.petclinic.model;
+package org.group2.petclinic.validator;
 
 
 public class CreditcardValidatorTests {
