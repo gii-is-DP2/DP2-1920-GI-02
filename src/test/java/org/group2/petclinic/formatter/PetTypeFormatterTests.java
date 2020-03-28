@@ -1,4 +1,4 @@
-package org.group2.petclinic.web;
+package org.group2.petclinic.formatter;
 
 import org.group2.petclinic.model.PetType;
 import org.group2.petclinic.service.PetService;
