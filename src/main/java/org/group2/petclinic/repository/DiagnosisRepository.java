@@ -41,8 +41,8 @@ public interface DiagnosisRepository {
 	 */
 	void save(Diagnosis diagnosis) throws DataAccessException;
 	
-	Diagnosis findById(Integer id);
+	Diagnosis findById(Integer id) throws DataAccessException;
 	
-	List<Diagnosis> findAll();
+	List<Diagnosis> findAll() throws DataAccessException;
 
 }

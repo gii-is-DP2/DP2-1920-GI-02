@@ -17,8 +17,6 @@ package org.group2.petclinic.repository;
 
 import java.util.List;
 
-import org.group2.petclinic.model.BaseEntity;
-import org.group2.petclinic.model.Diagnosis;
 import org.group2.petclinic.model.Medicine;
 import org.springframework.dao.DataAccessException;
 
@@ -37,5 +35,7 @@ public interface MedicineRepository {
 
 	
 	List<Medicine> findAll();
+	
+	void save(Medicine medicine);
 
 }

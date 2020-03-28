@@ -7,10 +7,14 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.group2.petclinic.model.Diagnosis;
+import org.group2.petclinic.model.Payment;
+import org.group2.petclinic.model.Pet;
 import org.group2.petclinic.model.User;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
@@ -182,5 +186,43 @@ class VisitServiceTests {
 		//3. Assert
 		assertThat(visitTypes).hasSize(0);
 	}
+	
+	// findVisitById(final int id) POSITIVE TEST
+		@Test
+		void shouldFindVisitById() {
+			//1. Arrange
+			Visit toReturn = new Visit();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+			toReturn.setId(1);
+			toReturn.setMoment(LocalDateTime.parse("2020/04/15 17:30", formatter));
+			toReturn.setDescription("Visit 11");
+			toReturn.setPet(mock(Pet.class));
+			toReturn.setVet(mock(Vet.class));
+			toReturn.setVisitType(mock(VisitType.class));
+			toReturn.setPayment(mock(Payment.class));
+			toReturn.setDiagnosis(mock(Diagnosis.class));
+
+			when(stubVisitRepository.findById(1)).thenReturn(toReturn);
+
+			visitService = new VisitService(stubVisitRepository);
+			//2. Act
+			Visit visit = visitService.findVisitById(1);
+			//3. Assert
+			assertThat(visit).isEqualTo(toReturn);
+		}
+
+		// findVisitById(final int id) NEGATIVE TEST
+		// id for which no visit exists in the repository. Should return null.
+		@Test
+		void shouldNotFindOwnerById() {
+			//1. Arrange
+			when(stubVisitRepository.findById(1)).thenReturn(null);
+
+			visitService = new VisitService(stubVisitRepository);
+			//2. Act
+			Visit visit = visitService.findVisitById(1);
+			//3. Assert
+			assertThat(visit).isNull();
+		}
 
 }
