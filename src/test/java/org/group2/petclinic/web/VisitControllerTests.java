@@ -59,7 +59,6 @@ class VisitControllerTests {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 		
 		Vet vet1 = new Vet();
-		vet1.setId(1);
 		
 		Visit visit1 = new Visit();
 		visit1.setId(1);
