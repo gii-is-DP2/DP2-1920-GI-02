@@ -214,7 +214,7 @@ class VisitServiceTests {
 		// findVisitById(final int id) NEGATIVE TEST
 		// id for which no visit exists in the repository. Should return null.
 		@Test
-		void shouldNotFindOwnerById() {
+		void shouldNotFindVisitById() {
 			//1. Arrange
 			when(stubVisitRepository.findById(1)).thenReturn(null);
 

@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.group2.petclinic.model.Medicine;
-import org.group2.petclinic.model.Owner;
-import org.group2.petclinic.model.User;
 import org.group2.petclinic.repository.MedicineRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
