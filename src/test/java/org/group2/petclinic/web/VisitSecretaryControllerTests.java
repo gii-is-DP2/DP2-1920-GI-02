@@ -4,6 +4,7 @@ package org.group2.petclinic.web;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,14 +74,26 @@ public class VisitSecretaryControllerTests {
 		given(this.stubVisitSecretaryService.findVisitsNoPayment()).willReturn(Lists.newArrayList(visit1, visit2));
 	}
 
+	// -------------------------- listPayments ---------------------------
+
+	// POSITIVE TEST
 	@WithMockUser(value = "spring")
 	@Test
-	void testShowVisitList() throws Exception {
+	void testListPaymentsGet() throws Exception {
 		mockMvc.perform(get("/secretary/visits"))//
 			.andExpect(status().isOk())//
 			.andExpect(model().attributeExists("visits"))//
 			.andExpect(view().name("secretary/visits/noPay"));
 		verify(stubVisitSecretaryService).findVisitsNoPayment();
+	}
+
+	// NEGATIVE TEST
+	// Acces with a user not authenticated
+	@Test
+	void testNotListPaymentsGet() throws Exception {
+		mockMvc.perform(get("/secretary/visits")//
+			.with(csrf()))//
+			.andExpect(status().is4xxClientError());
 	}
 
 }

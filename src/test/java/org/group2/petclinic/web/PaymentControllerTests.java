@@ -98,14 +98,6 @@ public class PaymentControllerTests {
 
 	}
 
-	void testWrongAuth(int mode, String path, Object... uriVars) throws Exception {
-		if (mode == 0) {
-			mockMvc.perform(get(path, uriVars)).andExpect(status().isOk()).andExpect(view().name("exception"));
-		} else {
-			mockMvc.perform(post(path, uriVars)).andExpect(status().isForbidden());
-		}
-	}
-
 	// -------------------------- initCreationForm ---------------------------
 
 	// POSITIVE TEST
@@ -120,18 +112,12 @@ public class PaymentControllerTests {
 	}
 
 	// NEGATIVE TEST
-	// Acces with a user not authority
-	@WithMockUser(value = "vet1", authorities = {
-		"vet"
-	})
+	// Acces with a user not authenticated
 	@Test
 	void testNotInitCreationFormGet() throws Exception {
-		/*
-		 * mockMvc.perform(get("/secretary/visits/{visitId}/payments/new", TEST_VISIT_ID)//
-		 * .with(csrf()))//
-		 * .andExpect(status().isOk())//
-		 * .andExpect(view().name("exception"));
-		 */
+		mockMvc.perform(get("/secretary/visits/{visitId}/payments/new", TEST_VISIT_ID)//
+			.with(csrf()))//
+			.andExpect(status().is4xxClientError());
 	}
 
 	// -------------------------- processCreationForm ---------------------------
@@ -146,6 +132,7 @@ public class PaymentControllerTests {
 			.param("method", "cash")//
 			.param("finalPrice", "30.00"))//
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/secretary/visits"));//
+		verify(stubVisitSecretaryService, times(2)).findVisitById(TEST_VISIT_ID);
 		verify(stubSecretaryService).findSecretaryByName("spring");
 	}
 
@@ -161,6 +148,7 @@ public class PaymentControllerTests {
 			.param("finalPrice", "30.00")//
 			.param("id", TEST_PAYMENT_ID + ""))//
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new"));
+		verify(stubVisitSecretaryService, times(2)).findVisitById(TEST_VISIT_ID);
 		verify(stubSecretaryService).findSecretaryByName("spring");
 	}
 
@@ -176,6 +164,7 @@ public class PaymentControllerTests {
 			.andExpect(model().attributeHasErrors("payment"))//
 			.andExpect(model().attributeHasFieldErrors("payment", "finalPrice"))//
 			.andExpect(status().isOk()).andExpect(view().name("/secretary/visits/createPaymentForm"));//
+		verify(stubVisitSecretaryService).findVisitById(TEST_VISIT_ID);
 	}
 
 }

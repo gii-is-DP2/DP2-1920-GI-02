@@ -2,6 +2,8 @@
 package org.group2.petclinic.web;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -90,23 +92,73 @@ public class CreditcardControllerTests {
 
 		Creditcard creditcard = new Creditcard();
 
-		//when(this.stubCreditcardService.saveCreditcard(creditcard)).thenReturn(payment);
 	}
 
+	// -------------------------- initCreationForm ---------------------------
+
+	// POSITIVE TEST
 	@WithMockUser(value = "spring")
 	@Test
-	void testShowGet() throws Exception {
+	void testInitCreationFormGet() throws Exception {
 		mockMvc.perform(get("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", TEST_VISIT_ID, TEST_PAYMENT_ID)).andExpect(status().isOk())//
 			.andExpect(model().attributeExists("creditcard"))//
 			.andExpect(model().attributeExists("expMonth"))//
 			.andExpect(view().name("secretary/visits/createCreditcardForm"));
+		verify(stubVisitSecretaryService).findVisitById(TEST_VISIT_ID);
+		verify(stubPaymentService).findPaymentById(TEST_PAYMENT_ID);
 	}
 
-	@WithMockUser(value = "spring")
+	// NEGATIVE TEST
+	// Acces with a user not authenticated
 	@Test
-	void testShowPostSInErrores() throws Exception {
-		mockMvc.perform(post("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", TEST_VISIT_ID, TEST_PAYMENT_ID).with(csrf()))//
+	void testNotInitCreationFormGet() throws Exception {
+		mockMvc.perform(post("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", TEST_VISIT_ID, TEST_PAYMENT_ID)//
+			.with(csrf()))//
+			.andExpect(status().is4xxClientError());
+	}
+
+	// -------------------------- processCreationForm ---------------------------
+
+	// POSITIVE TEST
+	@WithMockUser("spring")
+	@Test
+	void testProcessCreationFormPost() throws Exception {
+
+		mockMvc.perform(post("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", TEST_VISIT_ID, TEST_PAYMENT_ID)//
+			.with(csrf())//
+			.param("holder", "Maria")//
+			.param("brand", "visa")//
+			.param("number", "4137921689337454")//
+			.param("expMonth", "5")//
+			.param("expYear", "30")//
+			.param("securityCode", "250")//
+			.param("id", TEST_CREDITCARD_ID + ""))//
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/secretary/visits"));
+		verify(stubVisitSecretaryService).findVisitById(TEST_VISIT_ID);
+		verify(stubPaymentService, times(2)).findPaymentById(TEST_PAYMENT_ID);
+	}
+
+	// NEGATIVE TEST
+	// Form with errors
+	@WithMockUser("spring")
+	@Test
+	void testProcessCreationFormPostHasErrors() throws Exception {
+		mockMvc.perform(post("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", TEST_VISIT_ID, TEST_PAYMENT_ID)//
+			.with(csrf())//
+			.param("holder", "Maria")//
+			.param("brand", "visa")//
+			.param("number", "1122334455667788")//
+			.param("expMonth", "5")//
+			.param("expYear", "10")//
+			.param("securityCode", ""))//
+			.andExpect(model().attributeHasErrors("creditcard"))//
+			.andExpect(model().attributeHasFieldErrors("creditcard", "number"))//
+			.andExpect(model().attributeHasFieldErrors("creditcard", "expMonth"))//
+			.andExpect(model().attributeHasFieldErrors("creditcard", "expYear"))//
+			.andExpect(model().attributeHasFieldErrors("creditcard", "securityCode"))//
+			.andExpect(status().isOk()).andExpect(view().name("secretary/visits/createCreditcardForm"));//
+		verify(stubVisitSecretaryService).findVisitById(TEST_VISIT_ID);
+		verify(stubPaymentService).findPaymentById(TEST_PAYMENT_ID);
 	}
 
 }

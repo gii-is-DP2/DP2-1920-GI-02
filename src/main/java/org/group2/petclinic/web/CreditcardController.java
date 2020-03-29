@@ -67,7 +67,7 @@ public class CreditcardController {
 	}
 
 	@GetMapping(value = "/creditcards/new")
-	public String initCreationForm(final Secretary secretary, final ModelMap model) {
+	public String initCreationForm(final ModelMap model) {
 		Creditcard creditcard = new Creditcard();
 		model.addAttribute("creditcard", creditcard);
 		List<Integer> listExpMonth = new ArrayList<Integer>();
