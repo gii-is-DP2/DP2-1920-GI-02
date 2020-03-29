@@ -34,7 +34,7 @@ public class Prescription extends BaseEntity {
     @NotEmpty
     private String duration;
  
-    @ManyToOne(optional=true)
+    @ManyToOne(optional=false)
     @JoinColumn(name = "medicine_id")
     private Medicine medicine;
 

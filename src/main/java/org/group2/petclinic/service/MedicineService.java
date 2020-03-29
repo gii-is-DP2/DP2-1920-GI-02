@@ -17,16 +17,10 @@ package org.group2.petclinic.service;
 
 import java.util.Collection;
 
+import org.group2.petclinic.model.Medicine;
+import org.group2.petclinic.repository.MedicineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.group2.petclinic.model.Diagnosis;
-import org.group2.petclinic.model.Medicine;
-import org.group2.petclinic.model.Prescription;
-import org.group2.petclinic.model.Visit;
-import org.group2.petclinic.repository.DiagnosisRepository;
-import org.group2.petclinic.repository.MedicineRepository;
-import org.group2.petclinic.repository.PrescriptionRepository;
-import org.group2.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +33,15 @@ public class MedicineService {
 	public MedicineService(MedicineRepository medicineRepository) {
 		this.medicineRepository = medicineRepository;
 	}
-	
-	@Transactional(readOnly = true) public Collection<Medicine> findMedicines()
-	throws DataAccessException { return medicineRepository.findAll(); }
-	
+
+	@Transactional
+	public void saveMedicine(Medicine medicine) throws DataAccessException {
+		medicineRepository.save(medicine);
+	}
+
+	@Transactional(readOnly = true)
+	public Collection<Medicine> findMedicines() throws DataAccessException {
+		return medicineRepository.findAll();
+	}
 
 }

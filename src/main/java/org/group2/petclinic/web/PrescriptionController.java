@@ -30,7 +30,7 @@ public class PrescriptionController {
 	private final MedicineService medicineService;
 
 	@Autowired
-	public PrescriptionController(PrescriptionService prescriptionService, VisitService visitService, PetService petService, MedicineService medicineService) {
+	public PrescriptionController(PrescriptionService prescriptionService, VisitService visitService, MedicineService medicineService) {
 		this.prescriptionService = prescriptionService;
 		this.visitService = visitService;
 		this.medicineService = medicineService;
