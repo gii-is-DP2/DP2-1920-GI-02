@@ -2,13 +2,11 @@
 package org.group2.petclinic.web;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.validation.Valid;
 
 import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Pet;
-import org.group2.petclinic.model.Prescription;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class VisitController {
@@ -43,7 +40,9 @@ public class VisitController {
 	// CONSTRUCTOR ------------------------------------------------------------
 
 	@Autowired
-	public VisitController(final VisitService visitService, final PetService petService, final VetService vetService, final OwnerService ownerService) {
+	public VisitController(final VisitService visitService,
+		final PetService petService, final VetService vetService,
+		final OwnerService ownerService) {
 		this.visitService = visitService;
 		this.petService = petService;
 		this.vetService = vetService;
@@ -91,7 +90,8 @@ public class VisitController {
 	 *
 	 */
 	@GetMapping(value = "/owners/*/pets/{petId}/visits/new")
-	public String initNewVisitForm(@PathVariable("petId") final int petId, final ModelMap modelMap) {
+	public String initNewVisitForm(@PathVariable("petId") final int petId,
+		final ModelMap modelMap) {
 		Pet pet = this.petService.findPetById(petId);
 		Visit visit = new Visit();
 		pet.addVisit(visit);
@@ -101,7 +101,8 @@ public class VisitController {
 	}
 
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@PathVariable("petId") final int petId, @Valid final Visit visit, final BindingResult result) {
+	public String processNewVisitForm(@PathVariable("petId") final int petId,
+		@Valid final Visit visit, final BindingResult result) {
 		Pet pet = this.petService.findPetById(petId);
 		pet.addVisit(visit);
 		visit.setPet(pet);
@@ -114,6 +115,8 @@ public class VisitController {
 		}
 	}
 
+	// MIGUEL ------------------------------------------------------------------
+
 	/**
 	 *
 	 * owner/schedule-visit:
@@ -122,9 +125,11 @@ public class VisitController {
 	 */
 	@GetMapping(value = "owner/schedule-visit")
 	public String initScheduleVisitForm(final ModelMap modelMap) {
-		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		String ownerUsername = SecurityContextHolder.getContext()
+			.getAuthentication().getName();
 		Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
-		Collection<Pet> petsOfOwner = this.petService.findPetsByOwnerId(owner.getId());
+		Collection<Pet> petsOfOwner = this.petService
+			.findPetsByOwnerId(owner.getId());
 		modelMap.addAttribute("petsOfOwner", petsOfOwner);
 
 		Visit visit = new Visit();
@@ -134,11 +139,14 @@ public class VisitController {
 	}
 
 	@PostMapping(value = "owner/schedule-visit")
-	public String processScheduleVisitForm(@Valid final Visit visit, final BindingResult result, final ModelMap modelMap) {
+	public String processScheduleVisitForm(@Valid final Visit visit,
+		final BindingResult result, final ModelMap modelMap) {
 		if (result.hasErrors()) {
-			String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+			String ownerUsername = SecurityContextHolder.getContext()
+				.getAuthentication().getName();
 			Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
-			Collection<Pet> petsOfOwner = this.petService.findPetsByOwnerId(owner.getId());
+			Collection<Pet> petsOfOwner = this.petService
+				.findPetsByOwnerId(owner.getId());
 			modelMap.addAttribute("petsOfOwner", petsOfOwner);
 
 			return "owner/scheduleVisitForm";
@@ -148,22 +156,25 @@ public class VisitController {
 		}
 	}
 
+	// JOSEMA ------------------------------------------------------------------
+
 	@GetMapping(value = "/vet/visits")
 	public String showVisitsVet(final ModelMap modelMap) {
 		String view = "/vet/visitsList";
-		String vetUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		String vetUsername = SecurityContextHolder.getContext()
+			.getAuthentication().getName();
 		Vet vet = this.vetService.findVetByUsername(vetUsername);
 		Iterable<Visit> visits = this.visitService.findVisitsByVet(vet);
 		modelMap.addAttribute("visits", visits);
 		return view;
 	}
-	
+
 	@GetMapping(value = "/vet/visits/{visitId}")
-	public String showVisitForVet(@PathVariable("visitId") final int visitId, final ModelMap modelMap) {
+	public String showVisitForVet(@PathVariable("visitId") final int visitId,
+		final ModelMap modelMap) {
 		Visit visit = this.visitService.findVisitById(visitId);
 		modelMap.addAttribute("visit", visit);
 		return "vet/visitDetails";
 	}
-	
 
 }
