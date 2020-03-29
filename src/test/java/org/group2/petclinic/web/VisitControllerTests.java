@@ -43,6 +43,8 @@ import org.springframework.test.web.servlet.MockMvc;
 		classes = WebSecurityConfigurer.class),
 	excludeAutoConfiguration = SecurityConfiguration.class)
 class VisitControllerTests {
+	
+	private static final int TEST_VISIT_ID = 1;
 
 	@MockBean
 	private VisitService	visitService;
@@ -108,6 +110,7 @@ class VisitControllerTests {
 
 		given(this.visitService.findVisitsByVet(vet1))
 			.willReturn(Lists.newArrayList(visit1, visit2));
+        given(this.visitService.findVisitById(1)).willReturn(visit1);
 		given(this.petService.findPetsByOwnerId(1))
 			.willReturn(new ArrayList<Pet>());
 	}
@@ -160,6 +163,25 @@ class VisitControllerTests {
 		mockMvc.perform(get("/vet/visits")).andExpect(status().isOk())
 			.andExpect(model().attributeExists("visits"))
 			.andExpect(view().name("/vet/visitsList"));
+	}
+	
+	@Test
+	void testNotShowVisitListHtml() throws Exception {
+		mockMvc.perform(get("/vet/visits").with(csrf()))
+		.andExpect(status().is4xxClientError());
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowVisitHtml() throws Exception {
+		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("visit"))
+				.andExpect(view().name("vet/visitDetails"));
+	}
+	
+	@Test
+	void testNotShowVisitHtml() throws Exception {
+		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID).with(csrf()))
+		.andExpect(status().is4xxClientError());
 	}
 
 }

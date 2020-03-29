@@ -1,6 +1,7 @@
 package org.group2.petclinic.web;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,6 +53,12 @@ class MedicineControllerTests {
 	void testShowMedicineListHtml() throws Exception {
 		mockMvc.perform(get("/admin/medicines")).andExpect(status().isOk())
 				.andExpect(model().attributeExists("medicines")).andExpect(view().name("/admin/medicinesList"));
+	}
+	
+	@Test
+	void testNotShowMedicineListHtml() throws Exception {
+		mockMvc.perform(get("/admin/medicines").with(csrf()))
+		.andExpect(status().is4xxClientError());
 	}
 
 }
