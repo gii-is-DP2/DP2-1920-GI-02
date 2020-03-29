@@ -2,6 +2,7 @@ package org.group2.petclinic.web;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +33,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = VisitController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class VisitControllerTests {
+	
+	private static final int TEST_VISIT_ID = 1;
 
 	@Autowired
 	private VisitController visitController;
@@ -79,6 +82,7 @@ class VisitControllerTests {
 		visit2.setVisitType(null);
 
 		given(this.visitService.findVisitsByVet(vet1)).willReturn(Lists.newArrayList(visit1, visit2));
+		given(this.visitService.findVisitById(1)).willReturn(visit1);
 	}
 
 	@WithMockUser(value = "spring")
@@ -86,6 +90,25 @@ class VisitControllerTests {
 	void testShowVisitListHtml() throws Exception {
 		mockMvc.perform(get("/vet/visits")).andExpect(status().isOk()).andExpect(model().attributeExists("visits"))
 				.andExpect(view().name("/vet/visitsList"));
+	}
+	
+	@Test
+	void testNotShowVisitListHtml() throws Exception {
+		mockMvc.perform(get("/vet/visits").with(csrf()))
+		.andExpect(status().is4xxClientError());
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowVisitHtml() throws Exception {
+		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("visit"))
+				.andExpect(view().name("vet/visitDetails"));
+	}
+	
+	@Test
+	void testNotShowVisitHtml() throws Exception {
+		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID).with(csrf()))
+		.andExpect(status().is4xxClientError());
 	}
 
 }
