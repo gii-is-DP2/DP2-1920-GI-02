@@ -1,5 +1,7 @@
 # Spring PetClinic Sample Application 
 
+[![Build Status](https://travis-ci.com/gii-is-DP2/DP2-1920-GI-02.svg?branch=master)](https://travis-ci.com/gii-is-DP2/DP2-1920-GI-02)
+
 This is a (manual) fork of https://github.com/gii-is-DP2/spring-petclinic to be used for the DP2 course. We will extend the project provided by the professors.
 
 ## Team members
