@@ -43,7 +43,6 @@ public class PaymentRepositoryTests {
 
 		//3. Assert
 		assertThat(payment).isNull();
-
 	}
 
 }

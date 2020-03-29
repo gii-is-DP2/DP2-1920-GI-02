@@ -3,16 +3,26 @@ package org.group2.petclinic.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+
 import org.group2.petclinic.model.Visit;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.Mockito.when;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+@ExtendWith(MockitoExtension.class)
 @DataJpaTest
 public class VisitSecretaryRepositoryTests {
 
 	@Autowired
-	private VisitSecretaryRepository visitsecretaryRepository;
+	private VisitSecretaryRepository	visitsecretaryRepository;
+
+	@Mock
+	private VisitSecretaryRepository	stubVisitSecretaryRepository;
 
 	// -------------------------- findVisitsNoPayment() ---------------------------
 
@@ -31,17 +41,18 @@ public class VisitSecretaryRepositoryTests {
 	}
 
 	// NEGATIVE TEST
-	// Descriptionnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	// Use a empty list
 	@Test
 	void shouldNotFindVisitsNoPayment() {
 		//1. Arrange
-		//Iterable<Visit> visits = new ArrayList<Visit>();
+		Iterable<Visit> visits = new ArrayList<Visit>();
+		when(this.stubVisitSecretaryRepository.findVisitsNoPayment()).thenReturn(visits);
 
 		//2. Act
-		//Iterable<Visit> visits1 = this.visitsecretaryRepository.findVisitsNoPayment();
+		Iterable<Visit> visits1 = this.stubVisitSecretaryRepository.findVisitsNoPayment();
 
 		//3. Assert
-		//assertThat(visits1).hasSize(0);
+		assertThat(visits1).hasSize(0);
 
 	}
 
