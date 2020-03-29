@@ -30,9 +30,7 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers=VisitController.class,
-		excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-		excludeAutoConfiguration= SecurityConfiguration.class)
+@WebMvcTest(controllers = VisitController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class VisitControllerTests {
 
 	@Autowired
@@ -40,13 +38,13 @@ class VisitControllerTests {
 
 	@MockBean
 	private VisitService visitService;
-	
+
 	@MockBean
 	private PetService petService;
-	
+
 	@MockBean
 	private VetService vetService;
-	
+
 	@MockBean
 	private OwnerService ownerService;
 
@@ -57,9 +55,9 @@ class VisitControllerTests {
 	void setup() {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-		
+
 		Vet vet1 = new Vet();
-		
+
 		Visit visit1 = new Visit();
 		visit1.setId(1);
 		visit1.setDescription("rabies shot");
@@ -69,7 +67,7 @@ class VisitControllerTests {
 		visit1.setPet(mock(Pet.class));
 		visit1.setVet(null);
 		visit1.setVisitType(null);
-		
+
 		Visit visit2 = new Visit();
 		visit2.setId(2);
 		visit2.setDescription("rabies shot");
@@ -79,15 +77,15 @@ class VisitControllerTests {
 		visit1.setPet(mock(Pet.class));
 		visit2.setVet(null);
 		visit2.setVisitType(null);
-		
+
 		given(this.visitService.findVisitsByVet(vet1)).willReturn(Lists.newArrayList(visit1, visit2));
 	}
-        
-    @WithMockUser(value = "spring")
-		@Test
+
+	@WithMockUser(value = "spring")
+	@Test
 	void testShowVisitListHtml() throws Exception {
 		mockMvc.perform(get("/vet/visits")).andExpect(status().isOk()).andExpect(model().attributeExists("visits"))
 				.andExpect(view().name("/vet/visitsList"));
-	}	
+	}
 
 }

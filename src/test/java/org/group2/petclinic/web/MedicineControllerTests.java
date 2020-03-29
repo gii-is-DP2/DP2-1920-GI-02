@@ -21,9 +21,7 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers=MedicineController.class,
-		excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-		excludeAutoConfiguration= SecurityConfiguration.class)
+@WebMvcTest(controllers = MedicineController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class MedicineControllerTests {
 
 	@Autowired
@@ -48,12 +46,12 @@ class MedicineControllerTests {
 		medicine1.setId(1);
 		given(this.medicineService.findMedicines()).willReturn(Lists.newArrayList(medicine1, medicine2));
 	}
-        
-    @WithMockUser(value = "spring")
-		@Test
+
+	@WithMockUser(value = "spring")
+	@Test
 	void testShowMedicineListHtml() throws Exception {
-		mockMvc.perform(get("/admin/medicines")).andExpect(status().isOk()).andExpect(model().attributeExists("medicines"))
-				.andExpect(view().name("/admin/medicinesList"));
-	}	
+		mockMvc.perform(get("/admin/medicines")).andExpect(status().isOk())
+				.andExpect(model().attributeExists("medicines")).andExpect(view().name("/admin/medicinesList"));
+	}
 
 }
