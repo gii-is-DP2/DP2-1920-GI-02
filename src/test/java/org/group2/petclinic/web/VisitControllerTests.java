@@ -110,6 +110,7 @@ class VisitControllerTests {
 
 		given(this.visitService.findVisitsByVet(vet1))
 			.willReturn(Lists.newArrayList(visit1, visit2));
+        given(this.visitService.findVisitById(1)).willReturn(visit1);
 		given(this.petService.findPetsByOwnerId(1))
 			.willReturn(new ArrayList<Pet>());
 	}
