@@ -2,7 +2,6 @@
 package org.group2.petclinic.web;
 
 import org.group2.petclinic.model.Payment;
-import org.group2.petclinic.service.PaymentService;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -11,14 +10,7 @@ public class PaymentValidator implements Validator {
 
 	// SERVICES ---------------------------------------------------------------
 
-	private PaymentService paymentService;
-
-
 	// CONSTRUCTOR ------------------------------------------------------------
-
-	public PaymentValidator(final PaymentService paymentService) {
-		this.paymentService = paymentService;
-	}
 
 	// SUPPORTS ---------------------------------------------------------------
 

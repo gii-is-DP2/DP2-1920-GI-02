@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 import org.group2.petclinic.model.Creditcard;
-import org.group2.petclinic.service.CreditcardService;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -14,14 +13,7 @@ public class CreditcardValidator implements Validator {
 
 	// SERVICES ---------------------------------------------------------------
 
-	private CreditcardService creditcardService;
-
-
 	// CONSTRUCTOR ------------------------------------------------------------
-
-	public CreditcardValidator(final CreditcardService creditcardService) {
-		this.creditcardService = creditcardService;
-	}
 
 	// SUPPORTS ---------------------------------------------------------------
 
@@ -80,7 +72,15 @@ public class CreditcardValidator implements Validator {
 
 		// Validate that security code is a Integer
 		if (!errors.hasFieldErrors("securityCode")) {
-			if (Pattern.matches("[a-zA-Z]+", creditcard.getSecurityCode()) == true) {
+			Boolean booleano = false;
+			for (int i = 0; i < creditcard.getSecurityCode().length(); i++) {
+				char letra = creditcard.getSecurityCode().charAt(i);
+				if (Character.isLetter(letra)) {
+					booleano = true;
+				}
+			}
+
+			if (booleano) {
 				errors.rejectValue("securityCode", "Security code must be a int with 3 or 4 digits.", "Security code must be a int with 3 or 4 digits.");
 			}
 

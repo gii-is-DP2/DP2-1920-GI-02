@@ -47,7 +47,7 @@ public class PaymentController {
 
 	@InitBinder("payment")
 	public void initPaymentBinder(final WebDataBinder dataBinder) {
-		dataBinder.setValidator(new PaymentValidator(this.paymentService));
+		dataBinder.setValidator(new PaymentValidator());
 	}
 
 	@ModelAttribute("visit")
@@ -61,7 +61,7 @@ public class PaymentController {
 	}
 
 	@GetMapping(value = "/payments/new")
-	public String initCreationForm(final Visit visit, final Secretary secretary, final ModelMap model) {
+	public String initCreationForm(final Visit visit, final ModelMap model) {
 		Payment payment = new Payment();
 		model.addAttribute("payment", payment);
 		List<String> listMethod = new ArrayList<String>();
@@ -98,6 +98,7 @@ public class PaymentController {
 			Secretary secretary = this.secretaryService.findSecretaryByName(userDetail.getUsername());
 
 			payment.setSecretary(secretary);
+
 			payment.setCreditcard(null);
 
 			Visit visitIn = this.visitSecretaryService.findVisitById(visit.getId());

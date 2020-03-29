@@ -43,7 +43,7 @@ public class CreditcardController {
 
 	@InitBinder("creditcard")
 	public void initCreditcardBinder(final WebDataBinder dataBinder) {
-		dataBinder.setValidator(new CreditcardValidator(this.creditcardService));
+		dataBinder.setValidator(new CreditcardValidator());
 	}
 
 	@ModelAttribute("visit")
