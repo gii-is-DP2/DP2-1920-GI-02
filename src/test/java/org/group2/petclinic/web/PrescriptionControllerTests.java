@@ -8,7 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.Collection;
+
 import org.group2.petclinic.configuration.SecurityConfiguration;
+import org.group2.petclinic.model.Medicine;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.service.MedicineService;
 import org.group2.petclinic.service.PrescriptionService;
@@ -51,6 +54,9 @@ class PrescriptionControllerTests {
 		Visit visit = new Visit();
 		visit.setId(1);
 		given(this.visitService.findVisitById(visit.getId())).willReturn(new Visit());
+		
+		Medicine medicine = new Medicine();
+		medicine.setId(1);
 	}
 
 	@WithMockUser(value = "spring")
@@ -66,17 +72,28 @@ class PrescriptionControllerTests {
 		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_PRESCRIPTION_ID)).andExpect(status().is4xxClientError());
 	}
 
+	
+	
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/vet/visits/{visitId}/prescription/new", TEST_PRESCRIPTION_ID).with(csrf())
-				.param("frequency", "2 times per week").param("duration", "1 week"));
+		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_PRESCRIPTION_ID).with(csrf())
+				.param("frequency", "2 times per week").param("duration", "1 week"))
+				.andExpect(status().isOk());
 	}
 	
+	@WithMockUser(value = "vet1")
 	@Test
 	void testNotProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/vet/visits/{visitId}/prescription/new", TEST_PRESCRIPTION_ID).with(csrf())).
-				andExpect(status().is4xxClientError());
+		mockMvc.perform(
+			post("/vet/visits/{visitId}/prescriptions/new", TEST_PRESCRIPTION_ID).with(csrf())
+				.param("frequency", "2 times per week")
+				.param("duration", "1 week")
+				.param("medicine", "Medicine H"))
+			.andExpect(model().attributeHasErrors("prescription"))
+			.andExpect(model().attributeHasFieldErrors("prescription", "medicine"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("vet/createOrUpdatePrescriptionForm"));
 	}
 
 }
