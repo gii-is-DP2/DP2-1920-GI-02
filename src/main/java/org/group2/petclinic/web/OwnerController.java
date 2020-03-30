@@ -41,7 +41,9 @@ public class OwnerController {
 	// CONSTRUCTOR ------------------------------------------------------------
 
 	@Autowired
-	public OwnerController(final OwnerService ownerService, final PetService petService, final UserService userService, final AuthoritiesService authoritiesService) {
+	public OwnerController(final OwnerService ownerService,
+		final PetService petService, final UserService userService,
+		final AuthoritiesService authoritiesService) {
 		this.ownerService = ownerService;
 		this.petService = petService;
 	}
@@ -67,7 +69,8 @@ public class OwnerController {
 	}
 
 	@PostMapping(value = "/owners/new")
-	public String processCreationForm(@Valid final Owner owner, final BindingResult result) {
+	public String processCreationForm(@Valid final Owner owner,
+		final BindingResult result) {
 		if (result.hasErrors()) {
 			return OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		} else {
@@ -85,7 +88,8 @@ public class OwnerController {
 	}
 
 	@GetMapping(value = "/owners")
-	public String processFindForm(Owner owner, final BindingResult result, final Map<String, Object> model) {
+	public String processFindForm(Owner owner, final BindingResult result,
+		final Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
 		if (owner.getLastName() == null) {
@@ -93,7 +97,8 @@ public class OwnerController {
 		}
 
 		// find owners by last name
-		Collection<Owner> results = this.ownerService.findOwnerByLastName(owner.getLastName());
+		Collection<Owner> results = this.ownerService
+			.findOwnerByLastName(owner.getLastName());
 		if (results.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
@@ -110,14 +115,17 @@ public class OwnerController {
 	}
 
 	@GetMapping(value = "/owners/{ownerId}/edit")
-	public String initUpdateOwnerForm(@PathVariable("ownerId") final int ownerId, final Model model) {
+	public String initUpdateOwnerForm(
+		@PathVariable("ownerId") final int ownerId, final Model model) {
 		Owner owner = this.ownerService.findOwnerById(ownerId);
 		model.addAttribute(owner);
 		return OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping(value = "/owners/{ownerId}/edit")
-	public String processUpdateOwnerForm(@Valid final Owner owner, final BindingResult result, @PathVariable("ownerId") final int ownerId) {
+	public String processUpdateOwnerForm(@Valid final Owner owner,
+		final BindingResult result,
+		@PathVariable("ownerId") final int ownerId) {
 		if (result.hasErrors()) {
 			return OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		} else {
@@ -153,7 +161,8 @@ public class OwnerController {
 	@GetMapping("/owner/profile")
 	public ModelAndView showOwnerInfo() {
 		ModelAndView mav = new ModelAndView("owner/profileView");
-		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		String ownerUsername = SecurityContextHolder.getContext()
+			.getAuthentication().getName();
 		mav.addObject(this.ownerService.findOwnerByUsername(ownerUsername));
 		return mav;
 	}
@@ -167,18 +176,23 @@ public class OwnerController {
 	 */
 	@GetMapping(value = "/owner/profile/edit")
 	public String initUpdateOwnerForm(final Model model) {
-		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-		model.addAttribute(this.ownerService.findOwnerByUsername(ownerUsername));
+		String ownerUsername = SecurityContextHolder.getContext()
+			.getAuthentication().getName();
+		model
+			.addAttribute(this.ownerService.findOwnerByUsername(ownerUsername));
 		return "owner/profileForm";
 	}
 
 	@PostMapping(value = "/owner/profile/edit")
-	public String processUpdateOwnerForm(@Valid final Owner owner, final BindingResult result) {
+	public String processUpdateOwnerForm(@Valid final Owner owner,
+		final BindingResult result) {
 		if (result.hasErrors()) {
 			return "owner/profileForm";
 		} else {
-			String authenticatedOwnerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-			Owner authenticatedOwner = this.ownerService.findOwnerByUsername(authenticatedOwnerUsername);
+			String authenticatedOwnerUsername = SecurityContextHolder
+				.getContext().getAuthentication().getName();
+			Owner authenticatedOwner = this.ownerService
+				.findOwnerByUsername(authenticatedOwnerUsername);
 			owner.setId(authenticatedOwner.getId());
 			this.ownerService.saveOwner(owner);
 			return "redirect:/owner/profile";
@@ -195,14 +209,16 @@ public class OwnerController {
 	@GetMapping("/owner/pets")
 	public ModelAndView showOwnersPets() {
 		ModelAndView mav = new ModelAndView("owner/petsList");
-		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		String ownerUsername = SecurityContextHolder.getContext()
+			.getAuthentication().getName();
 		mav.addObject(this.ownerService.findOwnerByUsername(ownerUsername));
 		return mav;
 	}
 
 	@GetMapping(value = "/owner/pets/new")
 	public String initCreationForm(final ModelMap model) {
-		String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+		String ownerUsername = SecurityContextHolder.getContext()
+			.getAuthentication().getName();
 		Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
 		Pet pet = new Pet();
 		owner.addPet(pet);
@@ -212,9 +228,11 @@ public class OwnerController {
 	}
 
 	@PostMapping(value = "/owner/pets/new")
-	public String processCreationForm(@Valid final Pet pet, final BindingResult result, final ModelMap model) {
+	public String processCreationForm(@Valid final Pet pet,
+		final BindingResult result, final ModelMap model) {
 		if (result.hasErrors()) {
-			String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+			String ownerUsername = SecurityContextHolder.getContext()
+				.getAuthentication().getName();
 			Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
 			owner.addPet(pet);
 			model.put("pet", pet);
@@ -222,8 +240,10 @@ public class OwnerController {
 			return "owner/createOrUpdatePetForm";
 		} else {
 			try {
-				String ownerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-				Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
+				String ownerUsername = SecurityContextHolder.getContext()
+					.getAuthentication().getName();
+				Owner owner = this.ownerService
+					.findOwnerByUsername(ownerUsername);
 				owner.addPet(pet);
 				this.petService.savePet(pet);
 			} catch (DuplicatedPetNameException ex) {
@@ -235,7 +255,8 @@ public class OwnerController {
 	}
 
 	@GetMapping(value = "/owner/pets/{petId}/edit")
-	public String initUpdateForm(@PathVariable("petId") final int petId, final ModelMap model) {
+	public String initUpdateForm(@PathVariable("petId") final int petId,
+		final ModelMap model) {
 		Pet pet = this.petService.findPetById(petId);
 		model.put("pet", pet);
 		model.addAttribute("types", this.petService.findPetTypes());
@@ -243,10 +264,9 @@ public class OwnerController {
 	}
 
 	@PostMapping(value = "owner/pets/{petId}/edit")
-	public String processUpdateForm(@Valid final Pet pet, final BindingResult result, @PathVariable("petId") final int petId, final ModelMap model) {
-		//String authenticatedOwnerUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-		//Owner authenticatedOwner = this.ownerService.findOwnerByUsername(authenticatedOwnerUsername);
-		//authenticatedOwner.addPet(pet);
+	public String processUpdateForm(@Valid final Pet pet,
+		final BindingResult result, @PathVariable("petId") final int petId,
+		final ModelMap model) {
 		model.addAttribute("types", this.petService.findPetTypes());
 		if (result.hasErrors()) {
 			model.put("pet", pet);
