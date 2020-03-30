@@ -27,5 +27,13 @@ public class Medicine extends NamedEntity {
     @Column(name = "brand")
     @NotEmpty
     private String brand;
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
  
 }

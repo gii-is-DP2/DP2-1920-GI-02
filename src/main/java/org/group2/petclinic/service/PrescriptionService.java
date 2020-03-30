@@ -15,8 +15,6 @@
  */
 package org.group2.petclinic.service;
 
-import java.util.Collection;
-
 import org.group2.petclinic.model.Prescription;
 import org.group2.petclinic.repository.PrescriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +37,6 @@ public class PrescriptionService {
 		prescriptionRepository.save(prescription);
 	}
 
-	@Transactional(readOnly = true)
-	public Prescription findPrescriptionById(int id) throws DataAccessException {
-		return prescriptionRepository.findById(id);
-	}
 
-	@Transactional(readOnly = true)
-	public Collection<Prescription> findPrescriptions() throws DataAccessException {
-		return prescriptionRepository.findAll();
-	}
 
 }
