@@ -78,6 +78,8 @@ class OwnerControllerTests {
 		given(this.stubPetService.findPetById(1)).willReturn(pet);
 	}
 
+	// showOwnerInfo -----------------------------------------------------------
+
 	// showOwnerInfo() POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
 	@Test
@@ -97,6 +99,8 @@ class OwnerControllerTests {
 			.andExpect(status().is4xxClientError());
 	}
 
+	// initUpdateOwnerForm -----------------------------------------------------
+
 	// initUpdateOwnerForm(final Model model) POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
 	@Test
@@ -115,6 +119,8 @@ class OwnerControllerTests {
 		mockMvc.perform(get("/owner/profile/edit").with(csrf()))
 			.andExpect(status().is4xxClientError());
 	}
+
+	// processUpdateOwnerForm --------------------------------------------------
 
 	// processUpdateOwnerForm(@Valid final Owner owner, final BindingResult result) POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
@@ -143,6 +149,27 @@ class OwnerControllerTests {
 			.andExpect(status().is4xxClientError());
 	}
 
+	// processUpdateOwnerForm(@Valid final Owner owner, final BindingResult result) NEGATIVE TEST
+	@WithMockUser(value = "jgarcia")
+	@Test
+	void testShouldNotProcessOwnerFormHtml2() throws Exception {
+		mockMvc.perform(
+			post("/owner/profile/edit").with(csrf())
+				.param("firstName", "")
+				.param("lastName", "García")
+				.param("address", "Calle 1")
+				.param("city", "Sevila")
+				.param("telephone", "123")
+				.param("user.username", "jgarcia")
+				.param("user.password", "jgarcia"))
+			.andExpect(model().attributeHasErrors("owner"))
+			.andExpect(model().attributeHasFieldErrors("owner", "firstName"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("owner/profileForm"));
+	}
+
+	// showOwnerPets -----------------------------------------------------------
+
 	// showOwnerPets() POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
 	@Test
@@ -162,6 +189,8 @@ class OwnerControllerTests {
 			.andExpect(status().is4xxClientError());
 	}
 
+	// initCreationForm --------------------------------------------------------
+
 	// initCreationForm(final ModelMap model) POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
 	@Test
@@ -180,6 +209,8 @@ class OwnerControllerTests {
 		mockMvc.perform(get("/owner/pets/new").with(csrf()))
 			.andExpect(status().is4xxClientError());
 	}
+
+	// processCreationForm -----------------------------------------------------
 
 	// processCreationForm(final ModelMap model) POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
@@ -203,6 +234,23 @@ class OwnerControllerTests {
 			.andExpect(status().is4xxClientError());
 	}
 
+	// processCreationForm(final ModelMap model) NEGATIVE TEST
+	// birthDate is not a valid date
+	@WithMockUser(value = "jgarcia")
+	@Test
+	void testShouldNotProcessCreationFormHtml2() throws Exception {
+		mockMvc.perform(
+			post("/owner/pets/new").with(csrf())
+				.param("name", "Pepe")
+				.param("birthDate", "texto"))
+			.andExpect(model().attributeHasErrors("pet"))
+			.andExpect(model().attributeHasFieldErrors("pet", "birthDate"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("owner/createOrUpdatePetForm"));
+	}
+
+	// initUpdateForm ----------------------------------------------------------
+
 	// initUpdateForm(@PathVariable("petId") final int petId, final ModelMap model) POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
 	@Test
@@ -222,6 +270,8 @@ class OwnerControllerTests {
 		mockMvc.perform(get("/owner/pets/{petId}/edit", 1).with(csrf()))
 			.andExpect(status().is4xxClientError());
 	}
+
+	// processUpdateForm -------------------------------------------------------
 
 	// processUpdateForm(@Valid final Pet pet, final BindingResult result, @PathVariable("petId") final int petId, final ModelMap model) POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
@@ -243,6 +293,21 @@ class OwnerControllerTests {
 	void testShouldNotProcessUpdateFormHtml() throws Exception {
 		mockMvc.perform(post("/owner/pets/{petId}/edit", 1).with(csrf()))
 			.andExpect(status().is4xxClientError());
+	}
+
+	// processUpdateForm(@Valid final Pet pet, final BindingResult result, @PathVariable("petId") final int petId, final ModelMap model) NEGATIVE TEST
+	// birthDate is not a valid date
+	@WithMockUser(value = "jgarcia")
+	@Test
+	void testShouldNotProcessUpdateFormHtml2() throws Exception {
+		mockMvc.perform(
+			post("/owner/pets/{petId}/edit", 1).with(csrf())
+				.param("name", "Pepe")
+				.param("birthDate", "texto"))
+			.andExpect(model().attributeHasErrors("pet"))
+			.andExpect(model().attributeHasFieldErrors("pet", "birthDate"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("owner/createOrUpdatePetForm"));
 	}
 
 }

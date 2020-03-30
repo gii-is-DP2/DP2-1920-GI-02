@@ -43,23 +43,23 @@ import org.springframework.test.web.servlet.MockMvc;
 		classes = WebSecurityConfigurer.class),
 	excludeAutoConfiguration = SecurityConfiguration.class)
 class VisitControllerTests {
-	
-	private static final int TEST_VISIT_ID = 1;
+
+	private static final int	TEST_VISIT_ID	= 1;
 
 	@MockBean
-	private VisitService	visitService;
+	private VisitService		visitService;
 
 	@MockBean
-	private PetService		petService;
+	private PetService			petService;
 
 	@MockBean
-	private VetService		vetService;
+	private VetService			vetService;
 
 	@MockBean
-	private OwnerService	ownerService;
+	private OwnerService		ownerService;
 
 	@Autowired
-	private MockMvc			mockMvc;
+	private MockMvc				mockMvc;
 
 
 	@BeforeEach
@@ -110,10 +110,12 @@ class VisitControllerTests {
 
 		given(this.visitService.findVisitsByVet(vet1))
 			.willReturn(Lists.newArrayList(visit1, visit2));
-        given(this.visitService.findVisitById(1)).willReturn(visit1);
+		given(this.visitService.findVisitById(1)).willReturn(visit1);
 		given(this.petService.findPetsByOwnerId(1))
 			.willReturn(new ArrayList<Pet>());
 	}
+
+	// initScheduleVisitForm ---------------------------------------------------
 
 	// initScheduleVisitForm(final ModelMap modelMap) POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
@@ -134,6 +136,8 @@ class VisitControllerTests {
 		mockMvc.perform(get("/owner/schedule-visit").with(csrf()))
 			.andExpect(status().is4xxClientError());
 	}
+
+	// processScheduleVisitForm ------------------------------------------------
 
 	// processScheduleVisitForm(@Valid final Visit visit, final BindingResult result, final ModelMap modelMap) POSITIVE TEST
 	@WithMockUser(value = "jgarcia")
@@ -157,6 +161,21 @@ class VisitControllerTests {
 			.andExpect(status().is4xxClientError());
 	}
 
+	// processScheduleVisitForm(@Valid final Visit visit, final BindingResult result, final ModelMap modelMap) NEGATIVE TEST
+	// invalid moment
+	@WithMockUser(value = "jgarcia")
+	@Test
+	void testShouldNotProcessScheduleVisitFormHtml2() throws Exception {
+		mockMvc.perform(
+			post("/owner/schedule-visit").with(csrf())
+				.param("description", "Description")
+				.param("moment", "texto"))
+			.andExpect(model().attributeHasErrors("visit"))
+			.andExpect(model().attributeHasFieldErrors("visit", "moment"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("owner/scheduleVisitForm"));
+	}
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testShowVisitListHtml() throws Exception {
@@ -164,24 +183,27 @@ class VisitControllerTests {
 			.andExpect(model().attributeExists("visits"))
 			.andExpect(view().name("/vet/visitsList"));
 	}
-	
+
 	@Test
 	void testNotShowVisitListHtml() throws Exception {
 		mockMvc.perform(get("/vet/visits").with(csrf()))
-		.andExpect(status().is4xxClientError());
+			.andExpect(status().is4xxClientError());
 	}
-	
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testShowVisitHtml() throws Exception {
-		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("visit"))
-				.andExpect(view().name("vet/visitDetails"));
+		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("visit"))
+			.andExpect(view().name("vet/visitDetails"));
 	}
-	
+
 	@Test
 	void testNotShowVisitHtml() throws Exception {
-		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID).with(csrf()))
-		.andExpect(status().is4xxClientError());
+		mockMvc
+			.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID).with(csrf()))
+			.andExpect(status().is4xxClientError());
 	}
 
 }
