@@ -71,10 +71,18 @@ class DiagnosisControllerTests {
 				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vet/visits/{visitId}"));
 	}
 	
-	@Test
-	void testNotProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/vet/visits/{visitId}/diagnosis/new", TEST_DIAGNOSIS_ID).with(csrf())).
-				andExpect(status().is4xxClientError());
-	}
+
+		@WithMockUser(value = "vet1")
+		@Test
+		void testNotProcessCreationFormSuccess() throws Exception {
+			mockMvc.perform(
+				post("/vet/visits/{visitId}/diagnosis/new", TEST_DIAGNOSIS_ID).with(csrf())
+					.param("date", "Pepe")
+					.param("description", "texto"))
+				.andExpect(model().attributeHasErrors("diagnosis"))
+				.andExpect(model().attributeHasFieldErrors("diagnosis", "date"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("vet/createOrUpdateDiagnosisForm"));
+		}
 
 }
