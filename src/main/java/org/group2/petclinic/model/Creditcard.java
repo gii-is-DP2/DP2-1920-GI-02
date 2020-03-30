@@ -6,10 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "creditcards")
@@ -17,15 +14,12 @@ public class Creditcard extends BaseEntity {
 
 	// ATTRIBUTES -------------------------------------------------------------
 
-	@NotEmpty
 	@Column(name = "holder")
 	private String	holder;
 
-	@NotEmpty
 	@Column(name = "brand")
 	private String	brand;
 
-	@NotEmpty
 	@Column(name = "number")
 	private String	number;
 
@@ -35,14 +29,9 @@ public class Creditcard extends BaseEntity {
 	@Column(name = "exp_month")
 	private Integer	expMonth;
 
-	@NotNull
-	@Min(0)
-	@Max(99)
 	@Column(name = "exp_year")
 	private Integer	expYear;
 
-	@NotNull
-	@Length(min = 3, max = 4)
 	@Column(name = "security_code")
 	private String	securityCode;
 
