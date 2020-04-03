@@ -60,12 +60,18 @@
 						<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 						<span>Schedule new visit</span>
 					</petclinic:menuItem>
+					
+					<petclinic:menuItem active="${name eq 'owner-visits'}" url="/owner/visits"
+						title="vistis">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Visits</span>
+					</petclinic:menuItem>
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('veterinarian')">
 					<petclinic:menuItem active="${name eq 'vet-visits'}" url="/vet/visits"
 						title="vistis">
-						<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Visits</span>
 					</petclinic:menuItem>
 				</sec:authorize>

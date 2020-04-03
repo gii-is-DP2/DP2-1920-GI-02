@@ -253,4 +253,6 @@ INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payme
 INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (5, 7, 1, 3, '2019-03-10 15:30', 'Descrip with', 5, null);
 INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (6, 8, 1, 2, '2015-05-06 14:00', 'Descrip without', null, null);
 INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (7, 7, 2, 1, '2016-07-15 10:30', 'Rubies whitout', null, null);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (8, 1, 1, 1, '2020-04-01 10:30', 'Sample visit', null, null);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (9, 1, 1, 1, '2025-04-01 10:30', 'Sample visit', null, null);
 

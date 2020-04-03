@@ -40,7 +40,7 @@ public class VisitSecretaryServiceTests {
 		Iterable<Visit> visits = this.visitSecretaryService.findVisitsNoPayment();
 
 		//3. Assert
-		assertThat(visits).hasSize(2);
+		assertThat(visits).hasSize(4);
 
 	}
 
