@@ -156,18 +156,20 @@ public class VisitController {
 		}
 	}
 
-	// JOSEMA ------------------------------------------------------------------
-
 	@GetMapping(value = "/vet/visits")
 	public String showVisitsVet(final ModelMap modelMap) {
 		String view = "/vet/visitsList";
 		String vetUsername = SecurityContextHolder.getContext()
 			.getAuthentication().getName();
 		Vet vet = this.vetService.findVetByUsername(vetUsername);
-		Iterable<Visit> visits = this.visitService.findVisitsByVet(vet);
-		modelMap.addAttribute("visits", visits);
+		Iterable<Visit> futureVisits = this.visitService.findFutureVisitsByVet(vet);
+		modelMap.addAttribute("futureVisits", futureVisits);
+		Iterable<Visit> pastVisits = this.visitService.findPastVisitsByVet(vet);
+		modelMap.addAttribute("pastVisits", pastVisits);
 		return view;
 	}
+
+	// JOSEMA ------------------------------------------------------------------
 
 	@GetMapping(value = "/vet/visits/{visitId}")
 	public String showVisitForVet(@PathVariable("visitId") final int visitId,

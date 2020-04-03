@@ -41,10 +41,20 @@ public class VisitService {
 	public Collection<Visit> findVisits() throws DataAccessException {
 		return visitRepository.findAll();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<Visit> findVisitsByVet(final Vet vet) throws DataAccessException {
 		return this.visitRepository.findVisitsByVet(vet);
+	}
+
+	@Transactional(readOnly = true)
+	public List<Visit> findFutureVisitsByVet(final Vet vet) throws DataAccessException {
+		return this.visitRepository.findFutureVisitsByVet(vet, LocalDateTime.now());
+	}
+
+	@Transactional(readOnly = true)
+	public List<Visit> findPastVisitsByVet(final Vet vet) throws DataAccessException {
+		return this.visitRepository.findPastVisitsByVet(vet, LocalDateTime.now());
 	}
 
 	@Transactional(readOnly = true)
@@ -53,9 +63,9 @@ public class VisitService {
 		LocalDateTime end = beginning.plusDays(1);
 		return this.visitRepository.findVisitsByVetBetween(vet, beginning, end);
 	}
-	
+
 	// FIND VISIT -------------------------------------------------------------
-	
+
 	@Transactional(readOnly = true)
 	public Visit findVisitById(int id) throws DataAccessException {
 		return visitRepository.findById(id);
