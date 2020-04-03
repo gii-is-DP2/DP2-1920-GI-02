@@ -4,6 +4,7 @@ package org.group2.petclinic.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
@@ -27,6 +28,10 @@ public interface VisitRepository {
 
 	List<Visit> findVisitsByVetBetween(Vet vet, LocalDateTime beginning, LocalDateTime end)
 		throws DataAccessException;
+
+	List<Visit> findFutureVisitsByOwner(Owner owner, LocalDateTime now) throws DataAccessException;
+
+	List<Visit> findPastVisitsByOwner(Owner owner, LocalDateTime now) throws DataAccessException;
 
 	List<VisitType> findVisitTypes() throws DataAccessException;
 

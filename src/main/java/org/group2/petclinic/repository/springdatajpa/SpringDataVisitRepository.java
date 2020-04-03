@@ -4,6 +4,7 @@ package org.group2.petclinic.repository.springdatajpa;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
@@ -31,6 +32,14 @@ public interface SpringDataVisitRepository
 	@Query("SELECT visit FROM Visit visit WHERE visit.vet = ?1 AND visit.moment >= ?2 AND visit.moment < ?3 ORDER BY visit.moment")
 	List<Visit> findVisitsByVetBetween(Vet vet, LocalDateTime beginning,
 		LocalDateTime end) throws DataAccessException;
+
+	@Override
+	@Query("SELECT visit FROM Visit visit WHERE visit.pet.owner = ?1 AND visit.moment > ?2 ORDER BY visit.moment DESC")
+	List<Visit> findFutureVisitsByOwner(Owner owner, LocalDateTime now) throws DataAccessException;
+
+	@Override
+	@Query("SELECT visit FROM Visit visit WHERE visit.pet.owner = ?1 AND visit.moment <= ?2 ORDER BY visit.moment DESC")
+	List<Visit> findPastVisitsByOwner(Owner owner, LocalDateTime now) throws DataAccessException;
 
 	@Override
 	@Query("SELECT vt FROM VisitType vt ORDER BY vt.name")

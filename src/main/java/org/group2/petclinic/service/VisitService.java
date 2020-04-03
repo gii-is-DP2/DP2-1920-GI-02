@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
@@ -62,6 +63,16 @@ public class VisitService {
 		LocalDateTime beginning = date.atStartOfDay();
 		LocalDateTime end = beginning.plusDays(1);
 		return this.visitRepository.findVisitsByVetBetween(vet, beginning, end);
+	}
+
+	@Transactional(readOnly = true)
+	public List<Visit> findFutureVisitsByOwner(final Owner owner) throws DataAccessException {
+		return this.visitRepository.findFutureVisitsByOwner(owner, LocalDateTime.now());
+	}
+
+	@Transactional(readOnly = true)
+	public List<Visit> findPastVisitsByOwner(final Owner owner) throws DataAccessException {
+		return this.visitRepository.findPastVisitsByOwner(owner, LocalDateTime.now());
 	}
 
 	// FIND VISIT -------------------------------------------------------------

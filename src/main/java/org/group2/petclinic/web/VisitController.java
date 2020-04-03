@@ -179,4 +179,27 @@ public class VisitController {
 		return "vet/visitDetails";
 	}
 
+	// MIGUEL -----------------------------------------------------------------
+
+	@GetMapping(value = "/owner/visits")
+	public String showVisitsOwner(final ModelMap modelMap) {
+		String view = "owner/visitsList";
+		String ownerUsername = SecurityContextHolder.getContext()
+			.getAuthentication().getName();
+		Owner owner = this.ownerService.findOwnerByUsername(ownerUsername);
+		Iterable<Visit> futureVisits = this.visitService.findFutureVisitsByOwner(owner);
+		modelMap.addAttribute("futureVisits", futureVisits);
+		Iterable<Visit> pastVisits = this.visitService.findPastVisitsByOwner(owner);
+		modelMap.addAttribute("pastVisits", pastVisits);
+		return view;
+	}
+
+	@GetMapping(value = "/owner/visits/{visitId}")
+	public String showVisitForOwner(@PathVariable("visitId") final int visitId,
+		final ModelMap modelMap) {
+		Visit visit = this.visitService.findVisitById(visitId);
+		modelMap.addAttribute("visit", visit);
+		return "owner/visitDetails";
+	}
+
 }
