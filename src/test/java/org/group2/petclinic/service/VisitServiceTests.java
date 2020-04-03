@@ -2,6 +2,7 @@
 package org.group2.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.group2.petclinic.model.Diagnosis;
+import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Payment;
 import org.group2.petclinic.model.Pet;
 import org.group2.petclinic.model.User;
@@ -78,6 +80,186 @@ class VisitServiceTests {
 		visitService = new VisitService(stubVisitRepository);
 		//2. Act
 		List<Visit> visits = visitService.findVisitsByVet(vet);
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
+
+	// findFutureVisitsByVet(final Vet vet) POSITIVE TEST
+	@Test
+	void shouldFindFutureVisitsForVet() {
+		//1. Arrange
+		Vet vet = new Vet();
+		vet.setId(1);
+		vet.setFirstName("James");
+		vet.setFirstName("Carter");
+		vet.setUser(mock(User.class));
+
+		Visit visit1 = mock(Visit.class);
+		Visit visit2 = mock(Visit.class);
+		Visit visit3 = mock(Visit.class);
+		List<Visit> toReturn = Arrays.asList(visit1, visit2, visit3);
+
+		when(stubVisitRepository.findFutureVisitsByVet(any(), any())).thenReturn(toReturn);
+
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		List<Visit> visits = visitService.findFutureVisitsByVet(vet);
+		//3. Assert
+		assertThat(visits).hasSize(3);
+	}
+
+	// findFutureVisitsByVet(final Vet vet) NEGATIVE TEST
+	@Test
+	void shouldNotFindFutureVisitsForVet() {
+		//1. Arrange
+		Vet vet = new Vet();
+		vet.setId(1);
+		vet.setFirstName("James");
+		vet.setFirstName("Carter");
+		vet.setUser(mock(User.class));
+
+		List<Visit> toReturn = Arrays.asList();
+
+		when(stubVisitRepository.findFutureVisitsByVet(any(), any())).thenReturn(toReturn);
+
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		List<Visit> visits = visitService.findFutureVisitsByVet(vet);
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
+
+	// findPastVisitsByVet(final Vet vet) POSITIVE TEST
+	@Test
+	void shouldFindPastVisitsForVet() {
+		//1. Arrange
+		Vet vet = new Vet();
+		vet.setId(1);
+		vet.setFirstName("James");
+		vet.setFirstName("Carter");
+		vet.setUser(mock(User.class));
+
+		Visit visit1 = mock(Visit.class);
+		Visit visit2 = mock(Visit.class);
+		Visit visit3 = mock(Visit.class);
+		List<Visit> toReturn = Arrays.asList(visit1, visit2, visit3);
+
+		when(stubVisitRepository.findPastVisitsByVet(any(), any())).thenReturn(toReturn);
+
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		List<Visit> visits = visitService.findPastVisitsByVet(vet);
+		//3. Assert
+		assertThat(visits).hasSize(3);
+	}
+
+	// findPastVisitsByVet(final Vet vet) NEGATIVE TEST
+	@Test
+	void shouldNotFindPastVisitsForVet() {
+		//1. Arrange
+		Vet vet = new Vet();
+		vet.setId(1);
+		vet.setFirstName("James");
+		vet.setFirstName("Carter");
+		vet.setUser(mock(User.class));
+
+		List<Visit> toReturn = Arrays.asList();
+
+		when(stubVisitRepository.findPastVisitsByVet(any(), any())).thenReturn(toReturn);
+
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		List<Visit> visits = visitService.findPastVisitsByVet(vet);
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
+
+	// findFutureVisitsByOwner(final Vet vet) POSITIVE TEST
+	@Test
+	void shouldFindFutureVisitsForOwner() {
+		//1. Arrange
+		Owner owner = new Owner();
+		owner.setId(1);
+		owner.setFirstName("George");
+		owner.setFirstName("Franklin");
+		owner.setUser(mock(User.class));
+
+		Visit visit1 = mock(Visit.class);
+		Visit visit2 = mock(Visit.class);
+		Visit visit3 = mock(Visit.class);
+		List<Visit> toReturn = Arrays.asList(visit1, visit2, visit3);
+
+		when(stubVisitRepository.findFutureVisitsByOwner(any(), any())).thenReturn(toReturn);
+
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		List<Visit> visits = visitService.findFutureVisitsByOwner(owner);
+		//3. Assert
+		assertThat(visits).hasSize(3);
+	}
+
+	// findFutureVisitsByOwner(final Vet vet) NEGATIVE TEST
+	@Test
+	void shouldNotFindFutureVisitsForOwner() {
+		//1. Arrange
+		Owner owner = new Owner();
+		owner.setId(1);
+		owner.setFirstName("George");
+		owner.setFirstName("Franklin");
+		owner.setUser(mock(User.class));
+
+		List<Visit> toReturn = Arrays.asList();
+
+		when(stubVisitRepository.findFutureVisitsByOwner(any(), any())).thenReturn(toReturn);
+
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		List<Visit> visits = visitService.findFutureVisitsByOwner(owner);
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
+
+	// findPastVisitsByOwner(final Vet vet) POSITIVE TEST
+	@Test
+	void shouldFindPastVisitsForOwner() {
+		//1. Arrange
+		Owner owner = new Owner();
+		owner.setId(1);
+		owner.setFirstName("George");
+		owner.setFirstName("Franklin");
+		owner.setUser(mock(User.class));
+
+		Visit visit1 = mock(Visit.class);
+		Visit visit2 = mock(Visit.class);
+		Visit visit3 = mock(Visit.class);
+		List<Visit> toReturn = Arrays.asList(visit1, visit2, visit3);
+
+		when(stubVisitRepository.findPastVisitsByOwner(any(), any())).thenReturn(toReturn);
+
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		List<Visit> visits = visitService.findPastVisitsByOwner(owner);
+		//3. Assert
+		assertThat(visits).hasSize(3);
+	}
+
+	// findPastVisitsByOwner(final Vet vet) NEGATIVE TEST
+	@Test
+	void shouldNotFindPastVisitsForOwner() {
+		//1. Arrange
+		Owner owner = new Owner();
+		owner.setId(1);
+		owner.setFirstName("George");
+		owner.setFirstName("Franklin");
+		owner.setUser(mock(User.class));
+
+		List<Visit> toReturn = Arrays.asList();
+
+		when(stubVisitRepository.findPastVisitsByOwner(any(), any())).thenReturn(toReturn);
+
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		List<Visit> visits = visitService.findPastVisitsByOwner(owner);
 		//3. Assert
 		assertThat(visits).hasSize(0);
 	}
@@ -186,43 +368,43 @@ class VisitServiceTests {
 		//3. Assert
 		assertThat(visitTypes).hasSize(0);
 	}
-	
+
 	// findVisitById(final int id) POSITIVE TEST
-		@Test
-		void shouldFindVisitById() {
-			//1. Arrange
-			Visit toReturn = new Visit();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-			toReturn.setId(1);
-			toReturn.setMoment(LocalDateTime.parse("2020/04/15 17:30", formatter));
-			toReturn.setDescription("Visit 11");
-			toReturn.setPet(mock(Pet.class));
-			toReturn.setVet(mock(Vet.class));
-			toReturn.setVisitType(mock(VisitType.class));
-			toReturn.setPayment(mock(Payment.class));
-			toReturn.setDiagnosis(mock(Diagnosis.class));
+	@Test
+	void shouldFindVisitById() {
+		//1. Arrange
+		Visit toReturn = new Visit();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+		toReturn.setId(1);
+		toReturn.setMoment(LocalDateTime.parse("2020/04/15 17:30", formatter));
+		toReturn.setDescription("Visit 11");
+		toReturn.setPet(mock(Pet.class));
+		toReturn.setVet(mock(Vet.class));
+		toReturn.setVisitType(mock(VisitType.class));
+		toReturn.setPayment(mock(Payment.class));
+		toReturn.setDiagnosis(mock(Diagnosis.class));
 
-			when(stubVisitRepository.findById(1)).thenReturn(toReturn);
+		when(stubVisitRepository.findById(1)).thenReturn(toReturn);
 
-			visitService = new VisitService(stubVisitRepository);
-			//2. Act
-			Visit visit = visitService.findVisitById(1);
-			//3. Assert
-			assertThat(visit).isEqualTo(toReturn);
-		}
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		Visit visit = visitService.findVisitById(1);
+		//3. Assert
+		assertThat(visit).isEqualTo(toReturn);
+	}
 
-		// findVisitById(final int id) NEGATIVE TEST
-		// id for which no visit exists in the repository. Should return null.
-		@Test
-		void shouldNotFindVisitById() {
-			//1. Arrange
-			when(stubVisitRepository.findById(1)).thenReturn(null);
+	// findVisitById(final int id) NEGATIVE TEST
+	// id for which no visit exists in the repository. Should return null.
+	@Test
+	void shouldNotFindVisitById() {
+		//1. Arrange
+		when(stubVisitRepository.findById(1)).thenReturn(null);
 
-			visitService = new VisitService(stubVisitRepository);
-			//2. Act
-			Visit visit = visitService.findVisitById(1);
-			//3. Assert
-			assertThat(visit).isNull();
-		}
+		visitService = new VisitService(stubVisitRepository);
+		//2. Act
+		Visit visit = visitService.findVisitById(1);
+		//3. Assert
+		assertThat(visit).isNull();
+	}
 
 }
