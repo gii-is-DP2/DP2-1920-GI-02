@@ -2,13 +2,13 @@
 package org.group2.petclinic.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
 import org.group2.petclinic.model.Visit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.Mockito.when;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class VisitSecretaryRepositoryTests {
 		Iterable<Visit> visits = this.visitsecretaryRepository.findVisitsNoPayment();
 
 		//3. Assert
-		assertThat(visits).hasSize(2);
+		assertThat(visits).hasSize(4);
 
 	}
 

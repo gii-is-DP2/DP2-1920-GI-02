@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
@@ -29,7 +30,7 @@ public class VisitRepositoryTests {
 		//2. Act
 		List<Visit> visits = this.visitRepository.findVisitsByVet(vet);
 		//3. Assert
-		assertThat(visits).hasSize(3);
+		assertThat(visits).hasSize(5);
 	}
 
 	// findVisitsByVet(Vet vet) NEGATIVE TEST
@@ -40,6 +41,54 @@ public class VisitRepositoryTests {
 		vet.setId(99);
 		//2. Act
 		List<Visit> visits = this.visitRepository.findVisitsByVet(vet);
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
+
+	// findFutureVisitsByVet(Vet vet) POSITIVE TEST
+	@Test
+	void shouldFindFutureVisitByVet() {
+		//1. Arrange
+		Vet vet = new Vet();
+		vet.setId(1);
+		//2. Act
+		List<Visit> visits = this.visitRepository.findFutureVisitsByVet(vet, LocalDateTime.now());
+		//3. Assert
+		assertThat(visits).hasSize(1);
+	}
+
+	// findFutureVisitsByVet(Vet vet) NEGATIVE TEST
+	@Test
+	void shouldNotFindFutureVisitByVet() {
+		//1. Arrange
+		Vet vet = new Vet();
+		vet.setId(2);
+		//2. Act
+		List<Visit> visits = this.visitRepository.findFutureVisitsByVet(vet, LocalDateTime.now());
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
+
+	// findPastVisitsByVet(Vet vet) POSITIVE TEST
+	@Test
+	void shouldFindPastVisitByVet() {
+		//1. Arrange
+		Vet vet = new Vet();
+		vet.setId(1);
+		//2. Act
+		List<Visit> visits = this.visitRepository.findPastVisitsByVet(vet, LocalDateTime.now());
+		//3. Assert
+		assertThat(visits).hasSize(4);
+	}
+
+	// findPastVisitsByVet(Vet vet) NEGATIVE TEST
+	@Test
+	void shouldNotFindPastVisitByVet() {
+		//1. Arrange
+		Vet vet = new Vet();
+		vet.setId(3);
+		//2. Act
+		List<Visit> visits = this.visitRepository.findPastVisitsByVet(vet, LocalDateTime.now());
 		//3. Assert
 		assertThat(visits).hasSize(0);
 	}
@@ -68,6 +117,54 @@ public class VisitRepositoryTests {
 		LocalDateTime end = LocalDateTime.parse("2011-04-01T00:00:00.00");
 		//2. Act
 		List<Visit> visits = this.visitRepository.findVisitsByVetBetween(vet, beginning, end);
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
+
+	// findFutureVisitsByOwner(Owner owner) POSITIVE TEST
+	@Test
+	void shouldFindFutureVisitByOwner() {
+		//1. Arrange
+		Owner owner = new Owner();
+		owner.setId(1);
+		//2. Act
+		List<Visit> visits = this.visitRepository.findFutureVisitsByOwner(owner, LocalDateTime.now());
+		//3. Assert
+		assertThat(visits).hasSize(1);
+	}
+
+	// findFutureVisitsByOwner(Owner owner) NEGATIVE TEST
+	@Test
+	void shouldNotFindFutureVisitByOwner() {
+		//1. Arrange
+		Owner owner = new Owner();
+		owner.setId(3);
+		//2. Act
+		List<Visit> visits = this.visitRepository.findFutureVisitsByOwner(owner, LocalDateTime.now());
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
+
+	// findPastVisitsByOwner(Owner owner) POSITIVE TEST
+	@Test
+	void shouldFindPastVisitByOwner() {
+		//1. Arrange
+		Owner owner = new Owner();
+		owner.setId(1);
+		//2. Act
+		List<Visit> visits = this.visitRepository.findPastVisitsByOwner(owner, LocalDateTime.now());
+		//3. Assert
+		assertThat(visits).hasSize(1);
+	}
+
+	// findFutureVisitsByOwner(Owner owner) NEGATIVE TEST
+	@Test
+	void shouldNotFindPastVisitByOwner() {
+		//1. Arrange
+		Owner owner = new Owner();
+		owner.setId(3);
+		//2. Act
+		List<Visit> visits = this.visitRepository.findPastVisitsByOwner(owner, LocalDateTime.now());
 		//3. Assert
 		assertThat(visits).hasSize(0);
 	}
