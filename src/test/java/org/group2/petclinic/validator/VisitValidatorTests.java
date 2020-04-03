@@ -31,7 +31,7 @@ public class VisitValidatorTests {
 		Visit visit = new Visit();
 		visit.setId(1);
 		visit.setDescription("Description");
-		visit.setMoment(LocalDateTime.parse("2020-02-03T12:00:00.00"));
+		visit.setMoment(LocalDateTime.parse("2025-04-01T12:00:00.00"));
 		visit.setPet(mock(Pet.class));
 		visit.setVet(mock(Vet.class));
 		visit.setVisitType(mock(VisitType.class));
