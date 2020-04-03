@@ -19,7 +19,8 @@
                 	  minTime: '08:00',
                 	  maxTime: '20:00',
                 	  disabledWeekDays:[0,6],
-                	  dayOfWeekStart:1
+                	  dayOfWeekStart:1,
+                	  minDate: 0
                 	});
             });
         </script>

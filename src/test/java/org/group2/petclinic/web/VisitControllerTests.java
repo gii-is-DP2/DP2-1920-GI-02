@@ -180,13 +180,29 @@ class VisitControllerTests {
 	@Test
 	void testShowVisitListHtml() throws Exception {
 		mockMvc.perform(get("/vet/visits")).andExpect(status().isOk())
-			.andExpect(model().attributeExists("visits"))
+			.andExpect(model().attributeExists("futureVisits"))
+			.andExpect(model().attributeExists("pastVisits"))
 			.andExpect(view().name("/vet/visitsList"));
 	}
 
 	@Test
 	void testNotShowVisitListHtml() throws Exception {
 		mockMvc.perform(get("/vet/visits").with(csrf()))
+			.andExpect(status().is4xxClientError());
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowOwnerVisitListHtml() throws Exception {
+		mockMvc.perform(get("/owner/visits")).andExpect(status().isOk())
+			.andExpect(model().attributeExists("futureVisits"))
+			.andExpect(model().attributeExists("pastVisits"))
+			.andExpect(view().name("owner/visitsList"));
+	}
+
+	@Test
+	void testNotOwnerShowVisitListHtml() throws Exception {
+		mockMvc.perform(get("/owner/visits").with(csrf()))
 			.andExpect(status().is4xxClientError());
 	}
 
@@ -203,6 +219,22 @@ class VisitControllerTests {
 	void testNotShowVisitHtml() throws Exception {
 		mockMvc
 			.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID).with(csrf()))
+			.andExpect(status().is4xxClientError());
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowOwnerVisitHtml() throws Exception {
+		mockMvc.perform(get("/owner/visits/{visitId}", TEST_VISIT_ID))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("visit"))
+			.andExpect(view().name("owner/visitDetails"));
+	}
+
+	@Test
+	void testNotShowOwnerVisitHtml() throws Exception {
+		mockMvc
+			.perform(get("/owner/visits/{visitId}", TEST_VISIT_ID).with(csrf()))
 			.andExpect(status().is4xxClientError());
 	}
 
