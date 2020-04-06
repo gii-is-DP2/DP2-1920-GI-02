@@ -11,6 +11,8 @@ import org.group2.petclinic.model.Payment;
 import org.group2.petclinic.model.Secretary;
 import org.group2.petclinic.web.PaymentValidator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 
@@ -73,13 +75,16 @@ public class PaymentValidatorTests {
 	}
 
 	// NEGATIVE TEST
-	// Final price is negative
-	@Test
-	void shouldFinalPriceNegative() {
+	// Final price is not bigger than 0
+	@ParameterizedTest
+	@ValueSource(doubles = {
+		0.00, -1.00, -5.00, -10.00
+	})
+	void shouldFinalPriceNegative(Double finalPrice) {
 		//1. Arrange
 		Payment payment = new Payment();
 		payment.setId(1);
-		payment.setFinalPrice(-10.00);
+		payment.setFinalPrice(finalPrice);
 		payment.setCreditcard(mock(Creditcard.class));
 		LocalDateTime date = LocalDateTime.now();
 		date.minusMinutes(1);

@@ -1,6 +1,8 @@
 
 package org.group2.petclinic.repository.springdatajpa;
 
+import java.util.List;
+
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.repository.VisitSecretaryRepository;
 import org.springframework.dao.DataAccessException;
@@ -17,5 +19,9 @@ public interface SpringDataVisitSecretaryRepository extends VisitSecretaryReposi
 	@Override
 	@Query("SELECT v FROM Visit v WHERE v.id =:id")
 	Visit findVisitById(@Param("id") int id) throws DataAccessException;
+
+	@Override
+	@Query("SELECT v FROM Visit v")
+	List<Visit> findAllVisits() throws DataAccessException;
 
 }

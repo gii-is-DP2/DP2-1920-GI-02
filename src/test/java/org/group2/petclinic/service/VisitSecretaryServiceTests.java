@@ -93,4 +93,33 @@ public class VisitSecretaryServiceTests {
 		assertNull(visit);
 	}
 
+	// -------------------------- findAllVisits() ---------------------------
+
+	// POSITIVE TEST
+	@Test
+	void shouldFindAllVisits() {
+		//1. Arrange
+
+		//2. Act
+		Iterable<Visit> visits = this.visitSecretaryService.findAllVisits();
+
+		//3. Assert
+		assertThat(visits).isNotNull();
+		assertThat(visits).hasSize(9);
+
+	}
+
+	// NEGATIVE TEST
+	// There aren't any visit
+	@Test
+	void shouldNotFindAllVisits() {
+		//1. Arrange
+		visitSecretaryService = new VisitSecretaryService(stubVisitSecretaryRepository);
+
+		//2. Act
+		Iterable<Visit> visits = this.visitSecretaryService.findAllVisits();
+
+		//3. Assert
+		assertThat(visits).hasSize(0);
+	}
 }

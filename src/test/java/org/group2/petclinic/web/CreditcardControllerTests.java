@@ -112,7 +112,7 @@ public class CreditcardControllerTests {
 	// Acces with a user not authenticated
 	@Test
 	void testNotInitCreationFormGet() throws Exception {
-		mockMvc.perform(post("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", TEST_VISIT_ID, TEST_PAYMENT_ID)//
+		mockMvc.perform(get("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", TEST_VISIT_ID, TEST_PAYMENT_ID)//
 			.with(csrf()))//
 			.andExpect(status().is4xxClientError());
 	}

@@ -1,6 +1,8 @@
 
 package org.group2.petclinic.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.group2.petclinic.model.Visit;
@@ -28,6 +30,11 @@ public class VisitSecretaryService {
 	@Transactional
 	public Visit findVisitById(final int id) throws DataAccessException {
 		return this.visitSecretaryRepository.findVisitById(id);
+	}
+
+	@Transactional
+	public List<Visit> findAllVisits() throws DataAccessException {
+		return this.visitSecretaryRepository.findAllVisits();
 	}
 
 }

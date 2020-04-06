@@ -3,15 +3,19 @@ package org.group2.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.verify;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
 import org.group2.petclinic.model.Payment;
 import org.group2.petclinic.model.Secretary;
 import org.group2.petclinic.model.User;
+import org.group2.petclinic.model.Visit;
+import org.group2.petclinic.repository.springdatajpa.SpringDataPaymentRepository;
+import org.group2.petclinic.repository.springdatajpa.SpringDataVisitSecretaryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -26,10 +30,13 @@ import org.springframework.stereotype.Service;
 public class PaymentServiceTests {
 
 	@Autowired
-	protected PaymentService	paymentService;
+	protected PaymentService			paymentService;
 
 	@Mock
-	private PaymentService		stubPaymentService;
+	private SpringDataPaymentRepository	stubPaymentRepository;
+
+	@Mock
+	private PaymentService				stubPaymentService;
 
 	// -------------------------- savePayment(final Payment payment) ---------------------------
 
@@ -113,5 +120,35 @@ public class PaymentServiceTests {
 
 		//3. Assert
 		assertNull(payment);
+	}
+
+	// -------------------------- findRevenuesByMonth() ---------------------------
+
+	// POSITIVE TEST
+	@Test
+	void shouldFindRevenuesByMonth() {
+		//1. Arrange
+
+		//2. Act
+		List<Payment> payments = this.paymentService.findRevenuesByMonth();
+
+		//3. Assert
+		assertThat(payments).isNotNull();
+		assertThat(payments).hasSize(5);
+
+	}
+
+	// NEGATIVE TEST
+	// There aren't any payment
+	@Test
+	void shouldNotFindRevenuesByMonth() {
+		//1. Arrange
+		paymentService = new PaymentService(stubPaymentRepository);
+
+		//2. Act
+		List<Payment> payment = this.stubPaymentService.findRevenuesByMonth();
+
+		//3. Assert
+		assertThat(payment).hasSize(0);
 	}
 }
