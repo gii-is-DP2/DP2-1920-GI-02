@@ -83,7 +83,7 @@ public class AdminController {
 			} else if (month == "JULY") {
 				Double dou = listMonth.get("July");
 				listMonth.replace("July", dou + payment.getFinalPrice());
-			} else if (month == "08") {
+			} else if (month == "AUGUST") {
 				Double dou = listMonth.get("August");
 				listMonth.replace("August", dou + payment.getFinalPrice());
 			} else if (month == "SEPTEMBER") {
