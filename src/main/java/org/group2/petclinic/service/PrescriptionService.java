@@ -15,6 +15,10 @@
  */
 package org.group2.petclinic.service;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.group2.petclinic.model.Pet;
 import org.group2.petclinic.model.Prescription;
 import org.group2.petclinic.repository.PrescriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,11 @@ public class PrescriptionService {
 	@Transactional
 	public void savePrescription(Prescription prescription) throws DataAccessException {
 		prescriptionRepository.save(prescription);
+	}
+	
+	@Transactional(readOnly = true)
+	public List<Prescription> findAllPrescriptions() throws DataAccessException {
+		return this.prescriptionRepository.findAll();
 	}
 
 

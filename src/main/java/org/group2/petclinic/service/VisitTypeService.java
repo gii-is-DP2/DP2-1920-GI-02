@@ -17,41 +17,36 @@ package org.group2.petclinic.service;
 
 import java.util.Collection;
 
-import org.group2.petclinic.model.Medicine;
-import org.group2.petclinic.repository.MedicineRepository;
+import org.group2.petclinic.model.VisitType;
+import org.group2.petclinic.repository.VisitTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class MedicineService {
+public class VisitTypeService {
 
-	private final MedicineRepository medicineRepository;
+	private final VisitTypeRepository VisitTypeRepository;
 
 	@Autowired
-	public MedicineService(MedicineRepository medicineRepository) {
-		this.medicineRepository = medicineRepository;
+	public VisitTypeService(VisitTypeRepository VisitTypeRepository) {
+		this.VisitTypeRepository = VisitTypeRepository;
 	}
 
 	@Transactional
-	public void saveMedicine(Medicine medicine) throws DataAccessException {
-		medicineRepository.save(medicine);
-	}
-	
-	@Transactional
-	public void deleteMedicine(Medicine medicine) throws DataAccessException {
-		medicineRepository.delete(medicine);
+	public void saveVisitType(VisitType VisitType) throws DataAccessException {
+		VisitTypeRepository.save(VisitType);
 	}
 	
 	@Transactional(readOnly = true)
-	public Medicine findMedicineById(Integer medicineId) throws DataAccessException {
-		return medicineRepository.findMedicineById(medicineId);
+	public VisitType findVisitTypeById(Integer VisitTypeId) throws DataAccessException {
+		return VisitTypeRepository.findVisitTypeById(VisitTypeId);
 	}
 
 	@Transactional(readOnly = true)
-	public Collection<Medicine> findMedicines() throws DataAccessException {
-		return medicineRepository.findAll();
+	public Collection<VisitType> findVisitTypes() throws DataAccessException {
+		return VisitTypeRepository.findAll();
 	}
 
 }

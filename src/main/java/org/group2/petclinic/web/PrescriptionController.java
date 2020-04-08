@@ -60,6 +60,7 @@ public class PrescriptionController {
 		}
 		else {
 			diagnosis.addPrescription(prescription);
+			prescription.getMedicine().setUsed(true);
 			this.prescriptionService.savePrescription(prescription);
 			return "redirect:/vet/visits/{visitId}";
 		}

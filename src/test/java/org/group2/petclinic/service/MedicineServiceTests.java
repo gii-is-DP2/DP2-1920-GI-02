@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.group2.petclinic.model.Medicine;
+import org.group2.petclinic.model.Pet;
 import org.group2.petclinic.repository.MedicineRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,9 +43,8 @@ class MedicineServiceTests {
 		}
 
 		// findAll() NEGATIVE TEST
-		// id for which no owner exists in the repository. Should return null.
 		@Test
-		void shouldNotFindOwnerById() {
+		void shouldNotFindAll() {
 			//1. Arrange
 			when(stubMedicineRepository.findAll()).thenReturn(null);
 
@@ -53,6 +53,37 @@ class MedicineServiceTests {
 			List<Medicine> medicines = (List<Medicine>) medicineService.findMedicines();
 			//3. Assert
 			assertThat(medicines).isNull();
+		}
+		
+		// findMedicineById(final int id) POSITIVE TEST
+		@Test
+		void shouldFindMedicineById() {
+			//1. Arrange
+			Medicine toReturn = new Medicine();
+			toReturn.setId(1);
+			toReturn.setName("Medicine 1");
+			toReturn.setBrand("Brandolino");
+
+			when(stubMedicineRepository.findMedicineById(1)).thenReturn(toReturn);
+
+			medicineService = new MedicineService(stubMedicineRepository);
+			//2. Act
+			Medicine medicine = medicineService.findMedicineById(1);
+			//3. Assert
+			assertThat(medicine).isEqualTo(toReturn);
+		}
+
+		// findMedicineById(final int id) NEGATIVE TEST
+		@Test
+		void shouldNotFindMedicineById() {
+			//1. Arrange
+			when(stubMedicineRepository.findMedicineById(1)).thenReturn(null);
+
+			medicineService = new MedicineService(stubMedicineRepository);
+			//2. Act
+			Medicine medicine = medicineService.findMedicineById(1);
+			//3. Assert
+			assertThat(medicine).isNull();
 		}
 
 
