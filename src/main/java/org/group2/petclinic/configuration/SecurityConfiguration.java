@@ -33,30 +33,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
-				.antMatchers("/users/new").permitAll()
-				.antMatchers("/admin/**").hasAnyAuthority("admin")
-				.antMatchers("/owners/**").hasAnyAuthority("admin")
-				.antMatchers("/owner/**").hasAnyAuthority("owner")
-        		.antMatchers("/secretary/**").hasAnyAuthority("secretary")
-				.antMatchers("/vet/**").hasAnyAuthority("veterinarian")	
-				.antMatchers("/vets/**").permitAll()
-				.anyRequest().denyAll()
-				.and()
-				 	.formLogin()
-				 	/*.loginPage("/login")*/
-				 	.failureUrl("/login-error")
-				.and()
-					.logout()
-						.logoutSuccessUrl("/"); 
-                // Configuración para que funcione la consola de administración 
-                // de la BD H2 (deshabilitar las cabeceras de protección contra
-                // ataques de tipo csrf y habilitar los framesets si su contenido
-                // se sirve desde esta misma página.
-                http.csrf().ignoringAntMatchers("/h2-console/**");
-                http.headers().frameOptions().sameOrigin();
+		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/users/new").permitAll().antMatchers("/admin/**").hasAnyAuthority("admin")
+			.antMatchers("/owners/**").hasAnyAuthority("admin").antMatchers("/owner/**").hasAnyAuthority("owner").antMatchers("/secretary/**").hasAnyAuthority("secretary").antMatchers("/vet/**").hasAnyAuthority("veterinarian").antMatchers("/vets/**")
+			.permitAll().anyRequest().denyAll().and().formLogin()
+			/* .loginPage("/login") */
+			.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
+		// Configuración para que funcione la consola de administración 
+		// de la BD H2 (deshabilitar las cabeceras de protección contra
+		// ataques de tipo csrf y habilitar los framesets si su contenido
+		// se sirve desde esta misma página.
+		http.csrf().ignoringAntMatchers("/h2-console/**");
+		http.headers().frameOptions().sameOrigin();
 
 	}
 

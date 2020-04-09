@@ -11,9 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecretaryService {
 
-	@Autowired
 	private SpringDataSecretaryRepository secretaryRepository;
 
+
+	@Autowired
+	public SecretaryService(final SpringDataSecretaryRepository secretaryRepository) {
+		this.secretaryRepository = secretaryRepository;
+	}
 
 	@Transactional
 	public Secretary findSecretaryByName(final String username) {

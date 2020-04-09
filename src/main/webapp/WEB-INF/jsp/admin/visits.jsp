@@ -6,19 +6,22 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="vet-visits">
- 	<h2>Upcoming visits</h2>
+<petclinic:layout pageName="visits">
+    <h2>Visits without payment</h2>
     <table id="visitsTable" class="table table-striped">
         <thead>
         <tr>
             <th>Moment</th>
             <th>Description</th>
             <th>Pet</th>
-            <th>Details</th>
+            <th>Vet</th>
+            <th>Visit type</th>
+            <th>See payment</th>
+            <th>See diagnosis</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${futureVisits}" var="visit">
+        <c:forEach items="${listVisit}" var="visit">
         	<input type="hidden" name="id" value="${visit.id}"/>
             <tr>
                 <td>
@@ -31,43 +34,26 @@
                     <c:out value="${visit.pet.name}"/>
                 </td>
                 <td>
-                	<spring:url value="/vet/visits/{visitId}" var="addUrl">
-        				<spring:param name="visitId" value="${visit.id}"/>
-    				</spring:url>
-    				<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Details</a>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    <h2>Past visits</h2>
-    <table id="visitsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Moment</th>
-            <th>Description</th>
-            <th>Pet</th>
-            <th>Details</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${pastVisits}" var="visit">
-        	<input type="hidden" name="id" value="${visit.id}"/>
-            <tr>
-                <td>
-                    <petclinic:localDateTime moment="${visit.moment}" pattern="yyyy-MM-dd HH:mm"/>
+                    <c:out value="${visit.vet.firstName}"/>
                 </td>
                 <td>
-                    <c:out value="${visit.description}"/>
+                    <c:out value="${visit.visitType.name}"/>
                 </td>
                 <td>
-                    <c:out value="${visit.pet.name}"/>
+                	<c:if test="${visit.payment != null}">
+	                	 <spring:url value="/admin/visits/{visitId}/payment" var="addUrl">
+	        				<spring:param name="visitId" value="${visit.id}"/>
+	    				</spring:url>
+	    				<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Payment</a>
+    				</c:if>
                 </td>
                 <td>
-                	<spring:url value="/vet/visits/{visitId}" var="addUrl">
-        				<spring:param name="visitId" value="${visit.id}"/>
-    				</spring:url>
-    				<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Details</a>
+                    <c:if test="${visit.diagnosis != null}">
+	                	 <spring:url value="/admin/visits/{visitId}/diagnosis" var="addUrl">
+	        				<spring:param name="visitId" value="${visit.id}"/>
+	    				</spring:url>
+	    				<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Diagnosis</a>
+    				</c:if>
                 </td>
             </tr>
         </c:forEach>

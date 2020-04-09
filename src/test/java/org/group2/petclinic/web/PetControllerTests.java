@@ -48,6 +48,7 @@ import org.springframework.test.web.servlet.MockMvc;
  *
  * @author Colin But
  */
+
 @WebMvcTest(value = PetController.class,
 	includeFilters = @ComponentScan.Filter(value = PetTypeFormatter.class,
 		type = FilterType.ASSIGNABLE_TYPE),
@@ -85,15 +86,18 @@ class PetControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testInitCreationForm() throws Exception {
+
 		mockMvc.perform(get("/owners/{ownerId}/pets/new", TEST_OWNER_ID))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdatePetForm"))
 			.andExpect(model().attributeExists("pet"));
+
 	}
 
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
+
 		mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID)
 			.with(csrf())
 			.param("name", "Betty")
@@ -106,6 +110,7 @@ class PetControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcessCreationFormHasErrors() throws Exception {
+
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID,
 				TEST_PET_ID)

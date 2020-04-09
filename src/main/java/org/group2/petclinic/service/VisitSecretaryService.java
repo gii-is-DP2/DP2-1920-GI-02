@@ -1,6 +1,8 @@
 
 package org.group2.petclinic.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.group2.petclinic.model.Visit;
@@ -12,9 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class VisitSecretaryService {
 
-	@Autowired
 	private SpringDataVisitSecretaryRepository visitSecretaryRepository;
 
+
+	@Autowired
+	public VisitSecretaryService(final SpringDataVisitSecretaryRepository visitSecretaryRepository) {
+		this.visitSecretaryRepository = visitSecretaryRepository;
+	}
 
 	@Transactional
 	public Iterable<Visit> findVisitsNoPayment() {
@@ -24,6 +30,11 @@ public class VisitSecretaryService {
 	@Transactional
 	public Visit findVisitById(final int id) throws DataAccessException {
 		return this.visitSecretaryRepository.findVisitById(id);
+	}
+
+	@Transactional
+	public List<Visit> findAllVisits() throws DataAccessException {
+		return this.visitSecretaryRepository.findAllVisits();
 	}
 
 }

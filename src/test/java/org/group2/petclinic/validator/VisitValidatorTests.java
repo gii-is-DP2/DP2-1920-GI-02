@@ -16,6 +16,8 @@ import org.group2.petclinic.model.VisitType;
 import org.group2.petclinic.service.VisitService;
 import org.group2.petclinic.web.VisitValidator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 
@@ -25,16 +27,26 @@ public class VisitValidatorTests {
 
 
 	// validate POSITIVE TEST
-	@Test
-	void shouldAcceptVisit() {
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"2025-03-31T08:00:00.00", //Monday 8:00
+		"2025-03-31T08:00:00.01", //Monday 8:00:00.01
+		"2025-04-01T12:00:00.00", //Wednesday 12:00
+		"2025-04-04T19:39:59.99", //Friday 19:39:59.99 - ends at 19:59:59.99
+		"2025-04-04T19:40:00.00" //Friday 19:40 - ends at 20:00
+	})
+	void shouldAcceptVisit(String moment) {
 		//1. Arrange
+		VisitType visitType = new VisitType();
+		visitType.setDuration(20);
+
 		Visit visit = new Visit();
 		visit.setId(1);
 		visit.setDescription("Description");
-		visit.setMoment(LocalDateTime.parse("2020-02-03T12:00:00.00"));
+		visit.setMoment(LocalDateTime.parse(moment));
 		visit.setPet(mock(Pet.class));
 		visit.setVet(mock(Vet.class));
-		visit.setVisitType(mock(VisitType.class));
+		visit.setVisitType(visitType);
 
 		Errors errors = new BeanPropertyBindingResult(visit, "pet");
 
@@ -49,17 +61,25 @@ public class VisitValidatorTests {
 	}
 
 	// validate NEGATIVE TEST
-	// Visit on sunday
-	@Test
+	@ParameterizedTest
+	@ValueSource(strings = {
+		"2025-03-31T06:00:00.00", //Monday 6:00
+		"2025-03-31T07:59:59.99", //Monday 7:59:59.99
+		"2025-04-01T23:00:00.00", //Wednesday 23:00
+		"2025-04-04T19:40:00.01" //Friday 19:40:00.01 - ends at 20:00:00.01
+	})
 	void shouldRejectVisit1() {
 		//1. Arrange
+		VisitType visitType = new VisitType();
+		visitType.setDuration(20);
+
 		Visit visit = new Visit();
 		visit.setId(1);
 		visit.setDescription("Description");
 		visit.setMoment(LocalDateTime.parse("2020-02-02T12:00:00.00"));
 		visit.setPet(mock(Pet.class));
 		visit.setVet(mock(Vet.class));
-		visit.setVisitType(mock(VisitType.class));
+		visit.setVisitType(visitType);
 
 		Errors errors = new BeanPropertyBindingResult(visit, "pet");
 
