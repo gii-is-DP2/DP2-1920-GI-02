@@ -1,40 +1,23 @@
 package org.group2.petclinic.web;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.group2.petclinic.model.Medicine;
-import org.group2.petclinic.model.Prescription;
-import org.group2.petclinic.model.Vet;
-import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.service.MedicineService;
-import org.group2.petclinic.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class MedicineController {
@@ -88,13 +71,15 @@ public class MedicineController {
 	}
 
 	@PostMapping(value = "/admin/medicines/{medicineId}/edit")
-	public String processUpdateMedicineForm(@Valid Medicine medicine, BindingResult result, ModelMap model) {
+	public String processUpdateMedicineForm(@Valid Medicine medicine, BindingResult result, @PathVariable("medicineId") final int medicineId, ModelMap model) {
 		
 		if (result.hasErrors()) {
 			model.put("medicine", medicine);
 			return "admin/updateMedicineForm";
 		}
 		else {
+			medicine.setId(medicineId);
+			medicine.setUsed(this.medicineService.isInUse(medicine));
 			this.medicineService.saveMedicine(medicine);
 			return "redirect:/admin/medicines";
 		}

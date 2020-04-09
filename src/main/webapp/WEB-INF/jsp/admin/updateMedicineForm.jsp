@@ -19,7 +19,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
 
-                    <button class="btn btn-default" type="submit">Edit medicine</button>
+                    <button class="btn btn-default" type="submit">Save changes</button>
                 </div>
             </div>
         </form:form>

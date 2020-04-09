@@ -35,14 +35,14 @@
 														</spring:url>
 														<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">X</a>
 													</td>
-													<jstl:if test="${medicine.used==false}">
-														<td>
+													<td>
+														<jstl:if test="${medicine.used==false}">
 															<spring:url value="/admin/medicines/{medicineId}/delete" var="deleteUrl">
 																<spring:param name="medicineId" value="${medicine.id}" />
 															</spring:url>
 															<a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete</a>
-														</td>
-													</jstl:if>
+														</jstl:if>
+													</td>
 												</c:forEach>
 											</tbody>
 										</table>

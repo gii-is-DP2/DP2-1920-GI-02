@@ -6,11 +6,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.group2.petclinic.model.VisitType;
-import org.group2.petclinic.service.PrescriptionService;
 import org.group2.petclinic.service.VisitTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -72,13 +70,14 @@ public class VisitTypeController {
 	}
 
 	@PostMapping(value = "/admin/visitTypes/{visitTypeId}/edit")
-	public String processUpdateVisitTypeForm(@Valid VisitType visitType, BindingResult result, ModelMap model) {
+	public String processUpdateVisitTypeForm(@Valid VisitType visitType, BindingResult result, @PathVariable("visitTypeId") final int visitTypeId, ModelMap model) {
 		
 		if (result.hasErrors()) {
 			model.put("VisitType", visitType);
 			return "admin/updateVisitTypeForm";
 		}
 		else {
+			visitType.setId(visitTypeId);
 			this.visitTypeService.saveVisitType(visitType);
 			return "redirect:/admin/visitTypes";
 		}

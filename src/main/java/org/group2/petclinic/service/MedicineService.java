@@ -16,9 +16,12 @@
 package org.group2.petclinic.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.group2.petclinic.model.Medicine;
+import org.group2.petclinic.model.Prescription;
 import org.group2.petclinic.repository.MedicineRepository;
+import org.group2.petclinic.repository.PrescriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -28,10 +31,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class MedicineService {
 
 	private final MedicineRepository medicineRepository;
+	private final PrescriptionRepository prescriptionRepository;
 
 	@Autowired
-	public MedicineService(MedicineRepository medicineRepository) {
+	public MedicineService(MedicineRepository medicineRepository, PrescriptionRepository prescriptionRepository) {
 		this.medicineRepository = medicineRepository;
+		this.prescriptionRepository = prescriptionRepository;
 	}
 
 	@Transactional
@@ -52,6 +57,11 @@ public class MedicineService {
 	@Transactional(readOnly = true)
 	public Collection<Medicine> findMedicines() throws DataAccessException {
 		return medicineRepository.findAll();
+	}
+	
+	public Boolean isInUse(Medicine medicine) throws DataAccessException {
+		List<Prescription> prescriptions = this.prescriptionRepository.findPrescriptionsWithMedicine(medicine);
+		return !prescriptions.isEmpty();
 	}
 
 }

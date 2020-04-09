@@ -20,6 +20,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.group2.petclinic.model.Diagnosis;
+import org.group2.petclinic.model.Medicine;
 import org.group2.petclinic.model.Prescription;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.repository.DiagnosisRepository;
@@ -36,5 +37,8 @@ public interface SpringDataPrescriptionRepository extends PrescriptionRepository
 
 	@Query("select p from Prescription p where p.id = ?1")
 	Prescription findById(int prescriptionId);
+	
+	@Query("select p from Prescription p where p.medicine = ?1")
+	List<Prescription> findPrescriptionsWithMedicine(Medicine medicine);
 	
 }
