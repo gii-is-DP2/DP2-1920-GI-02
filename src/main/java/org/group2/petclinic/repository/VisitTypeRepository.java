@@ -17,7 +17,7 @@ package org.group2.petclinic.repository;
 
 import java.util.List;
 
-import org.group2.petclinic.model.Medicine;
+import org.group2.petclinic.model.VisitType;
 
 /**
  * Repository class for <code>Visit</code> domain objects All method names are compliant
@@ -30,15 +30,13 @@ import org.group2.petclinic.model.Medicine;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface MedicineRepository {
+public interface VisitTypeRepository {
 
 	
-	List<Medicine> findAll();
+	List<VisitType> findAll();
 	
-	void save(Medicine medicine);
+	void save(VisitType visitType);
 	
-	void delete(Medicine medicine);
-	
-	Medicine findMedicineById(Integer medicineId);
+	VisitType findVisitTypeById(Integer visitTypeId);
 
 }

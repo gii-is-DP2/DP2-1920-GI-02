@@ -212,10 +212,10 @@ INSERT INTO payments(id,method,moment,final_price,secretary_id,creditcard_id) VA
 --------------------------------------------------------------------------------
 --                                MEDICINES                                   --
 --------------------------------------------------------------------------------
-INSERT INTO medicines(id,brand,name) VALUES (1, 'Bayer', 'Betadine');
-INSERT INTO medicines(id,brand,name) VALUES (2, 'Pfizer', 'Medicine X');
-INSERT INTO medicines(id,brand,name) VALUES (3, 'Roche', 'Medicine Y');
-INSERT INTO medicines(id,brand,name) VALUES (4, 'Sanofi', 'Medicine Z');	
+INSERT INTO medicines(id,brand,name, used) VALUES (1, 'Bayer', 'Betadine', true);
+INSERT INTO medicines(id,brand,name, used) VALUES (2, 'Pfizer', 'Medicine X', true);
+INSERT INTO medicines(id,brand,name, used) VALUES (3, 'Roche', 'Medicine Y', true);
+INSERT INTO medicines(id,brand,name, used) VALUES (4, 'Sanofi', 'Medicine Z', true);	
 
 --------------------------------------------------------------------------------
 --                                PRESCRIPTIONS                               --

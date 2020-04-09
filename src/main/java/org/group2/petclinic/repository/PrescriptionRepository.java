@@ -18,6 +18,7 @@ package org.group2.petclinic.repository;
 import java.util.List;
 
 import org.group2.petclinic.model.BaseEntity;
+import org.group2.petclinic.model.Medicine;
 import org.group2.petclinic.model.Prescription;
 import org.springframework.dao.DataAccessException;
 
@@ -44,5 +45,7 @@ public interface PrescriptionRepository {
 	Prescription findById(Integer id);
 	
 	List<Prescription> findAll();
+	
+	List<Prescription> findPrescriptionsWithMedicine(Medicine medicine);
 
 }

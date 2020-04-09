@@ -33,6 +33,11 @@
 						<span>Medicines</span>
 					</petclinic:menuItem>
 
+					<petclinic:menuItem active="${name eq 'visitTypes'}" url="/admin/visitTypes"
+						title="visitTypes">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						<span>Visit Types</span>
+					</petclinic:menuItem>
 				</sec:authorize>
 
 				<sec:authorize access="hasAuthority('owner')">

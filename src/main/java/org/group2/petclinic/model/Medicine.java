@@ -27,6 +27,9 @@ public class Medicine extends NamedEntity {
     @Column(name = "brand")
     @NotEmpty
     private String brand;
+    
+    @Column(name = "used")
+    private boolean used;
 
 	public String getBrand() {
 		return brand;
@@ -34,6 +37,14 @@ public class Medicine extends NamedEntity {
 
 	public void setBrand(String brand) {
 		this.brand = brand;
+	}
+	
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
  
 }
