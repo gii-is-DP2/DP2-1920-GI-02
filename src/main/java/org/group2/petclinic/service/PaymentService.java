@@ -1,6 +1,8 @@
 
 package org.group2.petclinic.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.group2.petclinic.model.Payment;
@@ -29,6 +31,11 @@ public class PaymentService {
 	@Transactional
 	public Payment findPaymentById(final int id) throws DataAccessException {
 		return this.paymentRepository.findPaymentById(id);
+	}
+
+	@Transactional
+	public List<Payment> findRevenuesByMonth() throws DataAccessException {
+		return this.paymentRepository.findRevenuesByMonth();
 	}
 
 }

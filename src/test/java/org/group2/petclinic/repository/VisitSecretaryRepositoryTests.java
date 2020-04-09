@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.group2.petclinic.model.Visit;
 import org.junit.jupiter.api.Test;
@@ -85,6 +86,37 @@ public class VisitSecretaryRepositoryTests {
 		//3. Assert
 		assertThat(visit).isNull();
 
+	}
+
+	// -------------------------- findAllVisits() ---------------------------
+
+	// POSITIVE TEST
+	@Test
+	void shouldFindAllVisits() {
+		//1. Arrange
+
+		//2. Act
+		List<Visit> visits = this.visitsecretaryRepository.findAllVisits();
+
+		//3. Assert
+		assertThat(visits).isNotNull();
+		assertThat(visits).hasSize(9);
+
+	}
+
+	// NEGATIVE TEST
+	// Use an empty list
+	@Test
+	void shouldNotFindAllVisits() {
+		//1. Arrange
+		List<Visit> visit = new ArrayList<Visit>();
+		when(this.stubVisitSecretaryRepository.findAllVisits()).thenReturn(visit);
+
+		//2. Act
+		List<Visit> visits = this.stubVisitSecretaryRepository.findAllVisits();
+
+		//3. Assert
+		assertThat(visits).hasSize(0);
 	}
 
 }

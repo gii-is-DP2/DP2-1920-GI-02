@@ -1,6 +1,8 @@
 
 package org.group2.petclinic.repository.springdatajpa;
 
+import java.util.List;
+
 import org.group2.petclinic.model.Payment;
 import org.group2.petclinic.repository.PaymentRepository;
 import org.springframework.dao.DataAccessException;
@@ -13,5 +15,9 @@ public interface SpringDataPaymentRepository extends PaymentRepository, Reposito
 	@Override
 	@Query("SELECT p FROM Payment p WHERE p.id =:id")
 	Payment findPaymentById(@Param("id") int id) throws DataAccessException;
+
+	@Override
+	@Query("SELECT p FROM Payment p")
+	List<Payment> findRevenuesByMonth() throws DataAccessException;
 
 }
