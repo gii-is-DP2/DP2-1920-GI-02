@@ -11,6 +11,8 @@ public interface PaymentRepository {
 
 	void save(Payment payment) throws DataAccessException;
 
+	void delete(@Param("id") int id) throws DataAccessException;
+
 	Payment findPaymentById(@Param("id") int id) throws DataAccessException;
 
 	List<Payment> findRevenuesByMonth() throws DataAccessException;

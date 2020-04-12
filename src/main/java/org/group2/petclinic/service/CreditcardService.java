@@ -1,10 +1,13 @@
 
 package org.group2.petclinic.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.group2.petclinic.model.Creditcard;
 import org.group2.petclinic.repository.CreditcardRepository;
+import org.group2.petclinic.repository.springdatajpa.SpringDataCreditcardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -16,7 +19,7 @@ public class CreditcardService {
 
 
 	@Autowired
-	public CreditcardService(final CreditcardRepository creditcardRepository) {
+	public CreditcardService(final SpringDataCreditcardRepository creditcardRepository) {
 		this.creditcardRepository = creditcardRepository;
 	}
 
