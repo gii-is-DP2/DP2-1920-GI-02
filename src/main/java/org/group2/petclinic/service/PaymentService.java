@@ -29,6 +29,11 @@ public class PaymentService {
 	}
 
 	@Transactional
+	public void deletePayment(final int paymentId) throws DataAccessException {
+		this.paymentRepository.delete(paymentId);
+	}
+
+	@Transactional
 	public Payment findPaymentById(final int id) throws DataAccessException {
 		return this.paymentRepository.findPaymentById(id);
 	}

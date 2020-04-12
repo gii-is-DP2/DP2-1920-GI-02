@@ -20,7 +20,7 @@ public class Payment extends BaseEntity {
 
 	// ATTRIBUTES -------------------------------------------------------------
 
-	@NotEmpty
+	//@NotEmpty
 	@Pattern(regexp = "^creditcard|cash")
 	@Column(name = "method")
 	private String			method;
