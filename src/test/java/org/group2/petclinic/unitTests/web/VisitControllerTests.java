@@ -23,6 +23,7 @@ import org.group2.petclinic.model.Pet;
 import org.group2.petclinic.model.User;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
+import org.group2.petclinic.service.LoremApiService;
 import org.group2.petclinic.service.OwnerService;
 import org.group2.petclinic.service.PetService;
 import org.group2.petclinic.service.VetService;
@@ -58,6 +59,9 @@ class VisitControllerTests {
 
 	@MockBean
 	private OwnerService		ownerService;
+
+	@MockBean
+	private LoremApiService		loremApiService;
 
 	@Autowired
 	private MockMvc				mockMvc;
@@ -114,6 +118,7 @@ class VisitControllerTests {
 		given(this.visitService.findVisitById(1)).willReturn(visit1);
 		given(this.petService.findPetsByOwnerId(1))
 			.willReturn(new ArrayList<Pet>());
+		given(this.loremApiService.getRandomImageURL(any())).willReturn("url");
 	}
 
 	// initScheduleVisitForm ---------------------------------------------------
