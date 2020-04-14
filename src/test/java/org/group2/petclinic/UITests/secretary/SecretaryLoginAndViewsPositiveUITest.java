@@ -30,8 +30,8 @@ public class SecretaryLoginAndViewsPositiveUITest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		String pathToChromeDriver = "C:\\Users\\CLAUDIA\\Desktop\\Universidad\\5º año\\2 cuatrimestre\\DP";
-		System.setProperty("webdriver.chrome.driver", pathToChromeDriver + "\\chromedriver.exe");
+		//String pathToChromeDriver = "C:\\Users\\CLAUDIA\\Desktop\\Universidad\\5º año\\2 cuatrimestre\\DP";
+		System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "https://www.google.com/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
