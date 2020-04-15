@@ -24,6 +24,7 @@ import org.group2.petclinic.model.PetType;
 import org.group2.petclinic.model.User;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
+import org.group2.petclinic.model.VisitType;
 import org.group2.petclinic.service.LoremApiService;
 import org.group2.petclinic.service.OwnerService;
 import org.group2.petclinic.service.PetService;
@@ -86,9 +87,10 @@ class VisitControllerTests {
 		visit1.setDiagnosis(null);
 		visit1.setPayment(null);
 		Pet pet1 = new Pet();
+		pet1.setType(cat);
 		visit1.setPet(pet1);
 		visit1.setVet(null);
-		visit1.setVisitType(null);
+		visit1.setVisitType(mock(VisitType.class));
 
 		Visit visit2 = new Visit();
 		visit2.setId(2);
@@ -97,7 +99,7 @@ class VisitControllerTests {
 		visit2.setDiagnosis(null);
 		visit2.setPayment(null);
 		Pet pet2 = new Pet();
-		visit1.setPet(pet2);
+		visit2.setPet(pet2);
 		visit2.setVet(null);
 		visit2.setVisitType(null);
 
@@ -234,14 +236,14 @@ class VisitControllerTests {
 			.andExpect(status().is4xxClientError());
 	}
 
-	//	@WithMockUser(value = "spring")
-	//	@Test
-	//	void testShowOwnerVisitHtml() throws Exception {
-	//		mockMvc.perform(get("/owner/visits/{visitId}", TEST_VISIT_ID))
-	//			.andExpect(status().isOk())
-	//			.andExpect(model().attributeExists("visit"))
-	//			.andExpect(view().name("owner/visitDetails"));
-	//	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowOwnerVisitHtml() throws Exception {
+		mockMvc.perform(get("/owner/visits/{visitId}", TEST_VISIT_ID))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("visit"))
+			.andExpect(view().name("owner/visitDetails"));
+	}
 
 	@Test
 	void testNotShowOwnerVisitHtml() throws Exception {
