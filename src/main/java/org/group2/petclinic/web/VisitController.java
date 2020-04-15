@@ -7,9 +7,11 @@ import javax.validation.Valid;
 
 import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Pet;
+import org.group2.petclinic.model.PetType;
 import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
+import org.group2.petclinic.service.LoremApiService;
 import org.group2.petclinic.service.OwnerService;
 import org.group2.petclinic.service.PetService;
 import org.group2.petclinic.service.VetService;
@@ -31,10 +33,11 @@ public class VisitController {
 
 	// SERVICES ---------------------------------------------------------------
 
-	private final VisitService	visitService;
-	private final PetService	petService;
-	private final VetService	vetService;
-	private final OwnerService	ownerService;
+	private final VisitService		visitService;
+	private final PetService		petService;
+	private final VetService		vetService;
+	private final OwnerService		ownerService;
+	private final LoremApiService	loremApiService;
 
 
 	// CONSTRUCTOR ------------------------------------------------------------
@@ -42,11 +45,12 @@ public class VisitController {
 	@Autowired
 	public VisitController(final VisitService visitService,
 		final PetService petService, final VetService vetService,
-		final OwnerService ownerService) {
+		final OwnerService ownerService, final LoremApiService loremApiService) {
 		this.visitService = visitService;
 		this.petService = petService;
 		this.vetService = vetService;
 		this.ownerService = ownerService;
+		this.loremApiService = loremApiService;
 	}
 
 	// SET ALLOWED FIELDS -----------------------------------------------------
@@ -199,6 +203,11 @@ public class VisitController {
 		final ModelMap modelMap) {
 		Visit visit = this.visitService.findVisitById(visitId);
 		modelMap.addAttribute("visit", visit);
+
+		PetType petType = visit.getPet().getType();
+		String bannerURL = this.loremApiService.getRandomImageURL(petType.getName());
+
+		modelMap.addAttribute("bannerURL", bannerURL);
 		return "owner/visitDetails";
 	}
 

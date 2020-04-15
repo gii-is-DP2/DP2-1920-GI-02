@@ -7,7 +7,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  
-<petclinic:layout pageName="visits">
+<petclinic:layout pageName="revenues">
     <h1>Revenues by month</h1>
     <h2>From the month that earns more to the less one</h2>
     <table id="revenueTable" class="table table-striped">
