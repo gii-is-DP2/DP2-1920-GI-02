@@ -4,6 +4,10 @@ package org.group2.petclinic.unitTests.customasserts;
 import org.group2.petclinic.model.Creditcard;
 import org.group2.petclinic.model.Diagnosis;
 import org.group2.petclinic.model.Medicine;
+import org.group2.petclinic.model.Owner;
+import org.group2.petclinic.model.Payment;
+import org.group2.petclinic.model.Person;
+import org.group2.petclinic.model.Pet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
 
@@ -21,10 +25,22 @@ public class PetclinicAssertions {
 		return new MedicineAssert(actual);
 	}
 
-	//TODO Owner
-	//TODO Payment
-	//TODO Person
-	//TODO Pet
+	public static OwnerAssert assertThat(Owner actual) {
+		return new OwnerAssert(actual);
+	}
+
+	public static PaymentAssert assertThat(Payment actual) {
+		return new PaymentAssert(actual);
+	}
+
+	public static PersonAssert assertThat(Person actual) {
+		return new PersonAssert(actual);
+	}
+
+	public static PetAssert assertThat(Pet actual) {
+		return new PetAssert(actual);
+	}
+
 	//TODO PetType
 	//TODO Prescription
 	//TODO Secretary
