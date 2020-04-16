@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.VisitAssert.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
 import org.group2.petclinic.repository.VisitRepository;
+import org.group2.petclinic.unitTests.customasserts.VisitAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -189,6 +191,8 @@ public class VisitRepositoryTests {
 		Visit visit = this.visitRepository.findById(id);
 		//3. Assert
 		assertThat(visit).isNotNull();
+		VisitAssert.assertThat(visit).hasMoment(LocalDateTime.parse("2013-01-01T10:00"));
+		VisitAssert.assertThat(visit).hasDescription("rabies shot");
 	}
 
 	// findById(Integer visitId) NEGATIVE TEST
