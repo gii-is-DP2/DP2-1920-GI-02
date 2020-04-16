@@ -16,13 +16,11 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-<<<<<<< HEAD
+
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
-=======
->>>>>>> 00051b9076df964c60fcc51ca3d0f48c7633b766
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -42,8 +40,6 @@ public class AdminLoginAndViewsPositiveUITest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		//String pathToChromeDriver = "C:\\Users\\CLAUDIA\\Desktop\\Universidad\\5º año\\2 cuatrimestre\\DP";
-		//System.setProperty("webdriver.chrome.driver", pathToChromeDriver + "\\chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "https://www.google.com/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -72,14 +68,10 @@ public class AdminLoginAndViewsPositiveUITest {
 	private void showEstadisticView() {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[6]/a/span")).click();
 		assertEquals("Visits without payment", driver.findElement(By.xpath("//h2")).getText());
-		assertEquals("Moment",
-			driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th")).getText());
-		assertEquals("Description",
-			driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th[2]")).getText());
-		assertEquals("See payment",
-			driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th[6]")).getText());
-		assertEquals("See diagnosis",
-			driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th[7]")).getText());
+		assertEquals("Moment", driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th")).getText());
+		assertEquals("Description", driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th[2]")).getText());
+		assertEquals("See payment", driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th[6]")).getText());
+		assertEquals("See diagnosis", driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th[7]")).getText());
 
 		if (driver.findElement(By.xpath("//a[contains(text(),'Payment')]")) != null) {
 			driver.findElement(By.xpath("//a[contains(text(),'Payment')]")).click();
@@ -95,10 +87,8 @@ public class AdminLoginAndViewsPositiveUITest {
 
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[7]/a/span[2]")).click();
 		assertEquals("Revenues by month", driver.findElement(By.xpath("//h1")).getText());
-		assertEquals("Month",
-			driver.findElement(By.xpath("//table[@id='revenueTable']/thead/tr/th")).getText());
-		assertEquals("Revenues",
-			driver.findElement(By.xpath("//table[@id='revenueTable']/thead/tr/th[2]")).getText());
+		assertEquals("Month", driver.findElement(By.xpath("//table[@id='revenueTable']/thead/tr/th")).getText());
+		assertEquals("Revenues", driver.findElement(By.xpath("//table[@id='revenueTable']/thead/tr/th[2]")).getText());
 
 		driver.findElement(By.xpath("//a/span[2]")).click();
 	}
@@ -108,8 +98,7 @@ public class AdminLoginAndViewsPositiveUITest {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		driver.findElement(By.cssSelector("button.btn.btn-lg.btn-primary.btn-block")).click();
-		assertEquals("LOGIN",
-			driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
+		assertEquals("LOGIN", driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
 	}
 
 	@AfterEach
