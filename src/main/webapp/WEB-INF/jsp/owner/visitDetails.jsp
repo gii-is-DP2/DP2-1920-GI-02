@@ -8,6 +8,9 @@
 <petclinic:layout pageName="vet-visits">
 
     <h2>Visit Information</h2>
+    
+    <img class="img-responsive" src="${bannerURL}"/>
+    <br />
 
     <table class="table table-striped">
         <tr>

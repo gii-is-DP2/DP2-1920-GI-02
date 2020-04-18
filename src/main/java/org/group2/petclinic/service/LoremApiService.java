@@ -24,7 +24,7 @@ public class LoremApiService {
 
 		try {
 
-			URL url = new URL("https://loremflickr.com/json/320/240/pet");
+			URL url = new URL("https://loremflickr.com/json/320/240/" + keyword);
 			System.setProperty("http.agent", "Mozilla/5.0");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");

@@ -1,25 +1,29 @@
 
-package org.group2.petclinic.UITests.secretary;
+package org.group2.petclinic.UITests.owner;
 
-import java.util.regex.Pattern;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.openqa.selenium.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DoPaymentCashPositiveUITest {
+public class OwnerScheduleVisitNegativeUITest2 {
 
 	@LocalServerPort
 	private int				port;
@@ -38,30 +42,20 @@ public class DoPaymentCashPositiveUITest {
 	}
 
 	@Test
-	public void testUntitledTestCase() throws Exception {
-		SecretaryLoginAndViewsPositiveUITest.loginSecretary(driver, port);
+	public void testOwnerShowPetsUI() throws Exception {
+		LoginOwnerPositiveUITest.loginOwner(driver, port);
 
-		driver.findElement(By.cssSelector("a[title=\"visits\"]")).click();
-
-		int numVisitsInicial = numVisits();
-
-		driver.findElement(By.linkText("Add Payment")).click();
-		assertEquals("New Payment", driver.findElement(By.xpath("//h2")).getText());
-		driver.findElement(By.id("method")).click();
-		new Select(driver.findElement(By.id("method"))).selectByVisibleText("cash");
-		driver.findElement(By.id("method")).click();
-		driver.findElement(By.id("finalPrice")).click();
-		driver.findElement(By.id("finalPrice")).clear();
-		driver.findElement(By.id("finalPrice")).sendKeys("30.00");
+		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
+		driver.findElement(By.id("description")).click();
+		driver.findElement(By.id("description")).clear();
+		driver.findElement(By.id("description")).sendKeys("descr");
+		driver.findElement(By.id("visitType")).click();
+		new Select(driver.findElement(By.id("visitType"))).selectByVisibleText("operation");
+		driver.findElement(By.xpath("//form[@id='visit']/div/div[5]/div/div/div[2]/div/div/div[24]")).click();
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		assertEquals("Visit cannot be in the past.",
+			driver.findElement(By.xpath("//form[@id='visit']/div/div[5]/div/span[2]")).getText());
 
-		assertTrue(numVisits() < numVisitsInicial);
-	}
-
-	private int numVisits() {
-		WebElement tabla = driver.findElement(By.xpath("//table[1]"));
-		List<WebElement> filasDeTabla = tabla.findElements(By.tagName("tr"));
-		return filasDeTabla.size();
 	}
 
 	@AfterEach

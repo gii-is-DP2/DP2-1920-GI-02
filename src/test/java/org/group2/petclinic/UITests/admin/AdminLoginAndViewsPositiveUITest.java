@@ -1,18 +1,24 @@
 
 package org.group2.petclinic.UITests.admin;
 
-import java.util.regex.Pattern;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.openqa.selenium.*;
+import java.util.concurrent.TimeUnit;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -48,12 +54,11 @@ public class AdminLoginAndViewsPositiveUITest {
 	public static void loginAdmin(WebDriver driver, int port) {
 		driver.get("http://localhost:" + port);
 		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
-		driver.findElement(By.id("username")).click();
-		driver.findElement(By.id("password")).click();
-		driver.findElement(By.id("password")).clear();
-		driver.findElement(By.id("password")).sendKeys("4dm1n");
+		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys("admin1");
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("4dm1n");
 		driver.findElement(By.xpath("//button")).click();
 
 		assertEquals("ADMIN1", driver.findElement(By.xpath("//a[contains(@href, '#')]")).getText());
