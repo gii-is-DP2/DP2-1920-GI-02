@@ -12,6 +12,7 @@
 
         <form:form modelAttribute="visitType" class="form-horizontal">
             <div class="form-group has-feedback">
+				<petclinic:inputField label="Name" name="name"/>
                 <petclinic:inputField label="Duration" name="duration"/>
                 <petclinic:inputField label="Price" name="price"/>
             </div>
