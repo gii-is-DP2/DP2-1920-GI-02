@@ -44,7 +44,7 @@ public class LoginOwnerPositiveUITest {
 	public void testLoginOwnerAndViewsUI() throws Exception {
 		loginOwner(driver, port);
 
-		assertEquals("GFRANKLIN",
+		assertEquals("gfranklin",
 			driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).getText());
 
 	}
