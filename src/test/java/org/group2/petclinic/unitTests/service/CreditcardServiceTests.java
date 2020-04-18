@@ -1,14 +1,11 @@
 
 package org.group2.petclinic.unitTests.service;
 
-import static org.mockito.Mockito.verify;
 import static org.assertj.core.api.Assertions.assertThat;
-import java.time.LocalDateTime;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 import org.group2.petclinic.model.Creditcard;
-import org.group2.petclinic.model.Payment;
-import org.group2.petclinic.model.Secretary;
-import org.group2.petclinic.model.User;
 import org.group2.petclinic.service.CreditcardService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,6 +63,8 @@ public class CreditcardServiceTests {
 
 		//3. Assert
 		verify(this.stubCreditcardService).saveCreditcard(creditcard);
+		assertThat(creditcard).hasHolder("Maria");
+		assertThat(creditcard).hasBrand("visa");
 		assertThat(creditcard.getNumber()).isNull();
 		assertThat(creditcard.getExpMonth()).isNull();
 		assertThat(creditcard.getExpYear()).isNull();

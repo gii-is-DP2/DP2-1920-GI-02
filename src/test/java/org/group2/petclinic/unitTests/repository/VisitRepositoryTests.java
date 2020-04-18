@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -189,6 +190,8 @@ public class VisitRepositoryTests {
 		Visit visit = this.visitRepository.findById(id);
 		//3. Assert
 		assertThat(visit).isNotNull();
+		assertThat(visit).hasMoment(LocalDateTime.parse("2013-01-01T10:00"));
+		assertThat(visit).hasDescription("rabies shot");
 	}
 
 	// findById(Integer visitId) NEGATIVE TEST
