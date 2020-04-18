@@ -1,5 +1,5 @@
 
-package org.group2.petclinic.UITests.admin;
+package org.group2.petclinic.UITests.admin.steps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -25,47 +25,29 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.cucumber.junit.CucumberOptions;
+import lombok.extern.java.Log;
+
+@Log
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AdminLoginAndViewsPositiveUITest {
+public class AdminLoginAndViewsPositiveUITest extends AbstractStep {
 
 	@LocalServerPort
-	private int				port;
+	private int			port;
 
-	private WebDriver		driver;
-	private String			baseUrl;
-	private boolean			acceptNextAlert		= true;
-	private StringBuffer	verificationErrors	= new StringBuffer();
+	private WebDriver	driver	= getDriver();
 
 
-	@BeforeEach
-	public void setUp() throws Exception {
-		driver = new ChromeDriver();
-		baseUrl = "https://www.google.com/";
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+	@Given("I log in to the system with user {string} with a valid password like an admin")
+	public void loggin(String username) throws Exception {
+		loginAdmin(username, driver, port);
 	}
 
-	@Test
-	public void testUntitledTestCase() throws Exception {
-		loginAdmin(driver, port);
-		showEstadisticView();
-		logoutAdmin();
-	}
-
-	public static void loginAdmin(WebDriver driver, int port) {
-		driver.get("http://localhost:" + port);
-		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
-		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
-		driver.findElement(By.id("username")).clear();
-		driver.findElement(By.id("username")).sendKeys("admin1");
-		driver.findElement(By.id("password")).clear();
-		driver.findElement(By.id("password")).sendKeys("4dm1n");
-		driver.findElement(By.xpath("//button")).click();
-
-		assertEquals("ADMIN1", driver.findElement(By.xpath("//a[contains(@href, '#')]")).getText());
-	}
-
-	private void showEstadisticView() {
+	@When("I go to the estadistics views")
+	public void showViews() throws Exception {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[6]/a/span")).click();
 		assertEquals("Visits without payment", driver.findElement(By.xpath("//h2")).getText());
 		assertEquals("Moment", driver.findElement(By.xpath("//table[@id='visitsTable']/thead/tr/th")).getText());
@@ -93,53 +75,27 @@ public class AdminLoginAndViewsPositiveUITest {
 		driver.findElement(By.xpath("//a/span[2]")).click();
 	}
 
-	private void logoutAdmin() {
+	@Then("I can do logout like an admin")
+	public void logout() throws Exception {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li/a/span[2]")).click();
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		driver.findElement(By.cssSelector("button.btn.btn-lg.btn-primary.btn-block")).click();
 		assertEquals("LOGIN", driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
+		stopDriver();
 	}
 
-	@AfterEach
-	public void tearDown() throws Exception {
-		driver.quit();
-		String verificationErrorString = verificationErrors.toString();
-		if (!"".equals(verificationErrorString)) {
-			fail(verificationErrorString);
-		}
+	public static void loginAdmin(String username, WebDriver driver, int port) {
+		driver.get("http://localhost:" + port);
+		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+		driver.findElement(By.id("username")).clear();
+		driver.findElement(By.id("username")).sendKeys(username);
+		driver.findElement(By.id("password")).clear();
+		driver.findElement(By.id("password")).sendKeys("4dm1n");
+		driver.findElement(By.xpath("//button")).click();
+
+		assertEquals("ADMIN1", driver.findElement(By.xpath("//a[contains(@href, '#')]")).getText());
 	}
 
-	private boolean isElementPresent(By by) {
-		try {
-			driver.findElement(by);
-			return true;
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-	}
-
-	private boolean isAlertPresent() {
-		try {
-			driver.switchTo().alert();
-			return true;
-		} catch (NoAlertPresentException e) {
-			return false;
-		}
-	}
-
-	private String closeAlertAndGetItsText() {
-		try {
-			Alert alert = driver.switchTo().alert();
-			String alertText = alert.getText();
-			if (acceptNextAlert) {
-				alert.accept();
-			} else {
-				alert.dismiss();
-			}
-			return alertText;
-		} finally {
-			acceptNextAlert = true;
-		}
-	}
 }

@@ -1,5 +1,5 @@
 
-package org.group2.petclinic.UITests.admin;
+package org.group2.petclinic.UITests.admin.steps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -22,33 +22,33 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.cucumber.junit.CucumberOptions;
+import lombok.extern.java.Log;
+
+@Log
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AdminLoginNegativeUITest {
+public class AdminLoginNegativeUITest extends AbstractStep {
 
 	@LocalServerPort
-	private int				port;
+	private int			port;
 
-	private WebDriver		driver;
-	private String			baseUrl;
-	private boolean			acceptNextAlert		= true;
-	private StringBuffer	verificationErrors	= new StringBuffer();
+	private WebDriver	driver	= getDriver();
 
 
-	@BeforeEach
-	public void setUp() throws Exception {
-		driver = new ChromeDriver();
-		baseUrl = "https://www.google.com/";
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-	}
-
-	@Test
-	public void testUntitledTestCase() throws Exception {
+	@Given("I am not logged in the system and I want login like an admin")
+	public void login() throws Exception {
 		driver.get("http://localhost:" + port);
 		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+	}
+
+	@When("I try to do login as user {string} that is an admin with an invalid password")
+	public void invalidPassword(String username) throws Exception {
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		driver.findElement(By.id("username")).clear();
-		driver.findElement(By.id("username")).sendKeys("admin1");
+		driver.findElement(By.id("username")).sendKeys(username);
 		driver.findElement(By.id("password")).clear();
 		driver.findElement(By.id("password")).sendKeys("aaaa");
 		driver.findElement(By.xpath("//button")).click();
@@ -57,45 +57,11 @@ public class AdminLoginNegativeUITest {
 
 	}
 
-	@AfterEach
-	public void tearDown() throws Exception {
-		driver.quit();
-		String verificationErrorString = verificationErrors.toString();
-		if (!"".equals(verificationErrorString)) {
-			fail(verificationErrorString);
-		}
+	@Then("the login form is shown again and I'm not an admin")
+	public void backToRegistrePage() throws Exception {
+		assertEquals("Bad credentials", driver.findElement(By.xpath("//form/div")).getText());
+		stopDriver();
+
 	}
 
-	private boolean isElementPresent(By by) {
-		try {
-			driver.findElement(by);
-			return true;
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-	}
-
-	private boolean isAlertPresent() {
-		try {
-			driver.switchTo().alert();
-			return true;
-		} catch (NoAlertPresentException e) {
-			return false;
-		}
-	}
-
-	private String closeAlertAndGetItsText() {
-		try {
-			Alert alert = driver.switchTo().alert();
-			String alertText = alert.getText();
-			if (acceptNextAlert) {
-				alert.accept();
-			} else {
-				alert.dismiss();
-			}
-			return alertText;
-		} finally {
-			acceptNextAlert = true;
-		}
-	}
 }

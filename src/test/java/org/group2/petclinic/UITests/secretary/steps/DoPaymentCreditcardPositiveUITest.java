@@ -1,5 +1,5 @@
 
-package org.group2.petclinic.UITests.secretary;
+package org.group2.petclinic.UITests.secretary.steps;
 
 import java.util.regex.Pattern;
 import java.util.List;
@@ -39,7 +39,7 @@ public class DoPaymentCreditcardPositiveUITest {
 
 	@Test
 	public void testUntitledTestCase() throws Exception {
-		SecretaryLoginAndViewsPositiveUITest.loginSecretary(driver, port);
+		//SecretaryLoginAndViewsPositiveUITest.loginSecretary(driver, port);
 
 		driver.findElement(By.cssSelector("a[title=\"visits\"]")).click();
 

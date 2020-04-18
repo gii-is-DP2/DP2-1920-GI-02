@@ -1,5 +1,5 @@
 
-package org.group2.petclinic.UITests.secretary;
+package org.group2.petclinic.UITests.secretary.steps;
 
 import java.util.regex.Pattern;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DoPaymentCreditcardNegativeUITest {
+public class DoPaymentCashPositiveUITest {
 
 	@LocalServerPort
 	private int				port;
@@ -39,36 +39,23 @@ public class DoPaymentCreditcardNegativeUITest {
 
 	@Test
 	public void testUntitledTestCase() throws Exception {
-		SecretaryLoginAndViewsPositiveUITest.loginSecretary(driver, port);
+		//SecretaryLoginAndViewsPositiveUITest.loginSecretary(driver, port);
 
 		driver.findElement(By.cssSelector("a[title=\"visits\"]")).click();
 
-		//int numVisitsInicial = numVisits();
+		int numVisitsInicial = numVisits();
 
 		driver.findElement(By.linkText("Add Payment")).click();
 		assertEquals("New Payment", driver.findElement(By.xpath("//h2")).getText());
+		driver.findElement(By.id("method")).click();
+		new Select(driver.findElement(By.id("method"))).selectByVisibleText("cash");
+		driver.findElement(By.id("method")).click();
 		driver.findElement(By.id("finalPrice")).click();
 		driver.findElement(By.id("finalPrice")).clear();
 		driver.findElement(By.id("finalPrice")).sendKeys("30.00");
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
 
-		driver.findElement(By.id("holder")).clear();
-		driver.findElement(By.id("holder")).sendKeys("Maria");
-		driver.findElement(By.id("brand")).clear();
-		driver.findElement(By.id("brand")).sendKeys("Visa");
-		driver.findElement(By.id("number")).clear();
-		driver.findElement(By.id("number")).sendKeys("1122334455667788");
-		driver.findElement(By.id("expYear")).clear();
-		driver.findElement(By.id("expYear")).sendKeys("15");
-		driver.findElement(By.id("securityCode")).clear();
-		driver.findElement(By.id("securityCode")).sendKeys("aa22");
-		driver.findElement(By.xpath("//button[@type='submit']")).click();
-		assertEquals("Number is not valid.", driver.findElement(By.xpath("//form[@id='creditcard']/div/div[3]/div/span[2]")).getText());
-		assertEquals("Expirated date.", driver.findElement(By.xpath("//form[@id='creditcard']/div/div[5]/div/span[2]")).getText());
-		assertEquals("Security code must be a int with 3 or 4 digits.", driver.findElement(By.xpath("//form[@id='creditcard']/div/div[6]/div/span[2]")).getText());
-		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[2]/a/span[2]")).click();
-
-		//assertTrue(numVisits() == numVisitsInicial);
+		assertTrue(numVisits() < numVisitsInicial);
 	}
 
 	private int numVisits() {

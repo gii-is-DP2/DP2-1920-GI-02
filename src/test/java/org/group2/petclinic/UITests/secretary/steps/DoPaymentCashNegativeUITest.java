@@ -1,5 +1,5 @@
 
-package org.group2.petclinic.UITests.secretary;
+package org.group2.petclinic.UITests.secretary.steps;
 
 import java.util.regex.Pattern;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DoPaymentCashPositiveUITest {
+public class DoPaymentCashNegativeUITest {
 
 	@LocalServerPort
 	private int				port;
@@ -39,23 +39,25 @@ public class DoPaymentCashPositiveUITest {
 
 	@Test
 	public void testUntitledTestCase() throws Exception {
-		SecretaryLoginAndViewsPositiveUITest.loginSecretary(driver, port);
+		//SecretaryLoginAndViewsPositiveUITest.loginSecretary(driver, port);
 
-		driver.findElement(By.cssSelector("a[title=\"visits\"]")).click();
+		driver.findElement(By.xpath("//li[2]/a/span[2]")).click();
 
 		int numVisitsInicial = numVisits();
 
-		driver.findElement(By.linkText("Add Payment")).click();
+		driver.findElement(By.xpath("//a[contains(text(),'Add Payment')]")).click();
 		assertEquals("New Payment", driver.findElement(By.xpath("//h2")).getText());
 		driver.findElement(By.id("method")).click();
 		new Select(driver.findElement(By.id("method"))).selectByVisibleText("cash");
 		driver.findElement(By.id("method")).click();
 		driver.findElement(By.id("finalPrice")).click();
 		driver.findElement(By.id("finalPrice")).clear();
-		driver.findElement(By.id("finalPrice")).sendKeys("30.00");
+		driver.findElement(By.id("finalPrice")).sendKeys("-15.00");
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		assertEquals("Final price must be bigger than 0.", driver.findElement(By.xpath("//form[@id='payment']/div/div[2]/div/span[2]")).getText());
+		driver.findElement(By.xpath("//li[2]/a/span[2]")).click();
 
-		assertTrue(numVisits() < numVisitsInicial);
+		assertTrue(numVisits() == numVisitsInicial);
 	}
 
 	private int numVisits() {
