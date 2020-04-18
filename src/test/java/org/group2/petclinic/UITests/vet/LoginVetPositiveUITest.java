@@ -15,6 +15,8 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -49,13 +51,14 @@ public class LoginVetPositiveUITest {
 	public static void loginVet(WebDriver driver, int port) {
 		driver.get("http://localhost:" + port);
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
-		driver.findElement(By.id("username")).click();
+		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys("vet1");
-		driver.findElement(By.id("password")).click();
 		driver.findElement(By.id("password")).clear();
 		driver.findElement(By.id("password")).sendKeys("v3t");
 		driver.findElement(By.xpath("//button")).click();
+		
+		assertEquals("VET1", driver.findElement(By.xpath("//a[contains(@href, '#')]")).getText());
 	}
 
 	@AfterEach

@@ -8,10 +8,11 @@
 							<%@ taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 
 								<petclinic:layout pageName="visitTypes">
-									<h2>Medicines</h2>
+									<h2>Visit types</h2>
 									<table id="visitTypesTable" class="table table-striped">
 										<thead>
 											<tr>
+												<th>Name</th>
 												<th>Duration</th>
 												<th>Price</th>
 												<th>Edit</th>
@@ -22,6 +23,9 @@
 											<c:forEach items="${visitTypes}" var="visitType">
 												<input type="hidden" name="id" value="${visitType.id}" />
 												<tr>
+													<td>
+														<c:out value="${visitType.name}" />
+													</td>
 													<td>
 														<c:out value="${visitType.duration}" />
 													</td>

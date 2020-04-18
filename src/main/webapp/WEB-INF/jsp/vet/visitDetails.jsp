@@ -51,19 +51,23 @@
         </c:forEach>
         </tbody>
     </table>
-
+	
+	<jstl:if test="${bool==true}">
 	<jstl:if test="${visit.diagnosis==null}">
     <spring:url value="{visitId}/diagnosis/new" var="addUrl">
 		<spring:param name="visitId" value="${visit.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add diagnosis</a>
     </jstl:if>
+	</jstl:if>
 
-<jstl:if test="${visit.diagnosis!=null}">
+	<jstl:if test="${bool==true}">
+	<jstl:if test="${visit.diagnosis!=null}">
     <spring:url value="{visitId}/prescriptions/new" var="addUrl">
 		<spring:param name="visitId" value="${visit.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add prescription</a>
     </jstl:if>
+	</jstl:if>
 
 </petclinic:layout>

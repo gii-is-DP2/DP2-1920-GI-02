@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,8 +33,6 @@ public class AdminLoginAndViewsPositiveUITest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		String pathToChromeDriver = "C:\\Users\\CLAUDIA\\Desktop\\Universidad\\5º año\\2 cuatrimestre\\DP";
-		System.setProperty("webdriver.chrome.driver", pathToChromeDriver + "\\chromedriver.exe");
 		driver = new ChromeDriver();
 		baseUrl = "https://www.google.com/";
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
