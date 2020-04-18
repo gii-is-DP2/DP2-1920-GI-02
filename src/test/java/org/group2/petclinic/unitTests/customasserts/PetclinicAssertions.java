@@ -8,6 +8,11 @@ import org.group2.petclinic.model.Owner;
 import org.group2.petclinic.model.Payment;
 import org.group2.petclinic.model.Person;
 import org.group2.petclinic.model.Pet;
+import org.group2.petclinic.model.PetType;
+import org.group2.petclinic.model.Prescription;
+import org.group2.petclinic.model.Specialty;
+import org.group2.petclinic.model.User;
+import org.group2.petclinic.model.Vet;
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
 
@@ -41,12 +46,25 @@ public class PetclinicAssertions {
 		return new PetAssert(actual);
 	}
 
-	//TODO PetType
-	//TODO Prescription
-	//TODO Secretary
-	//TODO Specialty
-	//TODO User
-	//TODO Vet
+	public static PetTypeAssert assertThat(PetType actual) {
+		return new PetTypeAssert(actual);
+	}
+
+	public static PrescriptionAssert assertThat(Prescription actual) {
+		return new PrescriptionAssert(actual);
+	}
+
+	public static SpecialtyAssert assertThat(Specialty actual) {
+		return new SpecialtyAssert(actual);
+	}
+
+	public static UserAssert assertThat(User actual) {
+		return new UserAssert(actual);
+	}
+
+	public static VetAssert assertThat(Vet actual) {
+		return new VetAssert(actual);
+	}
 
 	public static VisitAssert assertThat(Visit actual) {
 		return new VisitAssert(actual);
