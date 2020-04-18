@@ -1,6 +1,7 @@
 
 package org.group2.petclinic.web;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -170,6 +171,7 @@ public class VisitController {
 		modelMap.addAttribute("futureVisits", futureVisits);
 		Iterable<Visit> pastVisits = this.visitService.findPastVisitsByVet(vet);
 		modelMap.addAttribute("pastVisits", pastVisits);
+		
 		return view;
 	}
 
@@ -180,6 +182,11 @@ public class VisitController {
 		final ModelMap modelMap) {
 		Visit visit = this.visitService.findVisitById(visitId);
 		modelMap.addAttribute("visit", visit);
+		Boolean bool = true;
+		LocalDateTime today = LocalDateTime.now();
+		if(visit.getMoment().isAfter(today))
+			bool=false;
+		modelMap.addAttribute("bool", bool);
 		return "vet/visitDetails";
 	}
 
