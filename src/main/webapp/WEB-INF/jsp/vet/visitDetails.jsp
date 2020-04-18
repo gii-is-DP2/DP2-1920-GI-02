@@ -24,6 +24,8 @@
         </tr>
     </table>
 
+<jstl:if test="${bool==true}">
+
 	<h2>Prescription Information</h2>
 
 	<table id="prescriptionsTable" class="table table-striped">
@@ -50,6 +52,7 @@
             </tr>
         </c:forEach>
         </tbody>
+	</jstl:if>
     </table>
 	
 	<jstl:if test="${bool==true}">

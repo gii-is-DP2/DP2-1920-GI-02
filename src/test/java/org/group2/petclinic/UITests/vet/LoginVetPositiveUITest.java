@@ -50,7 +50,7 @@ public class LoginVetPositiveUITest {
 
 	public static void loginVet(WebDriver driver, int port) {
 		driver.get("http://localhost:" + port);
-		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
+		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys("vet1");
