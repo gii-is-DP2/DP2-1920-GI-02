@@ -3,6 +3,8 @@ package org.group2.petclinic.UITests.secretary.steps;
 
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
+
+import org.group2.petclinic.UITests.AbstractStep;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -56,11 +58,12 @@ public class SecretaryLoginAndViewsPositiveUITest extends AbstractStep {
 		driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
 		assertEquals("LOGIN", driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
+		stopDriver();
 	}
 
 	public static void loginSecretary(String username, WebDriver driver, int port) {
 		driver.get("http://localhost:" + port);
-		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys(username);

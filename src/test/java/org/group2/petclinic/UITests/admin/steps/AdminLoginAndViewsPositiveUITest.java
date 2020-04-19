@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;
 
+import org.group2.petclinic.UITests.AbstractStep;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,7 +87,7 @@ public class AdminLoginAndViewsPositiveUITest extends AbstractStep {
 
 	public static void loginAdmin(String username, WebDriver driver, int port) {
 		driver.get("http://localhost:" + port);
-		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys(username);

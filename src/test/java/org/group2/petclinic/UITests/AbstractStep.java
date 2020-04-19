@@ -1,5 +1,5 @@
 
-package org.group2.petclinic.UITests.admin.steps;
+package org.group2.petclinic.UITests;
 
 import static org.junit.Assert.fail;
 

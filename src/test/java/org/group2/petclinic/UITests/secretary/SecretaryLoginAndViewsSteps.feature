@@ -1,5 +1,5 @@
 Feature: View all unpaid visits 
-	An 
+	A secretary login and can go to the unpaid visits view to do the payment
 
   Scenario: See the list of unpaid visits with the secretary role  (Positive scenario)
     Given I log in to the system with user "secretary2" with a valid password like a secretary

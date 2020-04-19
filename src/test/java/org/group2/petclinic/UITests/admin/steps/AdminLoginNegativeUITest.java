@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;
 
+import org.group2.petclinic.UITests.AbstractStep;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ public class AdminLoginNegativeUITest extends AbstractStep {
 	@Given("I am not logged in the system and I want login like an admin")
 	public void login() throws Exception {
 		driver.get("http://localhost:" + port);
-		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 	}
 
 	@When("I try to do login as user {string} that is an admin with an invalid password")
