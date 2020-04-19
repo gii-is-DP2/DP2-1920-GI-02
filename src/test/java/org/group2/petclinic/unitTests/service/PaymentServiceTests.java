@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDateTime;
@@ -146,9 +147,9 @@ public class PaymentServiceTests {
 		Payment payment = this.paymentService.findPaymentById(1);
 
 		//3. Assert
-		assertThat(payment.getMethod()).isEqualTo("creditcard");
-		assertThat(payment.getMoment()).isEqualTo("2019-06-05T10:20");
-		assertThat(payment.getFinalPrice()).isEqualTo(30);
+		assertThat(payment).hasMethod("creditcard");
+		assertThat(payment).hasMoment(LocalDateTime.parse("2019-06-05T10:20"));
+		assertThat(payment).hasFinalPrice(30.00);
 		assertThat(payment.getSecretary().getId()).isEqualTo(1);
 		assertThat(payment.getCreditcard().getId()).isEqualTo(1);
 	}
@@ -179,6 +180,8 @@ public class PaymentServiceTests {
 		//3. Assert
 		assertThat(payments).isNotNull();
 		assertThat(payments).hasSize(5);
+		assertThat(payments.get(0)).hasMethod("creditcard");
+		assertThat(payments.get(4)).hasMethod("cash");
 
 	}
 

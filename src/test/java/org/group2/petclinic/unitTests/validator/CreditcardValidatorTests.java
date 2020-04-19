@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 
 import org.group2.petclinic.model.Creditcard;
 import org.group2.petclinic.web.CreditcardValidator;
@@ -40,6 +41,10 @@ public class CreditcardValidatorTests {
 
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(0);
+		assertThat(creditcard).hasBrand("visa");
+		assertThat(creditcard).hasNumber("4785377804843758");
+		assertThat(creditcard).hasExpYear(25);
+		assertThat(creditcard).hasSecurityCode("025");
 	}
 
 	// NEGATIVE TEST

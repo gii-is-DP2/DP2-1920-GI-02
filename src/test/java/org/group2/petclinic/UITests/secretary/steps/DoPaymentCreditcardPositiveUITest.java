@@ -1,9 +1,11 @@
 
-package org.group2.petclinic.UITests.secretary;
+package org.group2.petclinic.UITests.secretary.steps;
 
 import java.util.regex.Pattern;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.group2.petclinic.UITests.AbstractStep;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -17,34 +19,32 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import lombok.extern.java.Log;
+
+@Log
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DoPaymentCreditcardPositiveUITest {
+public class DoPaymentCreditcardPositiveUITest extends AbstractStep {
 
 	@LocalServerPort
-	private int				port;
+	private int			port;
 
-	private WebDriver		driver;
-	private String			baseUrl;
-	private boolean			acceptNextAlert		= true;
-	private StringBuffer	verificationErrors	= new StringBuffer();
+	private WebDriver	driver	= getDriver();
+
+	private int			numVisitsInicial;
 
 
-	@BeforeEach
-	public void setUp() throws Exception {
-		driver = new ChromeDriver();
-		baseUrl = "https://www.google.com/";
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+	@Given("I log with {string} and see unpaid visits view")
+	public void loginAndView(String username) throws Exception {
+		SecretaryLoginAndViewsPositiveUITest.loginSecretary(username, driver, port);
+		driver.findElement(By.cssSelector("a[title=\"visits\"]")).click();
+		numVisitsInicial = numVisits();
 	}
 
-	@Test
-	public void testUntitledTestCase() throws Exception {
-		SecretaryLoginAndViewsPositiveUITest.loginSecretary(driver, port);
-
-		driver.findElement(By.cssSelector("a[title=\"visits\"]")).click();
-
-		int numVisitsInicial = numVisits();
-
+	@When("Do a payment of a visit selecting creditcard and introduce a valid one")
+	public void doPaymentWithCreditcard() throws Exception {
 		driver.findElement(By.linkText("Add Payment")).click();
 		assertEquals("New Payment", driver.findElement(By.xpath("//h2")).getText());
 		driver.findElement(By.id("finalPrice")).click();
@@ -64,9 +64,14 @@ public class DoPaymentCreditcardPositiveUITest {
 		driver.findElement(By.id("expYear")).sendKeys("25");
 		driver.findElement(By.id("securityCode")).clear();
 		driver.findElement(By.id("securityCode")).sendKeys("028");
+	}
+
+	@Then("The payment is saved with valid creditcard")
+	public void savePayment() throws Exception {
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
 
 		assertTrue(numVisits() < numVisitsInicial);
+		stopDriver();
 	}
 
 	private int numVisits() {
@@ -75,45 +80,4 @@ public class DoPaymentCreditcardPositiveUITest {
 		return filasDeTabla.size();
 	}
 
-	@AfterEach
-	public void tearDown() throws Exception {
-		driver.quit();
-		String verificationErrorString = verificationErrors.toString();
-		if (!"".equals(verificationErrorString)) {
-			fail(verificationErrorString);
-		}
-	}
-
-	private boolean isElementPresent(By by) {
-		try {
-			driver.findElement(by);
-			return true;
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-	}
-
-	private boolean isAlertPresent() {
-		try {
-			driver.switchTo().alert();
-			return true;
-		} catch (NoAlertPresentException e) {
-			return false;
-		}
-	}
-
-	private String closeAlertAndGetItsText() {
-		try {
-			Alert alert = driver.switchTo().alert();
-			String alertText = alert.getText();
-			if (acceptNextAlert) {
-				alert.accept();
-			} else {
-				alert.dismiss();
-			}
-			return alertText;
-		} finally {
-			acceptNextAlert = true;
-		}
-	}
 }
