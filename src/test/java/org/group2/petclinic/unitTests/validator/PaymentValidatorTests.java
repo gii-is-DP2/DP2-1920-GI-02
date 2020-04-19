@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.time.LocalDateTime;
@@ -46,6 +47,8 @@ public class PaymentValidatorTests {
 
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(0);
+		assertThat(payment).hasMethod("creditcard");
+		assertThat(payment).hasFinalPrice(30.00);
 	}
 
 	// NEGATIVE TEST

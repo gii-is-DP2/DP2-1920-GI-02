@@ -2,8 +2,10 @@
 package org.group2.petclinic.unitTests.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +44,9 @@ public class PaymentRepositoryTests {
 
 		//3. Assert
 		assertThat(payment).isNotNull();
+		assertThat(payment).hasMethod("creditcard");
+		assertThat(payment).hasMoment(LocalDateTime.parse("2019-06-05T10:20"));
+		assertThat(payment).hasFinalPrice(30.00);
 
 	}
 
@@ -72,6 +77,8 @@ public class PaymentRepositoryTests {
 		//3. Assert
 		assertThat(payments).isNotNull();
 		assertThat(payments).hasSize(5);
+		assertThat(payments.get(0)).hasMethod("creditcard");
+		assertThat(payments.get(4)).hasMethod("cash");
 
 	}
 

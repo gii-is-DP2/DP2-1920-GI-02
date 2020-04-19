@@ -1,3 +1,4 @@
+
 package org.group2.petclinic.UITests.admin;
 
 import static org.junit.Assert.assertEquals;
@@ -5,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;
 
+import org.group2.petclinic.UITests.admin.steps.AdminLoginAndViewsPositiveUITest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +26,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class AdminAddMedicinePositiveUITest {
 
 	@LocalServerPort
-	private int port;
+	private int				port;
 
-	private WebDriver driver;
-	private String baseUrl;
-	private boolean acceptNextAlert = true;
-	private StringBuffer verificationErrors = new StringBuffer();
+	private WebDriver		driver;
+	private String			baseUrl;
+	private boolean			acceptNextAlert		= true;
+	private StringBuffer	verificationErrors	= new StringBuffer();
+
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -40,17 +43,17 @@ public class AdminAddMedicinePositiveUITest {
 
 	@Test
 	public void testAdminAddMedicineUI() throws Exception {
-		AdminLoginAndViewsPositiveUITest.loginAdmin(driver, port);
+		AdminLoginAndViewsPositiveUITest.loginAdmin("admin1", driver, port);
 
-		 driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a")).click();
-		    driver.findElement(By.linkText("Add medicine")).click();
-		    driver.findElement(By.id("name")).click();
-		    driver.findElement(By.id("name")).clear();
-		    driver.findElement(By.id("name")).sendKeys("Medicina P");
-		    driver.findElement(By.id("brand")).clear();
-		    driver.findElement(By.id("brand")).sendKeys("Marca P");
-		    driver.findElement(By.xpath("//button[@type='submit']")).click();
-		    assertEquals("Medicina P", driver.findElement(By.xpath("//table[@id='medicinesTable']/tbody/tr[5]/td")).getText());
+		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a")).click();
+		driver.findElement(By.linkText("Add medicine")).click();
+		driver.findElement(By.id("name")).click();
+		driver.findElement(By.id("name")).clear();
+		driver.findElement(By.id("name")).sendKeys("Medicina P");
+		driver.findElement(By.id("brand")).clear();
+		driver.findElement(By.id("brand")).sendKeys("Marca P");
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		assertEquals("Medicina P", driver.findElement(By.xpath("//table[@id='medicinesTable']/tbody/tr[5]/td")).getText());
 
 	}
 

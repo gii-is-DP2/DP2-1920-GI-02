@@ -2,10 +2,13 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.repository.springdatajpa.SpringDataVisitSecretaryRepository;
@@ -42,6 +45,10 @@ public class VisitSecretaryServiceTests {
 
 		//3. Assert
 		assertThat(visits).hasSize(4);
+		assertThat(((ArrayList<Visit>) visits).get(0)).hasDescription("Descrip without");
+		assertThat(((ArrayList<Visit>) visits).get(0)).hasMoment(LocalDateTime.parse("2015-05-06T14:00"));
+		assertThat(((ArrayList<Visit>) visits).get(3)).hasDescription("Sample visit");
+		assertThat(((ArrayList<Visit>) visits).get(3)).hasMoment(LocalDateTime.parse("2025-04-01T10:30"));
 
 	}
 
@@ -72,8 +79,8 @@ public class VisitSecretaryServiceTests {
 		Visit visit = this.visitSecretaryService.findVisitById(1);
 
 		//3. Assert
-		assertThat(visit.getDescription()).isEqualTo("rabies shot");
-		assertThat(visit.getMoment()).isEqualTo("2013-01-01T10:00");
+		assertThat(visit).hasDescription("rabies shot");
+		assertThat(visit).hasMoment(LocalDateTime.parse("2013-01-01T10:00"));
 		assertThat(visit.getVisitType().getId()).isEqualTo(1);
 		assertThat(visit.getVet().getId()).isEqualTo(2);
 		assertThat(visit.getPet().getId()).isEqualTo(7);
@@ -102,11 +109,15 @@ public class VisitSecretaryServiceTests {
 		//1. Arrange
 
 		//2. Act
-		Iterable<Visit> visits = this.visitSecretaryService.findAllVisits();
+		List<Visit> visits = this.visitSecretaryService.findAllVisits();
 
 		//3. Assert
 		assertThat(visits).isNotNull();
 		assertThat(visits).hasSize(9);
+		assertThat(visits.get(0)).hasDescription("rabies shot");
+		assertThat(visits.get(0)).hasMoment(LocalDateTime.parse("2013-01-01T10:00"));
+		assertThat(visits.get(8)).hasDescription("Sample visit");
+		assertThat(visits.get(8)).hasMoment(LocalDateTime.parse("2025-04-01T10:30"));
 
 	}
 
