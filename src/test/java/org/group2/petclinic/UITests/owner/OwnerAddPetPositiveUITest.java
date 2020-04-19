@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.concurrent.TimeUnit;
 
+import org.group2.petclinic.UITests.owner.steps.LoginOwnerPositiveUITest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class OwnerAddPetPositiveUITest {
 
 	@Test
 	public void testOwnerShowPetsUI() throws Exception {
-		LoginOwnerPositiveUITest.loginOwner(driver, port);
+		LoginOwnerPositiveUITest.loginOwner("gfranklin", "gfranklin", driver, port);
 
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
 		driver.findElement(By.linkText("Add New Pet")).click();
