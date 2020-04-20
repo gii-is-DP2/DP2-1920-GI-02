@@ -1,5 +1,5 @@
 
-package org.group2.petclinic.UITests.admin.steps;
+package org.group2.petclinic.UITests.owner.steps;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,14 +12,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.java.Log;
 
 @Log
 @ExtendWith(SpringExtension.class)
-public class AdminLoginNegativeUITest extends AbstractStep {
+public class LoginOwnerNegativeUITest extends AbstractStep {
 
 	@LocalServerPort
 	private int			port;
@@ -27,34 +26,33 @@ public class AdminLoginNegativeUITest extends AbstractStep {
 	private WebDriver	driver	= getDriver();
 
 
-	@Given("I am not logged in the system and I want login like an admin")
-	public void login() throws Exception {
-		driver.get("http://localhost:" + port);
-		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
+	@When("I login as gfranklin with password 123")
+	public void login() {
+		loginOwner("gfranklin", "123", driver, port);
 	}
 
-	@When("I try to do login as user {string} that is an admin with an invalid password")
-	public void invalidPassword(String username) throws Exception {
+	@Then("an error message is shown")
+	public void checkErrorMsg() {
+		assertEquals("Bad credentials", driver.findElement(By.xpath("//form/div")).getText());
+		stopDriver();
+	}
+
+	public static void loginOwner(String username, String password, WebDriver driver, int port) {
+		driver.get("http://localhost:" + port);
+		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 		}
+		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys(username);
+		driver.findElement(By.id("password")).click();
 		driver.findElement(By.id("password")).clear();
-		driver.findElement(By.id("password")).sendKeys("aaaa");
-		driver.findElement(By.xpath("//button")).click();
+		driver.findElement(By.id("password")).sendKeys(password);
+
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
-		assertEquals("Bad credentials", driver.findElement(By.xpath("//form/div")).getText());
-
-	}
-
-	@Then("the login form is shown again and I'm not an admin")
-	public void backToRegistrePage() throws Exception {
-		assertEquals("Bad credentials", driver.findElement(By.xpath("//form/div")).getText());
-		stopDriver();
-
 	}
 
 }
