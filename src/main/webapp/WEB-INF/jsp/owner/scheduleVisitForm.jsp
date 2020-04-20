@@ -14,7 +14,6 @@
             $(function () {
                 $("#moment").datetimepicker({
                 	  format:'Y/m/d H:i',
-                	  inline:true,
                 	  step:30,
                 	  minTime: '08:00',
                 	  maxTime: '20:00',

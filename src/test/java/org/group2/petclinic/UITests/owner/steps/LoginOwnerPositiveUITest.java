@@ -48,6 +48,10 @@ public class LoginOwnerPositiveUITest extends AbstractStep {
 		driver.get("http://localhost:" + port);
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.id("username")).click();
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys(username);

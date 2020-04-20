@@ -2,31 +2,19 @@
 package org.group2.petclinic.UITests.admin.steps;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.util.concurrent.TimeUnit;
 
 import org.group2.petclinic.UITests.AbstractStep;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.junit.CucumberOptions;
 import lombok.extern.java.Log;
 
 @Log
@@ -48,6 +36,10 @@ public class AdminLoginNegativeUITest extends AbstractStep {
 	@When("I try to do login as user {string} that is an admin with an invalid password")
 	public void invalidPassword(String username) throws Exception {
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys(username);
 		driver.findElement(By.id("password")).clear();
