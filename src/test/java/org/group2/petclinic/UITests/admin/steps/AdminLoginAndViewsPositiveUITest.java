@@ -69,6 +69,10 @@ public class AdminLoginAndViewsPositiveUITest extends AbstractStep {
 
 	@Then("I can do logout like an admin")
 	public void logout() throws Exception {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li/a/span[2]")).click();
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		try {
