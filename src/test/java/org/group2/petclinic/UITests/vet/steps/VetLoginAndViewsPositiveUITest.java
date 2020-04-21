@@ -48,16 +48,44 @@ public class VetLoginAndViewsPositiveUITest extends AbstractStep {
 
 	@When("I go to the visit views")
 	public void showViews() throws Exception {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 	    driver.findElement(By.xpath("//button[@type='submit']")).click();
+	    try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 	    driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[2]/a")).click();
+	    try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 	    driver.findElement(By.xpath("//table[@id='visitsTable']/tbody/tr/td[4]/a")).click();
 	}
 
 	@Then("I can do logout like a vet")
 	public void logout() throws Exception {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li/a/span[2]")).click();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.cssSelector("button.btn.btn-lg.btn-primary.btn-block")).click();
 		assertEquals("LOGIN", driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
 		stopDriver();
@@ -67,6 +95,10 @@ public class VetLoginAndViewsPositiveUITest extends AbstractStep {
 		driver.get("http://localhost:" + port);
 		driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys("vet1");
 		driver.findElement(By.id("password")).clear();

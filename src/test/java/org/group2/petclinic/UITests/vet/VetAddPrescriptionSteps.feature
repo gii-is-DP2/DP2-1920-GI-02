@@ -6,7 +6,7 @@ Feature: Add prescription
     When I go to my visit list view, details of a visit and add a prescription to the diagnosis of the visit
     Then The prescription is saved
     
-   Scenario: Add diagnosis with incorrect parameters (Negative scenario)
+   Scenario: Add prescription with incorrect parameters (Negative scenario)
     Given I am authenticated as a vet
-    When I go to my visit list view, details of a visit and add a prescription to the diagnosis of the visit
+    When I go to my visit list view, details of a visit and add a prescription to the diagnosis
     Then The prescription form is shown again with the errors

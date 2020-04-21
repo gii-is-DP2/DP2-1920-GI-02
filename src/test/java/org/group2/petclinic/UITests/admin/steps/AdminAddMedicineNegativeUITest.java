@@ -42,9 +42,9 @@ public class AdminAddMedicineNegativeUITest extends AbstractStep {
 	private WebDriver	driver	= getDriver();
 
 
-	@Given("I am logged as an admin")
+	@Given("I am logged as an {string}")
 	public void loggin(String username) throws Exception {
-		AdminLoginAndViewsPositiveUITest.loginAdmin("admin1", driver, port);
+		AdminLoginAndViewsPositiveUITest.loginAdmin(username, driver, port);
 	}
 	
 	@When("I go to the medicine list view and add a medicine with incorrect parameters")
@@ -60,5 +60,6 @@ public class AdminAddMedicineNegativeUITest extends AbstractStep {
 	@Then("The medicine form is shown again with the errors")
 	public void logout() throws Exception {
 		assertEquals("no puede estar vacío", driver.findElement(By.xpath("//form[@id='medicine']/div/div[2]/div/span[2]")).getText());
+		stopDriver();
 	}
 }

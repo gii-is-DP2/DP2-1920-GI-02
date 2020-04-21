@@ -42,9 +42,9 @@ public class AdminAddMedicinePositiveUITest extends AbstractStep {
 	private WebDriver	driver	= getDriver();
 
 
-	@Given("I'm logged as an admin")
+	@Given("I'm logged as an {string}")
 	public void loggin(String username) throws Exception {
-		AdminLoginAndViewsPositiveUITest.loginAdmin("admin1", driver, port);
+		AdminLoginAndViewsPositiveUITest.loginAdmin(username, driver, port);
 	}
 	
 	@When("I go to the medicine list view and add a medicine with correct parameters")
@@ -62,5 +62,6 @@ public class AdminAddMedicinePositiveUITest extends AbstractStep {
 	@Then("The medicine is saved")
 	public void logout() throws Exception {
 		assertEquals("Medicina P", driver.findElement(By.xpath("//table[@id='medicinesTable']/tbody/tr[5]/td")).getText());
+		stopDriver();
 	}
 }

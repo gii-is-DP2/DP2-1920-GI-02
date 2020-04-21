@@ -4,10 +4,11 @@ package org.group2.petclinic.UITests.vet.steps;
 import static org.junit.Assert.assertEquals;
 
 import org.group2.petclinic.UITests.AbstractStep;
-import org.group2.petclinic.UITests.vet.VetLoginAndViewsPositiveUITest;
+import org.group2.petclinic.UITests.vet.steps.VetLoginAndViewsPositiveUITest;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -32,8 +33,9 @@ public class VetAddPrescriptionPositiveUITest extends AbstractStep {
 
 	@When("I go to my visit list view, details of a visit and add a prescription to the diagnosis of the visit")
 	public void addMedicine() throws Exception {
+		VetAddDiagnosisPositiveUITest.addDiagnosis(driver);
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[2]/a")).click();
-		driver.findElement(By.linkText("Details")).click();
+		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[3]")).click();
 		driver.findElement(By.linkText("Add prescription")).click();
 		driver.findElement(By.id("frequency")).click();
 		driver.findElement(By.id("frequency")).clear();
@@ -46,7 +48,7 @@ public class VetAddPrescriptionPositiveUITest extends AbstractStep {
 
 	@Then("The prescription is saved")
 	public void logout() throws Exception {
-		assertEquals("Una vez cada ocho horas",
-				driver.findElement(By.xpath("//table[@id='prescriptionsTable']/tbody/tr[3]/td")).getText());
+		assertEquals("Una vez cada ocho horas", driver.findElement(By.xpath("//table[@id='prescriptionsTable']/tbody/tr/td")).getText());
+		stopDriver();
 	}
 }
