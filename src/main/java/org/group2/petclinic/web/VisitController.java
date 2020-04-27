@@ -19,6 +19,7 @@ import org.group2.petclinic.service.VetService;
 import org.group2.petclinic.service.VisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -208,6 +209,16 @@ public class VisitController {
 	@GetMapping(value = "/owner/visits/{visitId}")
 	public String showVisitForOwner(@PathVariable("visitId") final int visitId,
 		final ModelMap modelMap) {
+		
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (userDetails.getAuthorities().toString().contains("owner")) {
+			Owner log = ownerService.findOwnerByUsername(userDetails.getUsername());
+			Owner ofVisit = visitService.findVisitById(visitId).getPet().getOwner();
+			if (!log.getUser().getUsername().equals(ofVisit.getUser().getUsername())) {
+				return "/exception";
+			}
+		}
+		
 		Visit visit = this.visitService.findVisitById(visitId);
 		modelMap.addAttribute("visit", visit);
 
