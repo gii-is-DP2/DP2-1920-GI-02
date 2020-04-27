@@ -88,7 +88,8 @@ public class AdminLoginAndViewsPositiveUITest extends AbstractStep {
 		} catch (InterruptedException e) {
 		}
 		driver.findElement(By.cssSelector("button.btn.btn-lg.btn-primary.btn-block")).click();
-		assertEquals("LOGIN", driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
+		assertEquals("LOGIN",
+			driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
 		stopDriver();
 	}
 	

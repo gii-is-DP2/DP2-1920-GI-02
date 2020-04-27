@@ -1,19 +1,13 @@
 
 package org.group2.petclinic.UITests.secretary.steps;
 
-import java.util.regex.Pattern;
-import java.util.concurrent.TimeUnit;
+import static org.junit.Assert.assertEquals;
 
 import org.group2.petclinic.UITests.AbstractStep;
-import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -57,7 +51,8 @@ public class SecretaryLoginAndViewsPositiveUITest extends AbstractStep {
 		driver.findElement(By.xpath("//ul[2]/li/a")).click();
 		driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
-		assertEquals("LOGIN", driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
+		assertEquals("LOGIN",
+			driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
 		stopDriver();
 	}
 
@@ -65,6 +60,10 @@ public class SecretaryLoginAndViewsPositiveUITest extends AbstractStep {
 		driver.get("http://localhost:" + port);
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys(username);
 		driver.findElement(By.id("password")).clear();
