@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -48,6 +49,8 @@ class VetServiceTests {
 		Vet vet = vetService.findVetByUsername("jgarcia");
 		//3. Assert
 		assertThat(vet).isEqualTo(toReturn);
+		assertThat(vet.getFirstName()).isEqualTo("Juan");
+		assertThat(vet.getLastName()).isEqualTo("García");
 	}
 
 	// findVetByUsername(final String username) NEGATIVE TEST

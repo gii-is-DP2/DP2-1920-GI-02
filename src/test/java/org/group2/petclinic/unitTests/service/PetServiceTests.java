@@ -43,6 +43,7 @@ class PetServiceTests {
 		Pet pet = petService.findPetById(1);
 		//3. Assert
 		assertThat(pet).isEqualTo(toReturn);
+		assertThat(pet.getName()).isEqualTo("Fofo");
 	}
 
 	// findPetById(final int id) NEGATIVE TEST
