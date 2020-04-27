@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -20,91 +21,93 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class MedicineServiceTests {
 
 	@Mock
-	private MedicineRepository	stubMedicineRepository;
-	
+	private MedicineRepository		stubMedicineRepository;
+
 	@Mock
 	private PrescriptionRepository	stubPrescriptionRepository;
 
-	protected MedicineService	medicineService;
+	protected MedicineService		medicineService;
+
 
 	// findAll POSITIVE TEST
-		@Test
-		void shouldFindAll() {
-			//1. Arrange
-			List<Medicine> toReturn = new ArrayList<Medicine>();
-			toReturn.add(mock(Medicine.class));
-			toReturn.add(mock(Medicine.class));
-			toReturn.add(mock(Medicine.class));
+	@Test
+	void shouldFindAll() {
+		//1. Arrange
+		List<Medicine> toReturn = new ArrayList<Medicine>();
+		toReturn.add(mock(Medicine.class));
+		toReturn.add(mock(Medicine.class));
+		toReturn.add(mock(Medicine.class));
 
-			when(stubMedicineRepository.findAll()).thenReturn(toReturn);
+		when(stubMedicineRepository.findAll()).thenReturn(toReturn);
 
-			medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
-			//2. Act
-			List<Medicine> medicines = (List<Medicine>) medicineService.findMedicines();
-			//3. Assert
-			assertThat(medicines).isEqualTo(toReturn);
-		}
+		medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
+		//2. Act
+		List<Medicine> medicines = (List<Medicine>) medicineService.findMedicines();
+		//3. Assert
+		assertThat(medicines).isEqualTo(toReturn);
+	}
 
-		// findAll() NEGATIVE TEST
-		@Test
-		void shouldNotFindAll() {
-			//1. Arrange
-			when(stubMedicineRepository.findAll()).thenReturn(null);
+	// findAll() NEGATIVE TEST
+	@Test
+	void shouldNotFindAll() {
+		//1. Arrange
+		when(stubMedicineRepository.findAll()).thenReturn(null);
 
-			medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
-			//2. Act
-			List<Medicine> medicines = (List<Medicine>) medicineService.findMedicines();
-			//3. Assert
-			assertThat(medicines).isNull();
-		}
-		
-		// findMedicineById(final int id) POSITIVE TEST
-		@Test
-		void shouldFindMedicineById() {
-			//1. Arrange
-			Medicine toReturn = new Medicine();
-			toReturn.setId(1);
-			toReturn.setName("Medicine 1");
-			toReturn.setBrand("Brandolino");
+		medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
+		//2. Act
+		List<Medicine> medicines = (List<Medicine>) medicineService.findMedicines();
+		//3. Assert
+		assertThat(medicines).isNull();
+	}
 
-			when(stubMedicineRepository.findMedicineById(1)).thenReturn(toReturn);
+	// findMedicineById(final int id) POSITIVE TEST
+	@Test
+	void shouldFindMedicineById() {
+		//1. Arrange
+		Medicine toReturn = new Medicine();
+		toReturn.setId(1);
+		toReturn.setName("Medicine 1");
+		toReturn.setBrand("Brandolino");
 
-			medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
-			//2. Act
-			Medicine medicine = medicineService.findMedicineById(1);
-			//3. Assert
-			assertThat(medicine).isEqualTo(toReturn);
-		}
+		when(stubMedicineRepository.findMedicineById(1)).thenReturn(toReturn);
 
-		// findMedicineById(final int id) NEGATIVE TEST
-		@Test
-		void shouldNotFindMedicineById() {
-			//1. Arrange
-			when(stubMedicineRepository.findMedicineById(1)).thenReturn(null);
+		medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
+		//2. Act
+		Medicine medicine = medicineService.findMedicineById(1);
+		//3. Assert
+		assertThat(medicine).isEqualTo(toReturn);
+		assertThat(medicine).hasName("Medicine 1");
+		assertThat(medicine).hasBrand("Brandolino");
+	}
 
-			medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
-			//2. Act
-			Medicine medicine = medicineService.findMedicineById(1);
-			//3. Assert
-			assertThat(medicine).isNull();
-		}
-		
-		
-		// isInUse(Medicine medicine) POSITIVE TEST
-		@Test
-		void shouldFindIfIsInUse() {
-			//1. Arrange
-			Medicine toReturn = new Medicine();
-			toReturn.setId(1);
-			toReturn.setName("Medicine 1");
-			toReturn.setBrand("Brandolino");
-			toReturn.setUsed(false);
+	// findMedicineById(final int id) NEGATIVE TEST
+	@Test
+	void shouldNotFindMedicineById() {
+		//1. Arrange
+		when(stubMedicineRepository.findMedicineById(1)).thenReturn(null);
 
-			medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
-			//2. Act
-			Boolean bool = medicineService.isInUse(toReturn);
-			//3. Assert
-			assertThat(bool).isEqualTo(false);
-		}
+		medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
+		//2. Act
+		Medicine medicine = medicineService.findMedicineById(1);
+		//3. Assert
+		assertThat(medicine).isNull();
+	}
+
+	// isInUse(Medicine medicine) POSITIVE TEST
+	@Test
+	void shouldFindIfIsInUse() {
+		//1. Arrange
+		Medicine toReturn = new Medicine();
+		toReturn.setId(1);
+		toReturn.setName("Medicine 1");
+		toReturn.setBrand("Brandolino");
+		toReturn.setUsed(false);
+
+		medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
+		//2. Act
+		Boolean bool = medicineService.isInUse(toReturn);
+		//3. Assert
+		assertThat(bool).isEqualTo(false);
+	}
 
 }

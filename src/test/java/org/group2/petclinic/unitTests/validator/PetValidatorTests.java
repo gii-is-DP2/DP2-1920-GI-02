@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 
 import java.time.LocalDate;
 
@@ -37,6 +38,7 @@ public class PetValidatorTests {
 		petValidator.validate(pet, errors);
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(0);
+		assertThat(pet).hasBirthDate(LocalDate.parse("2018-03-12"));
 	}
 
 	// validate NEGATIVE TEST
@@ -61,6 +63,7 @@ public class PetValidatorTests {
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(1);
 		assertThat(errors.getFieldError("name")).isNotNull();
+		assertThat(pet).hasBirthDate(LocalDate.parse("2018-03-12"));
 	}
 
 	// validate NEGATIVE TEST
@@ -81,6 +84,7 @@ public class PetValidatorTests {
 		petValidator.validate(pet, errors);
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(1);
+		assertThat(pet).hasBirthDate(LocalDate.parse("2018-03-12"));
 	}
 
 }

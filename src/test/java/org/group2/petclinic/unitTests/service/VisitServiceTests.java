@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -392,6 +393,8 @@ class VisitServiceTests {
 		Visit visit = visitService.findVisitById(1);
 		//3. Assert
 		assertThat(visit).isEqualTo(toReturn);
+		assertThat(visit).hasDescription("Visit 11");
+		assertThat(visit).hasMoment(LocalDateTime.parse("2020/04/15 17:30", formatter));
 	}
 
 	// findVisitById(final int id) NEGATIVE TEST

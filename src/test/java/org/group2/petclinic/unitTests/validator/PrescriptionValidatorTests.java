@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 
 import org.group2.petclinic.model.Medicine;
 import org.group2.petclinic.model.Prescription;
@@ -37,6 +38,8 @@ public class PrescriptionValidatorTests {
 		prescriptionValidator.validate(prescription, errors);
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(0);
+		assertThat(prescription).hasDuration("1 week");
+		assertThat(prescription).hasFrequency("2 times per day");
 	}
 
 	// validate NEGATIVE TEST
@@ -57,6 +60,8 @@ public class PrescriptionValidatorTests {
 		prescriptionValidator.validate(prescription, errors);
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(1);
+		assertThat(prescription).hasDuration("1 week");
+		assertThat(prescription).hasFrequency("2 times per day");
 	}
 
 }
