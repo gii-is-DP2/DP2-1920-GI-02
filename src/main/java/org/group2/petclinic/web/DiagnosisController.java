@@ -1,5 +1,6 @@
 package org.group2.petclinic.web;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -35,7 +36,14 @@ public class DiagnosisController {
 	}
 
 	@GetMapping(value = "/vet/visits/{visitId}/diagnosis/new")
-	public String initNewDiagnosisForm(Map<String, Object> model) {
+	public String initNewDiagnosisForm(@PathVariable("visitId") int visitId, Map<String, Object> model) {
+		Visit visit = this.visitService.findVisitById(visitId);
+		LocalDateTime today = LocalDateTime.now();
+		
+		if(visit.getMoment().isAfter(today)) {
+			return "/exception";
+		}
+		
 		Diagnosis diagnosis = new Diagnosis();
 		model.put("diagnosis", diagnosis);
 		return "vet/createOrUpdateDiagnosisForm";

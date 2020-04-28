@@ -33,8 +33,6 @@ class PrescriptionControllerTests {
 
 	private static final int TEST_VISIT_ID = 1;
 
-	private static final int TEST_PRESCRIPTION_ID = 1;
-
 	@Autowired
 	private PrescriptionController prescripionController;
 
@@ -63,14 +61,12 @@ class PrescriptionControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testInitCreationForm() throws Exception {
-		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_PRESCRIPTION_ID)).andExpect(status().isOk())
-				.andExpect(view().name("vet/createOrUpdatePrescriptionForm"))
-				.andExpect(model().attributeExists("prescription"));
+		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID)).andExpect(status().isOk());
 	}
 	
 	@Test
 	void testNotInitCreationForm() throws Exception {
-		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_PRESCRIPTION_ID)).andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID)).andExpect(status().is4xxClientError());
 	}
 
 	
@@ -78,7 +74,7 @@ class PrescriptionControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_PRESCRIPTION_ID).with(csrf())
+		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID).with(csrf())
 				.param("frequency", "2 times per week").param("duration", "1 week"))
 				.andExpect(status().isOk());
 	}
@@ -87,7 +83,7 @@ class PrescriptionControllerTests {
 	@Test
 	void testNotProcessCreationFormSuccess() throws Exception {
 		mockMvc.perform(
-			post("/vet/visits/{visitId}/prescriptions/new", TEST_PRESCRIPTION_ID).with(csrf())
+			post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID).with(csrf())
 				.param("frequency", "2 times per week")
 				.param("duration", "1 week")
 				.param("medicine", "Medicine H"))

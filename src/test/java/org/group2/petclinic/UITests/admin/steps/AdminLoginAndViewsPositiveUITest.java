@@ -1,4 +1,3 @@
-
 package org.group2.petclinic.UITests.admin.steps;
 
 import static org.junit.Assert.assertEquals;
@@ -64,13 +63,17 @@ public class AdminLoginAndViewsPositiveUITest extends AbstractStep {
 	@Then("I can do logout like an admin")
 	public void logout() throws Exception {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li/a/span[2]")).click();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		driver.findElement(By.cssSelector("button.btn.btn-lg.btn-primary.btn-block")).click();
 		assertEquals("LOGIN", driver.findElement(By.cssSelector("ul.nav.navbar-nav.navbar-right > li > a")).getText());
 		stopDriver();
 	}
-
+	
 	public static void loginAdmin(String username, WebDriver driver, int port) {
 		driver.get("http://localhost:" + port);
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
