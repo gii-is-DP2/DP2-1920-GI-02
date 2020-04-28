@@ -33,9 +33,21 @@ public class VetAddPrescriptionPositiveUITest extends AbstractStep {
 
 	@When("I go to my visit list view, details of a visit and add a prescription to the diagnosis of the visit")
 	public void addMedicine() throws Exception {
-		VetAddDiagnosisPositiveUITest.addDiagnosis(driver);
+		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[2]/a/span[2]")).click();
+		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[4]")).click();
+		driver.findElement(By.linkText("Add diagnosis")).click();
+		driver.findElement(By.id("date")).click();
+		driver.findElement(By.linkText("15")).click();
+		driver.findElement(By.id("date")).click();
+		driver.findElement(By.id("date")).clear();
+		driver.findElement(By.id("date")).sendKeys("2020/06/15");
+		driver.findElement(By.id("description")).click();
+		driver.findElement(By.id("description")).clear();
+	    driver.findElement(By.id("description")).sendKeys("eeee");
+	    driver.findElement(By.xpath("//div[2]/div/button")).click();
+	    
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[2]/a")).click();
-		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[3]")).click();
+		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[4]")).click();
 		driver.findElement(By.linkText("Add prescription")).click();
 		driver.findElement(By.id("frequency")).click();
 		driver.findElement(By.id("frequency")).clear();

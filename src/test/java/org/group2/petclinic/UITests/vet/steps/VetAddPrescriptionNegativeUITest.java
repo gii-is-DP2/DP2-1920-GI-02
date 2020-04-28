@@ -33,7 +33,7 @@ public class VetAddPrescriptionNegativeUITest extends AbstractStep {
 	@When("I go to my visit list view, details of a visit and add a prescription to the diagnosis")
 	public void addPrescription() throws Exception {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[2]/a/span[2]")).click();
-		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[4]")).click();
+		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[5]")).click();
 		driver.findElement(By.linkText("Add diagnosis")).click();
 		driver.findElement(By.id("date")).click();
 		driver.findElement(By.linkText("15")).click();
@@ -46,7 +46,7 @@ public class VetAddPrescriptionNegativeUITest extends AbstractStep {
 	    driver.findElement(By.xpath("//div[2]/div/button")).click();
 		
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[2]/a")).click();
-		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[4]")).click();
+		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[5]")).click();
 		driver.findElement(By.linkText("Add prescription")).click();
 		driver.findElement(By.id("frequency")).click();
 		driver.findElement(By.id("frequency")).clear();

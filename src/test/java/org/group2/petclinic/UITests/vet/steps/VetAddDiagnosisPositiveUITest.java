@@ -34,16 +34,6 @@ public class VetAddDiagnosisPositiveUITest extends AbstractStep {
 
 	@When("I go to my visit list view, details of a visit and add a diagnosis to the visit with correct parameters")
 	public void testDiagnosis() throws Exception {
-		addDiagnosis(driver);
-	}
-
-	@Then("The diagnosis is saved")
-	public void logout() throws Exception {
-		assertEquals("eeee", driver.findElement(By.xpath("//tr[3]/td")).getText());
-		stopDriver();
-	}
-	
-	public static void addDiagnosis(WebDriver driver) {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[2]/a/span[2]")).click();
 		driver.findElement(By.xpath("(//a[contains(text(),'Details')])[3]")).click();
 		driver.findElement(By.linkText("Add diagnosis")).click();
@@ -57,5 +47,11 @@ public class VetAddDiagnosisPositiveUITest extends AbstractStep {
 	    driver.findElement(By.id("description")).sendKeys("eeee");
 	    driver.findElement(By.xpath("//div[2]/div/button")).click();
 	}
+
+	@Then("The diagnosis is saved")
+	public void logout() throws Exception {
+		assertEquals("eeee", driver.findElement(By.xpath("//tr[3]/td")).getText());
+		stopDriver();
+	}
 	
-}
+}	

@@ -40,6 +40,10 @@ public class SecretaryLoginNegativeUITest extends AbstractStep {
 	@When("I try to do login as user {string} that is a secretary with an invalid password")
 	public void invalidPassword(String username) throws Exception {
 		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.id("username")).clear();
 		driver.findElement(By.id("username")).sendKeys(username);
 		driver.findElement(By.id("password")).clear();

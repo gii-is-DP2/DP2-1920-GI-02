@@ -42,10 +42,6 @@ public class LoginVetNegativeUITest extends AbstractStep {
 	@Given("I am not logged in the system and I want login like a vet")
 	public void login() throws Exception {
 		driver.get("http://localhost:" + port);
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-		}
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 	}
 
@@ -60,10 +56,6 @@ public class LoginVetNegativeUITest extends AbstractStep {
 		driver.findElement(By.id("username")).sendKeys("vet1");
 		driver.findElement(By.id("password")).clear();
 		driver.findElement(By.id("password")).sendKeys("aaaa");
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-		}
 		driver.findElement(By.xpath("//button")).click();
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
 		assertEquals("Bad credentials", driver.findElement(By.xpath("//form/div")).getText());
