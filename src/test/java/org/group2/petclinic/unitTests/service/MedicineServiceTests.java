@@ -2,7 +2,8 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,5 +107,50 @@ class MedicineServiceTests {
 			//3. Assert
 			assertThat(bool).isEqualTo(false);
 		}
+		
+
+		// save(Medicine medicine) POSITIVE TEST
+		@Test
+		void shouldSaveMedicine() {
+			//1. Arrange
+			Medicine toReturn = new Medicine();
+			toReturn.setId(12);
+			toReturn.setName("Medicine 50");
+			toReturn.setBrand("Brandolino");
+			toReturn.setUsed(false);
+			
+			medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
+			//2. Act
+	        medicineService.saveMedicine(toReturn);
+	        
+			//3. Assert
+			assertThat(toReturn.getId()).isEqualTo(12);
+		}
+		
+		// delete(Medicine medicine) POSITIVE TEST
+		@Test
+		void shouldDeleteMedicine() {
+			//1. Arrange
+			Medicine toReturn = new Medicine();
+			toReturn.setId(1);
+			toReturn.setName("Medicine 1");
+			toReturn.setBrand("Brandolino");
+
+			when(stubMedicineRepository.findMedicineById(1)).thenReturn(toReturn);
+
+			medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
+			//2. Act
+			Medicine medicine = medicineService.findMedicineById(1);
+			medicineService.deleteMedicine(medicine);
+	        
+			//3. Assert
+			if(medicineService.findMedicines().size()>0)
+			assertThat(medicineService.findMedicines().size()).isEqualTo((medicineService.findMedicines().size()) - 1);
+			else
+			assertThat(medicineService.findMedicines().size()).isEqualTo(0);
+		}
+		
+		
+
 
 }
