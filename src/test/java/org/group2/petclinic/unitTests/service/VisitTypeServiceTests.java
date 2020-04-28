@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,67 +26,69 @@ class VisitTypeServiceTests {
 
 	protected VisitTypeService	visitTypeService;
 
+
 	// findAll POSITIVE TEST
-		@Test
-		void shouldFindAll() {
-			//1. Arrange
-			List<VisitType> toReturn = new ArrayList<VisitType>();
-			toReturn.add(mock(VisitType.class));
-			toReturn.add(mock(VisitType.class));
-			toReturn.add(mock(VisitType.class));
+	@Test
+	void shouldFindAll() {
+		//1. Arrange
+		List<VisitType> toReturn = new ArrayList<VisitType>();
+		toReturn.add(mock(VisitType.class));
+		toReturn.add(mock(VisitType.class));
+		toReturn.add(mock(VisitType.class));
 
-			when(stubVisitTypeRepository.findAll()).thenReturn(toReturn);
+		when(stubVisitTypeRepository.findAll()).thenReturn(toReturn);
 
-			visitTypeService = new VisitTypeService(stubVisitTypeRepository);
-			//2. Act
-			List<VisitType> visitTypes = (List<VisitType>) visitTypeService.findVisitTypes();
-			//3. Assert
-			assertThat(visitTypes).isEqualTo(toReturn);
-		}
+		visitTypeService = new VisitTypeService(stubVisitTypeRepository);
+		//2. Act
+		List<VisitType> visitTypes = (List<VisitType>) visitTypeService.findVisitTypes();
+		//3. Assert
+		assertThat(visitTypes).isEqualTo(toReturn);
+	}
 
-		// findAll() NEGATIVE TEST
-		@Test
-		void shouldNotFindAll() {
-			//1. Arrange
-			when(stubVisitTypeRepository.findAll()).thenReturn(null);
+	// findAll() NEGATIVE TEST
+	@Test
+	void shouldNotFindAll() {
+		//1. Arrange
+		when(stubVisitTypeRepository.findAll()).thenReturn(null);
 
-			visitTypeService = new VisitTypeService(stubVisitTypeRepository);
-			//2. Act
-			List<VisitType> visitTypes = (List<VisitType>) visitTypeService.findVisitTypes();
-			//3. Assert
-			assertThat(visitTypes).isNull();
-		}
-		
-		// findVisitTypeById(final int id) POSITIVE TEST
-		@Test
-		void shouldFindVisitTypeById() {
-			//1. Arrange
-			VisitType toReturn = new VisitType();
-			toReturn.setId(1);
-			toReturn.setDuration(20);
-			toReturn.setPrice(30.0);
+		visitTypeService = new VisitTypeService(stubVisitTypeRepository);
+		//2. Act
+		List<VisitType> visitTypes = (List<VisitType>) visitTypeService.findVisitTypes();
+		//3. Assert
+		assertThat(visitTypes).isNull();
+	}
 
-			when(stubVisitTypeRepository.findVisitTypeById(1)).thenReturn(toReturn);
+	// findVisitTypeById(final int id) POSITIVE TEST
+	@Test
+	void shouldFindVisitTypeById() {
+		//1. Arrange
+		VisitType toReturn = new VisitType();
+		toReturn.setId(1);
+		toReturn.setDuration(20);
+		toReturn.setPrice(30.0);
 
-			visitTypeService = new VisitTypeService(stubVisitTypeRepository);
-			//2. Act
-			VisitType visitType = visitTypeService.findVisitTypeById(1);
-			//3. Assert
-			assertThat(visitType).isEqualTo(toReturn);
-		}
+		when(stubVisitTypeRepository.findVisitTypeById(1)).thenReturn(toReturn);
 
-		// findVisitTypeById(final int id) NEGATIVE TEST
-		@Test
-		void shouldNotFindVisitTypeById() {
-			//1. Arrange
-			when(stubVisitTypeRepository.findVisitTypeById(1)).thenReturn(null);
+		visitTypeService = new VisitTypeService(stubVisitTypeRepository);
+		//2. Act
+		VisitType visitType = visitTypeService.findVisitTypeById(1);
+		//3. Assert
+		assertThat(visitType).isEqualTo(toReturn);
+		assertThat(visitType).hasDuration(20);
+		assertThat(visitType).hasPrice(30.0);
+	}
 
-			visitTypeService = new VisitTypeService(stubVisitTypeRepository);
-			//2. Act
-			VisitType visitType = visitTypeService.findVisitTypeById(1);
-			//3. Assert
-			assertThat(visitType).isNull();
-		}
+	// findVisitTypeById(final int id) NEGATIVE TEST
+	@Test
+	void shouldNotFindVisitTypeById() {
+		//1. Arrange
+		when(stubVisitTypeRepository.findVisitTypeById(1)).thenReturn(null);
 
+		visitTypeService = new VisitTypeService(stubVisitTypeRepository);
+		//2. Act
+		VisitType visitType = visitTypeService.findVisitTypeById(1);
+		//3. Assert
+		assertThat(visitType).isNull();
+	}
 
 }

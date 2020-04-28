@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -58,6 +59,8 @@ public class VisitValidatorTests {
 		visitValidator.validate(visit, errors);
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(0);
+		assertThat(visit).hasDescription("Description");
+		assertThat(visit).hasMoment(LocalDateTime.parse(moment));
 	}
 
 	// validate NEGATIVE TEST
@@ -91,6 +94,8 @@ public class VisitValidatorTests {
 		visitValidator.validate(visit, errors);
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(1);
+		assertThat(visit).hasDescription("Description");
+		assertThat(visit).hasMoment(LocalDateTime.parse("2020-02-02T12:00:00.00"));
 	}
 
 	// validate NEGATIVE TEST
@@ -116,6 +121,8 @@ public class VisitValidatorTests {
 		visitValidator.validate(visit, errors);
 		//3. Assert
 		assertThat(errors.getErrorCount()).isEqualTo(1);
+		assertThat(visit).hasDescription("Description");
+		assertThat(visit).hasMoment(LocalDateTime.parse("2020-02-03T05:00:00.00"));
 	}
 
 }

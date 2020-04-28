@@ -2,6 +2,7 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -49,6 +50,9 @@ class OwnerServiceTests {
 		Owner owner = ownerService.findOwnerById(1);
 		//3. Assert
 		assertThat(owner).isEqualTo(toReturn);
+		assertThat(owner).hasCity("Sevilla");
+		assertThat(owner).hasAddress("Calle Larga 1");
+		assertThat(owner).hasTelephone("954123123");
 	}
 
 	// findOwnerById(final int id) NEGATIVE TEST
@@ -90,6 +94,11 @@ class OwnerServiceTests {
 		Owner owner = ownerService.findOwnerByUsername("jgarcia");
 		//3. Assert
 		assertThat(owner).isEqualTo(toReturn);
+		assertThat(owner).hasCity("Sevilla");
+		assertThat(owner).hasAddress("Calle Larga 1");
+		assertThat(owner).hasTelephone("954123123");
+		assertThat(owner.getUser().getUsername()).isEqualTo("jgarcia");
+		assertThat(owner.getUser().getPassword()).isEqualTo("jgarcia");
 	}
 
 	// findOwnerByUsername(final String username) NEGATIVE TEST

@@ -2,8 +2,9 @@
 package org.group2.petclinic.unitTests.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+
+import static org.group2.petclinic.unitTests.customasserts.PetclinicAssertions.assertThat;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +22,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class MedicineServiceTests {
 
 	@Mock
-	private MedicineRepository	stubMedicineRepository;
-	
+	private MedicineRepository		stubMedicineRepository;
+
 	@Mock
 	private PrescriptionRepository	stubPrescriptionRepository;
 
-	protected MedicineService	medicineService;
+	protected MedicineService		medicineService;
+
 
 	// findAll POSITIVE TEST
+
 		@Test
 		void shouldFindAll() {
 			//1. Arrange
@@ -149,7 +152,6 @@ class MedicineServiceTests {
 			else
 			assertThat(medicineService.findMedicines().size()).isEqualTo(0);
 		}
-		
 		
 
 
