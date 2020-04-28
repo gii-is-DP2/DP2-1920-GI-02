@@ -1,21 +1,17 @@
 
 package org.group2.petclinic.UITests.secretary.steps;
 
-import java.util.regex.Pattern;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.group2.petclinic.UITests.AbstractStep;
-import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -58,7 +54,8 @@ public class DoPaymentCashNegativeUITest extends AbstractStep {
 	@Then("The payment doesn't save")
 	public void quantityIsNegativeError() throws Exception {
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
-		assertEquals("Final price must be bigger than 0.", driver.findElement(By.xpath("//form[@id='payment']/div/div[2]/div/span[2]")).getText());
+		assertEquals("Final price must be bigger than 0.",
+			driver.findElement(By.xpath("//form[@id='payment']/div/div[2]/div/span[2]")).getText());
 		driver.findElement(By.xpath("//li[2]/a/span[2]")).click();
 
 		assertTrue(numVisits() == numVisitsInicial);
@@ -66,6 +63,10 @@ public class DoPaymentCashNegativeUITest extends AbstractStep {
 	}
 
 	private int numVisits() {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		WebElement tabla = driver.findElement(By.xpath("//table[1]"));
 		List<WebElement> filasDeTabla = tabla.findElements(By.tagName("tr"));
 		return filasDeTabla.size();

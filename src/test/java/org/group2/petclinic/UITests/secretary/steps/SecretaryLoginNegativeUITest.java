@@ -1,21 +1,14 @@
 
 package org.group2.petclinic.UITests.secretary.steps;
 
-import java.util.regex.Pattern;
-import java.util.concurrent.TimeUnit;
+import static org.junit.Assert.assertEquals;
 
 import org.group2.petclinic.UITests.AbstractStep;
-import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -37,6 +30,10 @@ public class SecretaryLoginNegativeUITest extends AbstractStep {
 	@Given("I am not logged in the system and I want login like a secretary")
 	public void login() throws Exception {
 		driver.get("http://localhost:" + port);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+		}
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 	}
 
