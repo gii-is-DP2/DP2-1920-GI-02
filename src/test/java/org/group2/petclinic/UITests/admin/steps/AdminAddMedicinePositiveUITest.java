@@ -61,7 +61,7 @@ public class AdminAddMedicinePositiveUITest extends AbstractStep {
 	
 	@Then("The medicine is saved")
 	public void logout() throws Exception {
-		assertEquals("Medicina P", driver.findElement(By.xpath("//table[@id='medicinesTable']/tbody/tr[5]/td")).getText());
+		assertEquals("Medicina P", driver.findElement(By.xpath("//table[@id='medicinesTable']/tbody/tr[6]/td")).getText());
 		stopDriver();
 	}
 }
