@@ -1,4 +1,4 @@
-package org.group2.petclinic.unitTests.web;
+package org.group2.petclinic.e2eControllerTests;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -20,65 +20,54 @@ import org.group2.petclinic.service.VisitService;
 import org.group2.petclinic.web.PrescriptionController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(value = PrescriptionController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
-class PrescriptionControllerTests {
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+class Prescriptione2eControllerTests {
 
 	private static final int TEST_VISIT_ID = 1;
 
 	@Autowired
 	private PrescriptionController prescripionController;
 
-	@MockBean
-	private PrescriptionService stubpPrescriptionService;
-
-	@MockBean
-	private VisitService stubVisitService;
-
-	@MockBean
-	private MedicineService stubMedicineService;
-
 	@Autowired
 	private MockMvc mockMvc;
+	
 
-	@BeforeEach
-	void setup() {
-		Visit visit = new Visit();
-		visit.setId(1);
-		given(this.stubVisitService.findVisitById(visit.getId())).willReturn(new Visit());
-
-		Medicine medicine = new Medicine();
-		medicine.setId(1);
-	}
-
-	@WithMockUser(value = "spring")
+	@WithMockUser(username = "vet1", authorities = { "veterinarian" })
 	@Test
 	void testInitCreationForm() throws Exception {
 		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID)).andExpect(status().isOk());
 	}
 
+	@WithMockUser(username = "vet1", authorities = { "aaaa" })
 	@Test
 	void testNotInitCreationForm() throws Exception {
 		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID))
 				.andExpect(status().is4xxClientError());
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(username = "vet1", authorities = { "veterinarian" })
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
 		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID).with(csrf())
 				.param("frequency", "2 times per week").param("duration", "1 week")).andExpect(status().isOk());
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(username = "vet1", authorities = { "veterinarian" })
 	@Test
 	void testNotProcessCreationFormSuccess() throws Exception {
 		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID).with(csrf())
@@ -89,7 +78,7 @@ class PrescriptionControllerTests {
 	}
 
 	
-	@WithMockUser("spring")
+	@WithMockUser(username = "vet1", authorities = { "veterinarian" })
 	@Test
 	void testProcessCreationFormPostRedirectHasErrors() throws Exception {
 		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID)//
@@ -99,7 +88,6 @@ class PrescriptionControllerTests {
 				.andExpect(model().attributeHasErrors("prescription"))//
 				.andExpect(model().attributeHasFieldErrors("prescription", "duration"))//
 				.andExpect(status().isOk()).andExpect(view().name("vet/createOrUpdatePrescriptionForm"));//
-		verify(stubVisitService).findVisitById(TEST_VISIT_ID);
 	}
 
 }

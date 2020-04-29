@@ -117,17 +117,19 @@ class MedicineServiceTests {
 		void shouldSaveMedicine() {
 			//1. Arrange
 			Medicine toReturn = new Medicine();
-			toReturn.setId(12);
+			toReturn.setId(1);
 			toReturn.setName("Medicine 50");
 			toReturn.setBrand("Brandolino");
 			toReturn.setUsed(false);
 			
 			medicineService = new MedicineService(stubMedicineRepository, stubPrescriptionRepository);
+			int int1 = this.stubMedicineRepository.findAll().size();
 			//2. Act
 	        medicineService.saveMedicine(toReturn);
+	        int int2 = this.stubMedicineRepository.findAll().size();
 	        
 			//3. Assert
-			assertThat(toReturn.getId()).isEqualTo(12);
+			assertThat(int2 > int1);
 		}
 		
 		// delete(Medicine medicine) POSITIVE TEST
