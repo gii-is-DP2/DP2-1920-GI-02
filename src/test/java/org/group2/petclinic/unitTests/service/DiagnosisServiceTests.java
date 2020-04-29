@@ -33,11 +33,13 @@ class DiagnosisServiceTests {
 		toReturn.setDescription("EY");
 
 		diagnosisService = new DiagnosisService(stubDiagnosisRepository);
+		int int1 = this.stubDiagnosisRepository.findAll().size();
 		// 2. Act
 		diagnosisService.saveDiagnosis(toReturn);
+		int int2 = this.stubDiagnosisRepository.findAll().size();
 
 		// 3. Assert
-		assertThat(toReturn.getId()).isEqualTo(12);
+		assertThat(int2 > int1);
 	}
 
 }

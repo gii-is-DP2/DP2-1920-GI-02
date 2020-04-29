@@ -43,7 +43,7 @@ public class PrescriptionAssert extends AbstractAssert<PrescriptionAssert, Presc
 		return this;
 	}
 
-	public PrescriptionAssert hasMedicice(Medicine medicine) {
+	public PrescriptionAssert hasMedicine(Medicine medicine) {
 
 		isNotNull();
 
