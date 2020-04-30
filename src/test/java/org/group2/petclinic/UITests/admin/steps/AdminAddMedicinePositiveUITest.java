@@ -46,7 +46,7 @@ public class AdminAddMedicinePositiveUITest extends AbstractStep {
 	public void loggin(String username) throws Exception {
 		AdminLoginAndViewsPositiveUITest.loginAdmin(username, driver, port);
 	}
-	
+
 	@When("I go to the medicine list view and add a medicine with correct parameters")
 	public void addMedicine() throws Exception {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a")).click();
@@ -58,7 +58,7 @@ public class AdminAddMedicinePositiveUITest extends AbstractStep {
 		driver.findElement(By.id("brand")).sendKeys("Marca P");
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
-	
+
 	@Then("The medicine is saved")
 	public void logout() throws Exception {
 		assertEquals("Medicina P", driver.findElement(By.xpath("//table[@id='medicinesTable']/tbody/tr[5]/td")).getText());

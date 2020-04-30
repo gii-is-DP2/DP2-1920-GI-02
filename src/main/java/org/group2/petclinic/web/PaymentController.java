@@ -102,9 +102,11 @@ public class PaymentController {
 			payment.setCreditcard(null);
 
 			Visit visitIn = this.visitSecretaryService.findVisitById(visit.getId());
-
-			visitIn.setPayment(payment);
+			if (payment.getMethod().contains("cash")) {
+				visitIn.setPayment(payment);
+			}
 			model.addAttribute("visit", visitIn);
+
 			this.paymentService.savePayment(payment);
 			redirectAttributes.addAttribute("paymentId", payment.getId());
 
