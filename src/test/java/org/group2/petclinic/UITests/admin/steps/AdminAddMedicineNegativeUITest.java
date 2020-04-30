@@ -30,6 +30,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.junit.CucumberOptions;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.java.Log;
 
 @Log
@@ -46,7 +47,7 @@ public class AdminAddMedicineNegativeUITest extends AbstractStep {
 	public void loggin(String username) throws Exception {
 		AdminLoginAndViewsPositiveUITest.loginAdmin(username, driver, port);
 	}
-	
+
 	@When("I go to the medicine list view and add a medicine with incorrect parameters")
 	public void addMedicine() throws Exception {
 		driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
@@ -56,7 +57,7 @@ public class AdminAddMedicineNegativeUITest extends AbstractStep {
 		driver.findElement(By.id("name")).sendKeys("Medicina T");
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
-	
+
 	@Then("The medicine form is shown again with the errors")
 	public void logout() throws Exception {
 		assertEquals("no puede estar vacío", driver.findElement(By.xpath("//form[@id='medicine']/div/div[2]/div/span[2]")).getText());

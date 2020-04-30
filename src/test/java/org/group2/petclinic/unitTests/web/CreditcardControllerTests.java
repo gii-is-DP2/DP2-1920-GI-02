@@ -106,7 +106,7 @@ public class CreditcardControllerTests {
 			.andExpect(model().attributeExists("expMonth"))//
 			.andExpect(view().name("secretary/visits/createCreditcardForm"));
 		verify(stubVisitSecretaryService).findVisitById(TEST_VISIT_ID);
-		verify(stubPaymentService).findPaymentById(TEST_PAYMENT_ID);
+		verify(stubPaymentService, times(2)).findPaymentById(TEST_PAYMENT_ID);
 	}
 
 	// NEGATIVE TEST
@@ -136,7 +136,7 @@ public class CreditcardControllerTests {
 			.param("id", TEST_CREDITCARD_ID + ""))//
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/secretary/visits"));
 		verify(stubVisitSecretaryService).findVisitById(TEST_VISIT_ID);
-		verify(stubPaymentService, times(2)).findPaymentById(TEST_PAYMENT_ID);
+		verify(stubPaymentService).findPaymentById(TEST_PAYMENT_ID);
 	}
 
 	// NEGATIVE TEST
