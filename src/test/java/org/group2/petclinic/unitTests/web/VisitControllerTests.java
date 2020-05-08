@@ -126,7 +126,8 @@ class VisitControllerTests {
 		given(this.visitService.findVisitById(1)).willReturn(visit1);
 		given(this.petService.findPetsByOwnerId(1))
 			.willReturn(new ArrayList<Pet>());
-		given(this.loremApiService.getRandomImageURL("cat")).willReturn("url");
+		given(this.loremApiService.getRandomImageURL("cat")).willReturn(
+			"https://loremflickr.com/cache/resized/65535_49761103513_4bdf59405d_320_240_nofilter.jpg");
 	}
 
 	// initScheduleVisitForm ---------------------------------------------------

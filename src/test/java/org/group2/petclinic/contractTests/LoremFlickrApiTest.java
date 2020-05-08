@@ -3,8 +3,10 @@ package org.group2.petclinic.contractTests;
 
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.startsWith;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,10 +29,12 @@ public class LoremFlickrApiTest {
 			.statusCode(200)
 			.and()
 			.assertThat()
-			.body("file", containsString("https:"))
+			.body("file", startsWith("https://loremflickr.com/cache/resized/"))
+			.body("file", endsWith(".jpg"))
+			.body("tags", containsString(keyword))
 			.body("width", equalTo(width))
 			.body("height", equalTo(height))
 			.and()
-			.time(lessThan(3L), TimeUnit.SECONDS);
+			.time(lessThan(6L), TimeUnit.SECONDS);
 	}
 }
