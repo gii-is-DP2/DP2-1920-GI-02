@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import javax.transaction.Transactional;
+
 import org.group2.petclinic.web.PetController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,96 +36,66 @@ class Pete2eControllerTests {
 	private MockMvc				mockMvc;
 
 
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testInitCreationForm() throws Exception {
 
-		mockMvc.perform(get("/owners/{ownerId}/pets/new", TEST_OWNER_ID))
-			.andExpect(status().isOk())
-			.andExpect(view().name("pets/createOrUpdatePetForm"))
-			.andExpect(model().attributeExists("pet"));
+		mockMvc.perform(get("/owners/{ownerId}/pets/new", TEST_OWNER_ID)).andExpect(status().isOk()).andExpect(view().name("pets/createOrUpdatePetForm")).andExpect(model().attributeExists("pet"));
 
 	}
 
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
 
-		mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID)
-			.with(csrf())
-			.param("name", "Betty")
-			.param("type", "hamster")
-			.param("birthDate", "2015/02/12"))
-			.andExpect(status().is3xxRedirection())
+		mockMvc.perform(post("/owners/{ownerId}/pets/new", TEST_OWNER_ID).with(csrf()).param("name", "Betty").param("type", "hamster").param("birthDate", "2015/02/12")).andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
 
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testProcessCreationFormHasErrors() throws Exception {
 
-		mockMvc
-			.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID,
-				TEST_PET_ID)
-					.with(csrf())
-					.param("name", "Betty")
-					.param("birthDate", "2015/02/12"))
-			.andExpect(model().attributeHasNoErrors("owner"))
-			.andExpect(model().attributeHasErrors("pet"))
-			.andExpect(status().isOk())
-			.andExpect(view().name("pets/createOrUpdatePetForm"));
+		mockMvc.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).with(csrf()).param("name", "Betty").param("birthDate", "2015/02/12")).andExpect(model().attributeHasNoErrors("owner"))
+			.andExpect(model().attributeHasErrors("pet")).andExpect(status().isOk()).andExpect(view().name("pets/createOrUpdatePetForm"));
 	}
 
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testInitUpdateForm() throws Exception {
-		mockMvc
-			.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID,
-				TEST_PET_ID))
-			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("pet"))
-			.andExpect(view().name("pets/createOrUpdatePetForm"));
+		mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("pet")).andExpect(view().name("pets/createOrUpdatePetForm"));
 	}
 
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testProcessUpdateFormSuccess() throws Exception {
-		mockMvc
-			.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID,
-				TEST_PET_ID)
-					.with(csrf())
-					.param("name", "Betty G")
-					.param("type", "hamster")
-					.param("birthDate", "2015/02/12"))
-			.andExpect(status().is3xxRedirection())
+		mockMvc.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).with(csrf()).param("name", "Betty G").param("type", "hamster").param("birthDate", "2015/02/12")).andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
 
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testProcessUpdateFormHasErrors() throws Exception {
-		mockMvc
-			.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID,
-				TEST_PET_ID)
-					.with(csrf())
-					.param("name", "Betty")
-					.param("birthDate", "2015/02/12"))
-			.andExpect(model().attributeHasNoErrors("owner"))
-			.andExpect(model().attributeHasErrors("pet"))
-			.andExpect(status().isOk())
-			.andExpect(view().name("pets/createOrUpdatePetForm"));
+		mockMvc.perform(post("/owners/{ownerId}/pets/{petId}/edit", TEST_OWNER_ID, TEST_PET_ID).with(csrf()).param("name", "Betty").param("birthDate", "2015/02/12")).andExpect(model().attributeHasNoErrors("owner"))
+			.andExpect(model().attributeHasErrors("pet")).andExpect(status().isOk()).andExpect(view().name("pets/createOrUpdatePetForm"));
 	}
 
 }

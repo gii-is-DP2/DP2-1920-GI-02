@@ -93,7 +93,7 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>webjars-locator-core</artifactId>
 		</dependency>
-		<dependency>
+		<dependency> 
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
 			<version>${webjars-jquery.version}</version>
@@ -379,7 +379,7 @@
 									<goal>generate</goal>
 								</goals>
 								<configuration>
-									<projectName>${name}</projectName>
+									<projectName>${project.name}</projectName>
 									<outputDirectory>target</outputDirectory>
 									<cucumberOutput>target/cucumber-reports/cucumber-report.json</cucumberOutput>
 									<buildNumber>1</buildNumber>

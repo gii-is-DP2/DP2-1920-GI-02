@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import javax.transaction.Transactional;
+
 import org.group2.petclinic.web.VisitTypeController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,15 +31,16 @@ class VisitTypee2eControllerTests {
 	private MockMvc				mockMvc;
 
 
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testShowVisitTypeListHtml() throws Exception {
-		mockMvc.perform(get("/admin/visitTypes")).andExpect(status().isOk())
-			.andExpect(model().attributeExists("visitTypes")).andExpect(view().name("/admin/visitTypesList"));
+		mockMvc.perform(get("/admin/visitTypes")).andExpect(status().isOk()).andExpect(model().attributeExists("visitTypes")).andExpect(view().name("/admin/visitTypesList"));
 	}
 
+	@Transactional
 	@WithMockUser(username = "vet1", authorities = {
 		"veterinarian"
 	})
@@ -46,23 +49,22 @@ class VisitTypee2eControllerTests {
 		mockMvc.perform(get("/admin/visitTypes").with(csrf())).andExpect(status().is4xxClientError());
 	}
 
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testUpdateVisitTypeForm() throws Exception {
-		mockMvc.perform(get("/admin/visitTypes/{visitTypeId}/edit", 1))
-			.andExpect(status().isOk())
-			.andExpect(view().name("admin/updateVisitTypeForm"));
+		mockMvc.perform(get("/admin/visitTypes/{visitTypeId}/edit", 1)).andExpect(status().isOk()).andExpect(view().name("admin/updateVisitTypeForm"));
 	}
 
+	@Transactional
 	@WithMockUser(username = "vet1", authorities = {
 		"veterinarian"
 	})
 	@Test
 	void testNotUpdateVisitTypeForm() throws Exception {
-		mockMvc.perform(get("/admin/visitTypes/{visitTypeId}/edit", 1))
-			.andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/admin/visitTypes/{visitTypeId}/edit", 1)).andExpect(status().is4xxClientError());
 	}
 
 }

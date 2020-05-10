@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.group2.petclinic.configuration.SecurityConfiguration;
 import org.group2.petclinic.model.Payment;
 import org.group2.petclinic.model.Pet;
@@ -63,6 +65,7 @@ public class Admine2eControllerTests {
 	// -------------------------- showRenevuesByMonth ---------------------------
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
@@ -91,6 +94,7 @@ public class Admine2eControllerTests {
 
 	// NEGATIVE TEST
 	// Acces with a user not authenticated
+	@Transactional
 	@WithMockUser(username = "vet1", authorities = {
 		"vet"
 	})
@@ -104,6 +108,7 @@ public class Admine2eControllerTests {
 	// -------------------------- showVisits ---------------------------
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
@@ -116,6 +121,7 @@ public class Admine2eControllerTests {
 
 	// NEGATIVE TEST
 	// Acces with a user not authenticated
+	@Transactional
 	@WithMockUser(username = "vet1", authorities = {
 		"vet"
 	})
@@ -129,6 +135,7 @@ public class Admine2eControllerTests {
 	// -------------------------- showPaymentVisit ---------------------------
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
@@ -141,6 +148,7 @@ public class Admine2eControllerTests {
 
 	// NEGATIVE TEST
 	// Acces with a user not authenticated
+	@Transactional
 	@WithMockUser(username = "vet1", authorities = {
 		"vet"
 	})
@@ -154,6 +162,7 @@ public class Admine2eControllerTests {
 	// -------------------------- showDiagnosisVisit ---------------------------
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
@@ -166,6 +175,7 @@ public class Admine2eControllerTests {
 
 	// NEGATIVE TEST
 	// Acces with a user not authenticated
+	@Transactional
 	@WithMockUser(username = "vet1", authorities = {
 		"vet"
 	})
@@ -177,6 +187,7 @@ public class Admine2eControllerTests {
 	}
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})

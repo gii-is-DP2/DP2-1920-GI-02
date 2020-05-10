@@ -10,13 +10,17 @@ import org.group2.petclinic.model.Medicine;
 import org.group2.petclinic.repository.MedicineRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class MedicineRepositoryTests {
 
 	@Autowired
 	private MedicineRepository medicineRepository;
+
 
 	// findAllMedicines() POSITIVE TEST
 	@Test
