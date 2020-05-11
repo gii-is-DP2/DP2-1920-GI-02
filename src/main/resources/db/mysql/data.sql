@@ -249,7 +249,7 @@ INSERT INTO diagnosis_prescriptions VALUES (3, 5);
 --                                VISITS                                      --
 --------------------------------------------------------------------------------
 
-INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (1, 7, 2, 1, '2013-01-01 09:00', 'rabies shot', 1, 1);
+INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (1, 7, 2, 1, '2013-01-01 10:00', 'rabies shot', 1, 1);
 INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (2, 8, 2, 1, '2013-01-02 10:00', 'rabies shot', 2, 2);
 INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (3, 8, 2, 2, '2013-01-03 10:00', 'neutered', 3, 3);
 INSERT INTO visits(id,pet_id,vet_id,visit_type_id,visit_moment,description,payment_id, diagnosis_id) VALUES (4, 7, 1, 3, '2013-01-04 10:00', 'spayed', 4, null);
