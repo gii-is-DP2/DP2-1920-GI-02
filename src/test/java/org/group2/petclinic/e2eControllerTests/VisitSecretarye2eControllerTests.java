@@ -12,6 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 
+import javax.transaction.Transactional;
+
 import org.assertj.core.util.Lists;
 import org.group2.petclinic.configuration.SecurityConfiguration;
 import org.group2.petclinic.model.Pet;
@@ -54,6 +56,7 @@ public class VisitSecretarye2eControllerTests {
 	// -------------------------- listPayments ---------------------------
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "secretary1", authorities = {
 		"secretary"
 	})
@@ -67,6 +70,7 @@ public class VisitSecretarye2eControllerTests {
 
 	// NEGATIVE TEST
 	// Acces with a user not authenticated
+	@Transactional
 	@WithMockUser(username = "owner1", authorities = {
 		"owner"
 	})

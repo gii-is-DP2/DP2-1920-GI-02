@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import javax.transaction.Transactional;
+
 import org.group2.petclinic.web.VisitController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,160 +37,135 @@ class Visite2eControllerTests {
 
 
 	// initScheduleVisitForm(final ModelMap modelMap) POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "gfranklin", authorities = {
 		"owner"
 	})
 	@Test
 	void testShowInitScheduleVisitFormHtml() throws Exception {
-		mockMvc.perform(get("/owner/schedule-visit").with(csrf()))
-			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("petsOfOwner"))
-			.andExpect(model().attributeExists("visit"))
-			.andExpect(view().name("owner/scheduleVisitForm"));
+		mockMvc.perform(get("/owner/schedule-visit").with(csrf())).andExpect(status().isOk()).andExpect(model().attributeExists("petsOfOwner")).andExpect(model().attributeExists("visit")).andExpect(view().name("owner/scheduleVisitForm"));
 	}
 
 	// initScheduleVisitForm(final ModelMap modelMap) NEGATIVE TEST
 	// admin doesn't have access
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testShouldNotShowInitScheduleVisitFormHtml() throws Exception {
-		mockMvc.perform(get("/owner/schedule-visit").with(csrf()))
-			.andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/owner/schedule-visit").with(csrf())).andExpect(status().is4xxClientError());
 	}
 
 	// processScheduleVisitForm ------------------------------------------------
 
 	// processScheduleVisitForm(@Valid final Visit visit, final BindingResult result, final ModelMap modelMap) POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "gfranklin", authorities = {
 		"owner"
 	})
 	@Test
 	void testProcessScheduleVisitFormHtml() throws Exception {
-		mockMvc.perform(
-			post("/owner/schedule-visit").with(csrf())
-				.param("description", "Description")
-				.param("moment", "2012/03/12 10:00"))
-			.andExpect(status().isOk());
+		mockMvc.perform(post("/owner/schedule-visit").with(csrf()).param("description", "Description").param("moment", "2012/03/12 10:00")).andExpect(status().isOk());
 	}
 
 	// processScheduleVisitForm(@Valid final Visit visit, final BindingResult result, final ModelMap modelMap) NEGATIVE TEST
 	// admin doesn't have access
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testShouldNotProcessScheduleVisitFormHtml() throws Exception {
-		mockMvc.perform(
-			post("/owner/schedule-visit").with(csrf())
-				.param("description", "Description")
-				.param("moment", "2012/03/12 10:00"))
-			.andExpect(status().is4xxClientError());
+		mockMvc.perform(post("/owner/schedule-visit").with(csrf()).param("description", "Description").param("moment", "2012/03/12 10:00")).andExpect(status().is4xxClientError());
 	}
 
 	// processScheduleVisitForm(@Valid final Visit visit, final BindingResult result, final ModelMap modelMap) NEGATIVE TEST
 	// invalid moment
+	@Transactional
 	@WithMockUser(username = "gfranklin", authorities = {
 		"owner"
 	})
 	@Test
 	void testShouldNotProcessScheduleVisitFormHtml2() throws Exception {
-		mockMvc.perform(
-			post("/owner/schedule-visit").with(csrf())
-				.param("description", "Description")
-				.param("moment", "texto"))
-			.andExpect(model().attributeHasErrors("visit"))
-			.andExpect(model().attributeHasFieldErrors("visit", "moment"))
-			.andExpect(status().isOk())
-			.andExpect(view().name("owner/scheduleVisitForm"));
+		mockMvc.perform(post("/owner/schedule-visit").with(csrf()).param("description", "Description").param("moment", "texto")).andExpect(model().attributeHasErrors("visit")).andExpect(model().attributeHasFieldErrors("visit", "moment"))
+			.andExpect(status().isOk()).andExpect(view().name("owner/scheduleVisitForm"));
 	}
 
+	@Transactional
 	@WithMockUser(username = "vet1", authorities = {
 		"veterinarian"
 	})
 	@Test
 	void testShowVisitListHtml() throws Exception {
-		mockMvc.perform(get("/vet/visits").with(csrf()))
-			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("futureVisits"))
-			.andExpect(model().attributeExists("pastVisits"))
-			.andExpect(view().name("/vet/visitsList"));
+		mockMvc.perform(get("/vet/visits").with(csrf())).andExpect(status().isOk()).andExpect(model().attributeExists("futureVisits")).andExpect(model().attributeExists("pastVisits")).andExpect(view().name("/vet/visitsList"));
 	}
 
 	// admin doesn't have access
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testNotShowVisitListHtml() throws Exception {
-		mockMvc.perform(get("/vet/visits").with(csrf()))
-			.andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/vet/visits").with(csrf())).andExpect(status().is4xxClientError());
 	}
 
+	@Transactional
 	@WithMockUser(username = "gfranklin", authorities = {
 		"owner"
 	})
 	@Test
 	void testShowOwnerVisitListHtml() throws Exception {
-		mockMvc.perform(get("/owner/visits")).andExpect(status().isOk())
-			.andExpect(model().attributeExists("futureVisits"))
-			.andExpect(model().attributeExists("pastVisits"))
-			.andExpect(view().name("owner/visitsList"));
+		mockMvc.perform(get("/owner/visits")).andExpect(status().isOk()).andExpect(model().attributeExists("futureVisits")).andExpect(model().attributeExists("pastVisits")).andExpect(view().name("owner/visitsList"));
 	}
 
 	// admin doesn't have access
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testNotOwnerShowVisitListHtml() throws Exception {
-		mockMvc.perform(get("/owner/visits").with(csrf()))
-			.andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/owner/visits").with(csrf())).andExpect(status().is4xxClientError());
 	}
 
+	@Transactional
 	@WithMockUser(username = "vet1", authorities = {
 		"veterinarian"
 	})
 	@Test
 	void testShowVisitHtml() throws Exception {
-		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID))
-			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("visit"))
-			.andExpect(view().name("vet/visitDetails"));
+		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("visit")).andExpect(view().name("vet/visitDetails"));
 	}
 
 	// admin doesn't have access
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testNotShowVisitHtml() throws Exception {
-		mockMvc
-			.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID).with(csrf()))
-			.andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/vet/visits/{visitId}", TEST_VISIT_ID).with(csrf())).andExpect(status().is4xxClientError());
 	}
 
+	@Transactional
 	@WithMockUser(username = "gfranklin", authorities = {
 		"owner"
 	})
 	@Test
 	void testShowOwnerVisitHtml() throws Exception {
-		mockMvc.perform(get("/owner/visits/{visitId}", TEST_VISIT_ID))
-			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("visit"))
-			.andExpect(view().name("owner/visitDetails"));
+		mockMvc.perform(get("/owner/visits/{visitId}", TEST_VISIT_ID)).andExpect(status().isOk()).andExpect(model().attributeExists("visit")).andExpect(view().name("owner/visitDetails"));
 	}
 
 	// admin doesn't have access
+	@Transactional
 	@WithMockUser(username = "admin1", authorities = {
 		"admin"
 	})
 	@Test
 	void testNotShowOwnerVisitHtml() throws Exception {
-		mockMvc
-			.perform(get("/owner/visits/{visitId}", TEST_VISIT_ID).with(csrf()))
-			.andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/owner/visits/{visitId}", TEST_VISIT_ID).with(csrf())).andExpect(status().is4xxClientError());
 	}
 
 }

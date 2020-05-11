@@ -1,3 +1,4 @@
+
 package org.group2.petclinic.e2eControllerTests;
 
 import static org.mockito.BDDMockito.given;
@@ -8,6 +9,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import javax.transaction.Transactional;
 
 import org.assertj.core.util.Lists;
 import org.group2.petclinic.configuration.SecurityConfiguration;
@@ -33,78 +36,100 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 class Medicinee2eControllerTests {
-	
-	private static final int TEST_MEDICINE_ID = 1;
+
+	private static final int	TEST_MEDICINE_ID	= 1;
 
 	@Autowired
-	private MedicineController medicineController;
+	private MedicineController	medicineController;
 
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc				mockMvc;
 
-	@WithMockUser(username = "admin1", authorities = { "admin" })
+
+	@WithMockUser(username = "admin1", authorities = {
+		"admin"
+	})
 	@Test
 	void testShowMedicineListHtml() throws Exception {
-		mockMvc.perform(get("/admin/medicines")).andExpect(status().isOk())
-				.andExpect(model().attributeExists("medicines")).andExpect(view().name("/admin/medicinesList"));
+		mockMvc.perform(get("/admin/medicines")).andExpect(status().isOk()).andExpect(model().attributeExists("medicines")).andExpect(view().name("/admin/medicinesList"));
 	}
 
-	@WithMockUser(username = "admin1", authorities = { "aaaa" })
+	@Transactional
+	@WithMockUser(username = "admin1", authorities = {
+		"aaaa"
+	})
 	@Test
 	void testNotShowMedicineListHtml() throws Exception {
 		mockMvc.perform(get("/admin/medicines").with(csrf())).andExpect(status().is4xxClientError());
 	}
-	
-	@WithMockUser(username = "admin1", authorities = { "admin" })
+
+	@Transactional
+	@WithMockUser(username = "admin1", authorities = {
+		"admin"
+	})
 	@Test
 	void testInitCreationForm() throws Exception {
-		mockMvc.perform(get("/admin/medicines/new")).andExpect(status().isOk())
-				.andExpect(view().name("admin/createMedicineForm"))
-				.andExpect(model().attributeExists("medicine"));
+		mockMvc.perform(get("/admin/medicines/new")).andExpect(status().isOk()).andExpect(view().name("admin/createMedicineForm")).andExpect(model().attributeExists("medicine"));
 	}
-	
-	@WithMockUser(username = "admin1", authorities = { "aaaa" })
+
+	@Transactional
+	@WithMockUser(username = "admin1", authorities = {
+		"aaaa"
+	})
 	@Test
 	void testNotInitCreationForm() throws Exception {
 		mockMvc.perform(get("/admin/medicines/new")).andExpect(status().is4xxClientError());
 	}
 
-	@WithMockUser(username = "admin1", authorities = { "admin" })
+	@Transactional
+	@WithMockUser(username = "admin1", authorities = {
+		"admin"
+	})
 	@Test
 	void testUpdateMedicineForm() throws Exception {
-		mockMvc.perform(get("/admin/medicines/{medicineId}/edit", TEST_MEDICINE_ID)).andExpect(status().isOk())
-				.andExpect(view().name("admin/updateMedicineForm"));
+		mockMvc.perform(get("/admin/medicines/{medicineId}/edit", TEST_MEDICINE_ID)).andExpect(status().isOk()).andExpect(view().name("admin/updateMedicineForm"));
 	}
 
-	@WithMockUser(username = "admin1", authorities = { "aaaa" })
+	@Transactional
+	@WithMockUser(username = "admin1", authorities = {
+		"aaaa"
+	})
 	@Test
 	void testNotUpdateMedicineForm() throws Exception {
 		mockMvc.perform(get("/admin/medicines/{medicineId}/edit", TEST_MEDICINE_ID)).andExpect(status().is4xxClientError());
 	}
 
-	@WithMockUser(username = "admin1", authorities = { "admin" })
+	@Transactional
+	@WithMockUser(username = "admin1", authorities = {
+		"admin"
+	})
 	@Test
 	void testDeleteMedicine() throws Exception {
-		mockMvc.perform(get("/admin/medicines/{medicineId}/delete", 5)).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/admin/medicines"));
+		mockMvc.perform(get("/admin/medicines/{medicineId}/delete", 5)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/admin/medicines"));
 	}
 
-	@WithMockUser(username = "admin1", authorities = { "aaaa" })
+	@Transactional
+	@WithMockUser(username = "admin1", authorities = {
+		"aaaa"
+	})
 	@Test
 	void testNotDeleteMedicine() throws Exception {
 		mockMvc.perform(get("/admin/medicines/{medicineId}/delete", TEST_MEDICINE_ID)).andExpect(status().is4xxClientError());
 	}
 
-	@WithMockUser(username = "admin1", authorities = { "admin" })
+	@Transactional
+	@WithMockUser(username = "admin1", authorities = {
+		"admin"
+	})
 	@Test
 	void testProcessCreationFormPostRedirectHasErrors() throws Exception {
 		mockMvc.perform(post("/admin/medicines/new")//
-				.with(csrf())//
-				.param("name", "Medicine C")//
-				.param("brand", ""))//
-				.andExpect(model().attributeHasErrors("medicine"))//
-				.andExpect(model().attributeHasFieldErrors("medicine", "brand"))//
-				.andExpect(status().isOk()).andExpect(view().name("admin/createMedicineForm"));//
+			.with(csrf())//
+			.param("name", "Medicine C")//
+			.param("brand", ""))//
+			.andExpect(model().attributeHasErrors("medicine"))//
+			.andExpect(model().attributeHasFieldErrors("medicine", "brand"))//
+			.andExpect(status().isOk()).andExpect(view().name("admin/createMedicineForm"));//
 	}
 
 }

@@ -19,16 +19,20 @@ import org.group2.petclinic.repository.DiagnosisRepository;
 import org.group2.petclinic.repository.PrescriptionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class DiagnosisRepositoryTests {
 
 	@Autowired
-	private DiagnosisRepository diagnosisRepository;
-	
+	private DiagnosisRepository		diagnosisRepository;
+
 	@Autowired
-	private PrescriptionRepository prescriptionRepository;
+	private PrescriptionRepository	prescriptionRepository;
+
 
 	// findAllDiagnosis() POSITIVE TEST
 	@Test

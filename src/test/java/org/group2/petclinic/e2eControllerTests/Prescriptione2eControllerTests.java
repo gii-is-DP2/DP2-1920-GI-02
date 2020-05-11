@@ -1,3 +1,4 @@
+
 package org.group2.petclinic.e2eControllerTests;
 
 import static org.mockito.BDDMockito.given;
@@ -10,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.Collection;
+
+import javax.transaction.Transactional;
 
 import org.group2.petclinic.configuration.SecurityConfiguration;
 import org.group2.petclinic.model.Medicine;
@@ -38,56 +41,65 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class Prescriptione2eControllerTests {
 
-	private static final int TEST_VISIT_ID = 1;
+	private static final int		TEST_VISIT_ID	= 1;
 
 	@Autowired
-	private PrescriptionController prescripionController;
+	private PrescriptionController	prescripionController;
 
 	@Autowired
-	private MockMvc mockMvc;
-	
+	private MockMvc					mockMvc;
 
-	@WithMockUser(username = "vet1", authorities = { "veterinarian" })
+
+	@Transactional
+	@WithMockUser(username = "vet1", authorities = {
+		"veterinarian"
+	})
 	@Test
 	void testInitCreationForm() throws Exception {
 		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID)).andExpect(status().isOk());
 	}
 
-	@WithMockUser(username = "vet1", authorities = { "aaaa" })
+	@Transactional
+	@WithMockUser(username = "vet1", authorities = {
+		"aaaa"
+	})
 	@Test
 	void testNotInitCreationForm() throws Exception {
-		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID))
-				.andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID)).andExpect(status().is4xxClientError());
 	}
 
-	@WithMockUser(username = "vet1", authorities = { "veterinarian" })
+	@Transactional
+	@WithMockUser(username = "vet1", authorities = {
+		"veterinarian"
+	})
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID).with(csrf())
-				.param("frequency", "2 times per week").param("duration", "1 week")).andExpect(status().isOk());
+		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID).with(csrf()).param("frequency", "2 times per week").param("duration", "1 week")).andExpect(status().isOk());
 	}
 
-	@WithMockUser(username = "vet1", authorities = { "veterinarian" })
+	@Transactional
+	@WithMockUser(username = "vet1", authorities = {
+		"veterinarian"
+	})
 	@Test
 	void testNotProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID).with(csrf())
-				.param("frequency", "2 times per week").param("duration", "1 week").param("medicine", "Medicine H"))
-				.andExpect(model().attributeHasErrors("prescription"))
-				.andExpect(model().attributeHasFieldErrors("prescription", "medicine")).andExpect(status().isOk())
-				.andExpect(view().name("vet/createOrUpdatePrescriptionForm"));
+		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID).with(csrf()).param("frequency", "2 times per week").param("duration", "1 week").param("medicine", "Medicine H")).andExpect(model().attributeHasErrors("prescription"))
+			.andExpect(model().attributeHasFieldErrors("prescription", "medicine")).andExpect(status().isOk()).andExpect(view().name("vet/createOrUpdatePrescriptionForm"));
 	}
 
-	
-	@WithMockUser(username = "vet1", authorities = { "veterinarian" })
+	@Transactional
+	@WithMockUser(username = "vet1", authorities = {
+		"veterinarian"
+	})
 	@Test
 	void testProcessCreationFormPostRedirectHasErrors() throws Exception {
 		mockMvc.perform(post("/vet/visits/{visitId}/prescriptions/new", TEST_VISIT_ID)//
-				.with(csrf())//
-				.param("frequency", "1 time per week")//
-				.param("duration", ""))//
-				.andExpect(model().attributeHasErrors("prescription"))//
-				.andExpect(model().attributeHasFieldErrors("prescription", "duration"))//
-				.andExpect(status().isOk()).andExpect(view().name("vet/createOrUpdatePrescriptionForm"));//
+			.with(csrf())//
+			.param("frequency", "1 time per week")//
+			.param("duration", ""))//
+			.andExpect(model().attributeHasErrors("prescription"))//
+			.andExpect(model().attributeHasFieldErrors("prescription", "duration"))//
+			.andExpect(status().isOk()).andExpect(view().name("vet/createOrUpdatePrescriptionForm"));//
 	}
 
 }

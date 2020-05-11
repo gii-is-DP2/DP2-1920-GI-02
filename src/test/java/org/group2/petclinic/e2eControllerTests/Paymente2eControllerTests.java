@@ -14,6 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 
+import javax.transaction.Transactional;
+
 import org.group2.petclinic.configuration.SecurityConfiguration;
 import org.group2.petclinic.model.Authorities;
 import org.group2.petclinic.model.Payment;
@@ -76,6 +78,7 @@ public class Paymente2eControllerTests {
 	// -------------------------- initCreationForm ---------------------------
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "secretary1", authorities = {
 		"secretary"
 	})
@@ -89,6 +92,7 @@ public class Paymente2eControllerTests {
 
 	// NEGATIVE TEST
 	// Acces with a user not authenticated
+	@Transactional
 	@WithMockUser(username = "owner1", authorities = {
 		"owner"
 	})
@@ -103,6 +107,7 @@ public class Paymente2eControllerTests {
 
 	// POSITIVE TEST
 	// Redirect 1
+	@Transactional
 	@WithMockUser(username = "secretary1", authorities = {
 		"secretary"
 	})
@@ -117,6 +122,7 @@ public class Paymente2eControllerTests {
 
 	// POSITIVE TEST
 	// Redirect 2
+	@Transactional
 	@WithMockUser(username = "secretary1", authorities = {
 		"secretary"
 	})
@@ -133,6 +139,7 @@ public class Paymente2eControllerTests {
 
 	// NEGATIVE TEST
 	// Form with errors
+	@Transactional
 	@WithMockUser(username = "secretary1", authorities = {
 		"secretary"
 	})

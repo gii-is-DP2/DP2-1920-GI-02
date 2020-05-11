@@ -44,37 +44,37 @@ INSERT INTO authorities VALUES ('admin1','admin');
 -- vet1 / v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities VALUES ('vet1','veterinarian');
-INSERT INTO vets VALUES (1, 'James', 'Carter', 'vet1');
+INSERT INTO vets(id,first_name,last_name,username) VALUES (1, 'James', 'Carter', 'vet1');
 
 -- vet2 / vet2
 INSERT INTO users(username,password,enabled) VALUES ('vet2','vet2',TRUE);
 INSERT INTO authorities VALUES ('vet2','veterinarian');
-INSERT INTO vets VALUES (2, 'Helen', 'Leary', 'vet2');
+INSERT INTO vets(id,first_name,last_name,username) VALUES (2, 'Helen', 'Leary', 'vet2');
 INSERT INTO vet_specialties(vet_id,specialty_id) VALUES (2, 1);
 
 -- vet3 / vet3
 INSERT INTO users(username,password,enabled) VALUES ('vet3','vet3',TRUE);
 INSERT INTO authorities VALUES ('vet3','veterinarian');
-INSERT INTO vets VALUES (3, 'Linda', 'Douglas', 'vet3');
+INSERT INTO vets(id,first_name,last_name,username) VALUES (3, 'Linda', 'Douglas', 'vet3');
 INSERT INTO vet_specialties(vet_id,specialty_id) VALUES (3, 2);
 INSERT INTO vet_specialties(vet_id,specialty_id) VALUES (3, 3);
 
 -- vet4 / vet4
 INSERT INTO users(username,password,enabled) VALUES ('vet4','vet4',TRUE);
 INSERT INTO authorities VALUES ('vet4','veterinarian');
-INSERT INTO vets VALUES (4, 'Rafael', 'Ortega', 'vet4');
+INSERT INTO vets(id,first_name,last_name,username) VALUES (4, 'Rafael', 'Ortega', 'vet4');
 INSERT INTO vet_specialties(vet_id,specialty_id) VALUES (4, 2);
 
 -- vet5 / vet5
 INSERT INTO users(username,password,enabled) VALUES ('vet5','vet5',TRUE);
 INSERT INTO authorities VALUES ('vet5','veterinarian');
-INSERT INTO vets VALUES (5, 'Henry', 'Stevens', 'vet5');
+INSERT INTO vets(id,first_name,last_name,username) VALUES (5, 'Henry', 'Stevens', 'vet5');
 INSERT INTO vet_specialties(vet_id,specialty_id) VALUES (5, 1);
 
 -- vet6 / vet6
 INSERT INTO users(username,password,enabled) VALUES ('vet6','vet6',TRUE);
 INSERT INTO authorities VALUES ('vet6','veterinarian');
-INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins', 'vet6');
+INSERT INTO vets(id,first_name,last_name,username) VALUES (6, 'Sharon', 'Jenkins', 'vet6');
 
 
 --------------------------------------------------------------------------------

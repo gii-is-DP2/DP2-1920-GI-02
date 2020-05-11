@@ -1,3 +1,4 @@
+
 package org.group2.petclinic.e2eControllerTests;
 
 import org.assertj.core.util.Lists;
@@ -31,6 +32,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import javax.transaction.Transactional;
+
 /**
  * Test class for the {@link VetController}
  */
@@ -40,15 +43,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class Vete2eControllerTests {
 
 	@Autowired
-	private VetController vetController;
+	private VetController	vetController;
 
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc			mockMvc;
 
+
+	@Transactional
 	@Test
 	void testShowVetListHtml() throws Exception {
-		mockMvc.perform(get("/vets")).andExpect(status().isOk()).andExpect(model().attributeExists("vets"))
-				.andExpect(view().name("vets/vetList"));
+		mockMvc.perform(get("/vets")).andExpect(status().isOk()).andExpect(model().attributeExists("vets")).andExpect(view().name("vets/vetList"));
 	}
 
 }

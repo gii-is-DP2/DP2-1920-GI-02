@@ -14,6 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 
+import javax.transaction.Transactional;
+
 import org.group2.petclinic.configuration.SecurityConfiguration;
 import org.group2.petclinic.model.Authorities;
 import org.group2.petclinic.model.Creditcard;
@@ -69,19 +71,19 @@ public class Creditcarde2eControllerTests {
 	// -------------------------- initCreationForm ---------------------------
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "secretary1", authorities = {
 		"secretary"
 	})
 	@Test
 	void testInitCreationFormGet() throws Exception {
-		mockMvc.perform(get("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", TEST_VISIT_ID, TEST_PAYMENT_ID)).andExpect(status().isOk())//
-			.andExpect(model().attributeExists("creditcard"))//
-			.andExpect(model().attributeExists("expMonth"))//
-			.andExpect(view().name("secretary/visits/createCreditcardForm"));
+		mockMvc.perform(get("/secretary/visits/{visitId}/payments/{paymentId}/creditcards/new", //
+			TEST_VISIT_ID, TEST_PAYMENT_ID)).andExpect(status().isOk());//
 	}
 
 	// NEGATIVE TEST
 	// Acces with a user not authenticated
+	@Transactional
 	@WithMockUser(username = "owner1", authorities = {
 		"owner"
 	})
@@ -95,6 +97,7 @@ public class Creditcarde2eControllerTests {
 	// -------------------------- processCreationForm ---------------------------
 
 	// POSITIVE TEST
+	@Transactional
 	@WithMockUser(username = "secretary1", authorities = {
 		"secretary"
 	})
@@ -115,6 +118,7 @@ public class Creditcarde2eControllerTests {
 
 	// NEGATIVE TEST
 	// Form with errors
+	@Transactional
 	@WithMockUser(username = "secretary1", authorities = {
 		"secretary"
 	})

@@ -17,14 +17,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 
 @ExtendWith(MockitoExtension.class)
+@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 class PrescriptionServiceTests {
 
 	@Mock
-	private PrescriptionRepository stubPrescriptionRepository;
+	private PrescriptionRepository	stubPrescriptionRepository;
 
-	protected PrescriptionService prescriptionService;
+	protected PrescriptionService	prescriptionService;
+
 
 	@Test
 	void shouldFindAll() {
@@ -65,7 +73,7 @@ class PrescriptionServiceTests {
 		m.setName("Winstrol");
 		m.setBrand("Chinese lab");
 		m.setUsed(true);
-		
+
 		Prescription toReturn = new Prescription();
 		toReturn.setId(1);
 		toReturn.setFrequency("2 times per week");
