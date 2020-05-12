@@ -193,7 +193,7 @@ public class VisitRepositoryTests {
 		Visit visit = this.visitRepository.findById(id);
 		//3. Assert
 		assertThat(visit).isNotNull();
-		assertThat(visit).hasMoment(LocalDateTime.parse("2013-01-01T10:00"));
+		assertThat(visit).hasMoment(LocalDateTime.parse("2013-01-01T11:00"));
 		assertThat(visit).hasDescription("rabies shot");
 	}
 
