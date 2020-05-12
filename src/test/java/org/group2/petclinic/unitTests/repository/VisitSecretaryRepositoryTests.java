@@ -45,9 +45,7 @@ public class VisitSecretaryRepositoryTests {
 		//3. Assert
 		assertThat(visits).hasSize(4);
 		assertThat(((ArrayList<Visit>) visits).get(0)).hasDescription("Descrip without");
-		assertThat(((ArrayList<Visit>) visits).get(0)).hasMoment(LocalDateTime.parse("2015-05-06T14:00"));
 		assertThat(((ArrayList<Visit>) visits).get(3)).hasDescription("Sample visit");
-		assertThat(((ArrayList<Visit>) visits).get(3)).hasMoment(LocalDateTime.parse("2025-04-01T10:30"));
 
 	}
 
@@ -81,7 +79,6 @@ public class VisitSecretaryRepositoryTests {
 		//3. Assert
 		assertThat(visit).isNotNull();
 		assertThat(visit).hasDescription("rabies shot");
-		assertThat(visit).hasMoment(LocalDateTime.parse("2013-01-01T10:00"));
 
 	}
 
@@ -114,9 +111,7 @@ public class VisitSecretaryRepositoryTests {
 		assertThat(visits).isNotNull();
 		assertThat(visits).hasSize(9);
 		assertThat(visits.get(0)).hasDescription("rabies shot");
-		assertThat(visits.get(0)).hasMoment(LocalDateTime.parse("2013-01-01T10:00"));
 		assertThat(visits.get(8)).hasDescription("Sample visit");
-		assertThat(visits.get(8)).hasMoment(LocalDateTime.parse("2025-04-01T10:30"));
 
 	}
 

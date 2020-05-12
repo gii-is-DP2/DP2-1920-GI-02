@@ -48,7 +48,6 @@ public class PaymentRepositoryTests {
 		//3. Assert
 		assertThat(payment).isNotNull();
 		assertThat(payment).hasMethod("creditcard");
-		assertThat(payment).hasMoment(LocalDateTime.parse("2019-06-05T10:20"));
 		assertThat(payment).hasFinalPrice(30.00);
 
 	}
