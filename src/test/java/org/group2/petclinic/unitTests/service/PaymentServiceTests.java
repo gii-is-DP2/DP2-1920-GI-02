@@ -151,7 +151,6 @@ public class PaymentServiceTests {
 
 		//3. Assert
 		assertThat(payment).hasMethod("creditcard");
-		assertThat(payment).hasMoment(LocalDateTime.parse("2019-06-05T12:20"));
 		assertThat(payment).hasFinalPrice(30.00);
 		assertThat(payment.getSecretary().getId()).isEqualTo(1);
 		assertThat(payment.getCreditcard().getId()).isEqualTo(1);
