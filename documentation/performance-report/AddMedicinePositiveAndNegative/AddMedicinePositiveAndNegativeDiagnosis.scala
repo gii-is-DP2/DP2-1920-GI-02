@@ -29,7 +29,7 @@ class AddMedicinePositiveAndNegative extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
-object Home {
+	object Home {
 		val home = exec(http("Home")
 			.get("/")
 			.headers(headers_0))
@@ -40,14 +40,14 @@ object Home {
 		val loginAsAdmin = exec(http("LoginAsAdmin1")
 			.get("/login")
 			.headers(headers_0)
-			.check(css("input[name=_csrf]", "value").saveAs("stoken"))
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(15)
 		.exec(http("LoginAsAdmin2")
 			.post("/login")
 			.headers(headers_3)
 			.formParam("username", "admin1")
 			.formParam("password", "4dm1n")
-			.formParam("_csrf", "${stoken}")
+			.formParam("_csrf", "${stoken}"))
 		.pause(12)
 	}
 	
@@ -55,14 +55,14 @@ object Home {
 		val loginAsVet = exec(http("LoginAsVet1")
 			.get("/login")
 			.headers(headers_0)
-			.check(css("input[name=_csrf]", "value").saveAs("stoken"))
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(15)
 		.exec(http("LoginAsVet2")
 			.post("/login")
 			.headers(headers_3)
 			.formParam("username", "vet1")
 			.formParam("password", "v3t")
-			.formParam("_csrf", "${stoken}")
+			.formParam("_csrf", "${stoken}"))
 		.pause(12)
 	}
 	
@@ -76,8 +76,8 @@ object Home {
 	object AddedMedicine {
 		val addedMedicine = exec(http("AddedMedicine1")
 			.get("/admin/medicines/new")
-			.headers(headers_0))
-			.check(css("input[name=_csrf]", "value").saveAs("stoken"))
+			.headers(headers_0)
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(29)
 		.exec(http("AddedMedicine2")
 			.post("/admin/medicines/new")
@@ -85,7 +85,7 @@ object Home {
 			.formParam("name", "Medicine J")
 			.formParam("brand", "Brand J")
 			.formParam("medicine.id", "")
-			.formParam("_csrf", "${stoken}")
+			.formParam("_csrf", "${stoken}"))
 		.pause(8)
 	}
 	
@@ -95,7 +95,6 @@ object Home {
 			.headers(headers_0)
 			.check(status.is(403)))
 		.pause(23)
-
 	}
 
 	val adminsScn = scenario("Admins").exec(Home.home, 
