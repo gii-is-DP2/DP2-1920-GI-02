@@ -6,7 +6,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class AddMedicinePositiveAndNegative extends Simulation {
+class AddMedicinePositiveAndNegativeDiagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
@@ -35,7 +35,7 @@ class AddMedicinePositiveAndNegative extends Simulation {
 			.headers(headers_0))
 		.pause(8)
 	}
-	
+
 	object LoginAsAdmin {
 		val loginAsAdmin = exec(http("LoginAsAdmin1")
 			.get("/login")
@@ -109,11 +109,7 @@ class AddMedicinePositiveAndNegative extends Simulation {
 
 
 	setUp(
-        adminsScn.inject(rampUsers(5000) during (100 seconds)),
-        vetsScn.inject(rampUsers(5000) during (100 seconds))
+        adminsScn.inject(rampUsers(100000) during (10 seconds)),
+        vetsScn.inject(rampUsers(100000) during (10 seconds))
         ).protocols(httpProtocol)
-		.assertions(
-        global.responseTime.max.lt(5000),
-        global.responseTime.mean.lt(1000),
-        global.successfulRequests.percent.gt(95)
 }

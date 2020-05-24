@@ -35,7 +35,7 @@ class AddMedicinePositiveAndNegative extends Simulation {
 			.headers(headers_0))
 		.pause(8)
 	}
-	
+
 	object LoginAsAdmin {
 		val loginAsAdmin = exec(http("LoginAsAdmin1")
 			.get("/login")
@@ -105,6 +105,8 @@ class AddMedicinePositiveAndNegative extends Simulation {
 	val vetsScn = scenario("Vets").exec(Home.home, 
 										   LoginAsVet.loginAsVet,
 										   AttemptAccessMedicine.attemptAccessMedicine)
+										   
+	
 
 
 
