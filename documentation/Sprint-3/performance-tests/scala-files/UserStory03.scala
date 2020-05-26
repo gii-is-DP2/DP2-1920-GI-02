@@ -29,35 +29,54 @@ class UserStory02 extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
-
-
-	val scn = scenario("UserStory02")
-		.exec(http("request_0")
+	object Home {
+		val home = exec(http("Home")
 			.get("/")
 			.headers(headers_0))
-		.pause(4)
-		.exec(http("request_1")
+		.pause(8)
+	}
+
+	object LoginAsOwner {
+		val loginAsOwner = exec(http("LoginAsOwner1")
 			.get("/login")
 			.headers(headers_0)
-			.resources(http("request_2")
-			.get("/login")
-			.headers(headers_2)))
-		.pause(17)
-		// Login
-		.exec(http("request_3")
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
+		.pause(15)
+		.exec(http("LoginAsOwner2")
 			.post("/login")
 			.headers(headers_3)
 			.formParam("username", "gfranklin")
-			.formParam("password", "gfranklin")
-			.formParam("_csrf", "d585ae0c-00de-4b13-b48f-2a2a0ddaaf1a"))
-		.pause(23)
-		// LoggedInAsOwner
-		.exec(http("request_4")
+			.formParam("password", "gfraklin")
+			.formParam("_csrf", "${stoken}"))
+		.pause(12)
+	}
+
+	object ScheduleCorrectVisist{
+		val scheduleCorrectVisist = exec(http("scheduleCorrectVisist1")
 			.get("/owner/schedule-visit")
 			.headers(headers_0))
-		.pause(54)
-		// ScheduleNewVisit
-		.exec(http("request_5")
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
+		.pause(11)
+		.exec(http("scheduleCorrectVisist2")
+			.post("/owner/schedule-visit")
+			.headers(headers_3)
+			.formParam("pet", "Leo")
+			.formParam("description", "description")
+			.formParam("visitType", "consultation")
+			.formParam("vet", "James Carter")
+			.formParam("moment", "2022/02/01 10:30")
+			.formParam("petId", "")
+			.formParam("_csrf", "${stoken}"))
+		.pause(21)
+	}
+
+	object AttemptToScheduleOutsideWorkingHours{
+		val attemptToScheduleOutsideWorkingHours = exec(http("AttemptToScheduleOutsideWorkingHours1")
+			.get("/owner/schedule-visit")
+			.headers(headers_0))
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
+		.pause(11)
+		.exec(http("AttemptToScheduleOutsideWorkingHours2")
 			.post("/owner/schedule-visit")
 			.headers(headers_3)
 			.formParam("pet", "Leo")
@@ -66,9 +85,24 @@ class UserStory02 extends Simulation {
 			.formParam("vet", "James Carter")
 			.formParam("moment", "2022/02/26 05:30")
 			.formParam("petId", "")
-			.formParam("_csrf", "ed7fb321-cd50-435a-a481-0cfcd20a455c"))
-		.pause(27)
-		// AttemptedToScheduleOutsideWorkingHours
+			.formParam("_csrf", "${stoken}"))
+		.pause(21)
+	}
 
-	setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
+	val positiveScn = scenario("CorrectScheduling").exec(
+		Home.home, 
+		LoginAsOwner.loginAsOwner,
+		ScheduleCorrectVisist.scheduleCorrectVisist
+	)
+	
+	val negativeScn = scenario("IncorrectScheduling").exec(
+		Home.home, 
+		LoginAsOwner.loginAsOwner,
+		AttemptToScheduleOutsideWorkingHours. attemptToScheduleOutsideWorkingHours
+	)
+	
+	setUp(
+		positiveScn.inject(atOnceUsers(1)),
+		negativeScn.inject(atOnceUsers(1))
+	).protocols(httpProtocol)
 }
