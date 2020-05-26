@@ -6,7 +6,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class UserStory03 extends Simulation {
+class UserStory03Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
@@ -102,7 +102,7 @@ class UserStory03 extends Simulation {
 	)
 	
 	setUp(
-		positiveScn.inject(atOnceUsers(1)),
-		negativeScn.inject(atOnceUsers(1))
-	).protocols(httpProtocol)
+	positiveScn.inject(rampUsers(75000) during (10 seconds)),
+	negativeScn.inject(rampUsers(75000) during (10 seconds))
+).protocols(httpProtocol)
 }

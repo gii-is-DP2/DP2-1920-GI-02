@@ -6,15 +6,15 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class UserStory03 extends Simulation {
+class UserStory01Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png""", """.*.jpg"""), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
-		.userAgentHeader("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36")
+		.userAgentHeader("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
 
 	val headers_0 = Map(
 		"Proxy-Connection" -> "keep-alive",
@@ -70,20 +70,20 @@ class UserStory03 extends Simulation {
 		.pause(21)
 	}
 
-	object AttemptToScheduleOutsideWorkingHours{
-		val attemptToScheduleOutsideWorkingHours = exec(http("AttemptToScheduleOutsideWorkingHours1")
+	object AttemptToScheduleOccupiedSlot{
+		val attemptToScheduleOccupiedSlot = exec(http("AttemptToScheduleOccupiedSlot1")
 			.get("/owner/schedule-visit")
 			.headers(headers_0)
 			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(11)
-		.exec(http("AttemptToScheduleOutsideWorkingHours2")
+		.exec(http("AttemptToScheduleOccupiedSlot2")
 			.post("/owner/schedule-visit")
 			.headers(headers_3)
 			.formParam("pet", "Leo")
 			.formParam("description", "description")
 			.formParam("visitType", "consultation")
 			.formParam("vet", "James Carter")
-			.formParam("moment", "2022/02/26 05:30")
+			.formParam("moment", "2025/04/01 10:30")
 			.formParam("petId", "")
 			.formParam("_csrf", "${stoken}"))
 		.pause(21)
@@ -98,11 +98,11 @@ class UserStory03 extends Simulation {
 	val negativeScn = scenario("IncorrectScheduling").exec(
 		Home.home, 
 		LoginAsOwner.loginAsOwner,
-		AttemptToScheduleOutsideWorkingHours. attemptToScheduleOutsideWorkingHours
+		AttemptToScheduleOccupiedSlot.attemptToScheduleOccupiedSlot
 	)
 	
 	setUp(
-		positiveScn.inject(atOnceUsers(1)),
-		negativeScn.inject(atOnceUsers(1))
-	).protocols(httpProtocol)
+	positiveScn.inject(rampUsers(5000) during (100 seconds)),
+	negativeScn.inject(rampUsers(5000) during (100 seconds))
+).protocols(httpProtocol)
 }
