@@ -61,7 +61,7 @@ class UserStory02 extends Simulation {
 	object ScheduleCorrectVisist{
 		val scheduleCorrectVisist = exec(http("scheduleCorrectVisist1")
 			.get("/owner/schedule-visit")
-			.headers(headers_0))
+			.headers(headers_0)
 			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(11)
 		.exec(http("scheduleCorrectVisist2")
