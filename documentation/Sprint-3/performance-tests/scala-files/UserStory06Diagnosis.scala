@@ -6,7 +6,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class US06 extends Simulation {
+class UserStory06Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
@@ -34,37 +34,54 @@ class US06 extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
-
-
-	val scn = scenario("US06")
-		.exec(http("request_0")
+	object Home {
+		val home = exec(http("Home")
 			.get("/")
-			.headers(headers_0)
-			.resources(http("request_1")
-			.get("/resources/images/favicon.png")
-			.headers(headers_1)))
-		.pause(1)
-		.exec(http("request_2")
+			.headers(headers_0))
+		.pause(8)
+	}
+
+	object LoginAsVet {
+		val loginAsVet = exec(http("LoginAsVet1")
 			.get("/login")
 			.headers(headers_0)
-			.resources(http("request_3")
-			.get("/favicon.ico")
-			.headers(headers_3)))
-		.pause(16)
-		// Login
-		.exec(http("request_4")
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
+		.pause(15)
+		.exec(http("LoginAsVet2")
 			.post("/login")
 			.headers(headers_4)
 			.formParam("username", "vet1")
 			.formParam("password", "v3t")
-			.formParam("_csrf", "3d724c13-e5b5-459c-9a8d-2393dd9e7232"))
-		.pause(14)
-		// LoggedAsVet
-		.exec(http("request_5")
+			.formParam("_csrf", "${stoken}"))
+		.pause(12)
+	}
+
+	object VisitsView {
+		val visitsView = exec(http("VisitsView")
 			.get("/vet/visits")
 			.headers(headers_0))
-		.pause(8)
-		// VisitView
+		.pause(10)
+	}
 
-	setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
+	object AttemptToShowVisitsViewWithoutLogin {
+		val attemptToShowVisitsViewWithoutLogin = exec(http("AttemptToShowVisitsViewWithoutLogin")
+			.get("/vet/visits")
+			.headers(headers_0))
+		.pause(10)
+	}
+
+	val positiveScn = scenario("LoginAndShowView").exec(
+		Home.home, 
+		LoginAsVet.loginAsVet,
+		VisitsView.visitsView
+	)
+
+	val negativeScn = scenario("DontLoginAndAttemptToShowView").exec(
+		AttemptToShowVisitsViewWithoutLogin.attemptToShowVisitsViewWithoutLogin
+	)
+
+	setUp(
+		positiveScn.inject(rampUsers(75000) during (10 seconds)),
+		negativeScn.inject(rampUsers(75000) during (10 seconds))
+	).protocols(httpProtocol)
 }

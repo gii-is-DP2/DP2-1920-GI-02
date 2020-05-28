@@ -6,7 +6,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class US05A extends Simulation {
+class UserStory05ADiagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
@@ -34,37 +34,60 @@ class US05A extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
+	val headers_5 = Map(
+		"Origin" -> "http://www.dp2.com",
+		"Proxy-Connection" -> "keep-alive",
+		"Upgrade-Insecure-Requests" -> "1")
 
 
-	val scn = scenario("US05A")
-		.exec(http("request_0")
+	object Home {
+		val home = exec(http("Home")
 			.get("/")
 			.headers(headers_0))
-		.pause(1)
-		.exec(http("request_1")
-			.get("/resources/images/favicon.png")
-			.headers(headers_1))
-		.pause(4)
-		.exec(http("request_2")
+		.pause(8)
+	}
+
+	object LoginAsOwner {
+		val loginAsOwner = exec(http("LoginAsOwner1")
 			.get("/login")
 			.headers(headers_0)
-			.resources(http("request_3")
-			.get("/favicon.ico")
-			.headers(headers_3)))
-		.pause(9)
-		.exec(http("request_4")
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
+		.pause(15)
+		.exec(http("LoginAsOwner2")
 			.post("/login")
-			.headers(headers_4)
+			.headers(headers_5)
 			.formParam("username", "gfranklin")
-			.formParam("password", "gfranklin")
-			.formParam("_csrf", "c84ab9d2-6d44-43e1-b6fa-83c6fc5f95d3"))
-		.pause(9)
-		// Login
-		.exec(http("request_5")
+			.formParam("password", "gfraklin")
+			.formParam("_csrf", "${stoken}"))
+		.pause(12)
+	}
+
+	object VisitsView {
+		val visitsView = exec(http("VisitsView")
 			.get("/owner/visits")
 			.headers(headers_0))
 		.pause(10)
-		// VisitsView
+	}
 
-	setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
+	object AttemptToShowVisitsViewWithoutLogin {
+		val attemptToShowVisitsViewWithoutLogin = exec(http("AttemptToShowVisitsViewWithoutLogin")
+			.get("/owner/visits")
+			.headers(headers_0))
+		.pause(10)
+	}
+
+	val positiveScn = scenario("LoginAndShowView").exec(
+		Home.home, 
+		LoginAsOwner.loginAsOwner,
+		VisitsView.visitsView
+	)
+
+	val negativeScn = scenario("DontLoginAndAttemptToShowView").exec(
+		AttemptToShowVisitsViewWithoutLogin.attemptToShowVisitsViewWithoutLogin
+	)
+
+	setUp(
+		positiveScn.inject(rampUsers(75000) during (10 seconds)),
+		negativeScn.inject(rampUsers(75000) during (10 seconds))
+	).protocols(httpProtocol)
 }
