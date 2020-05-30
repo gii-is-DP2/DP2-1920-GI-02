@@ -102,7 +102,7 @@ class UserStory03Diagnosis extends Simulation {
 	)
 	
 	setUp(
-	positiveScn.inject(rampUsers(75000) during (10 seconds)),
-	negativeScn.inject(rampUsers(75000) during (10 seconds))
+	positiveScn.inject(rampUsers(10000) during (100 seconds)),
+	negativeScn.inject(rampUsers(10000) during (100 seconds))
 ).protocols(httpProtocol)
 }
