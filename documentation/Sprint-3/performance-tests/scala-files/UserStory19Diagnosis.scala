@@ -6,11 +6,11 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class UserStory19 extends Simulation {
+class UserStory19Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -34,38 +34,54 @@ class UserStory19 extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
-
-
-	val scn = scenario("UserStory19")
-		.exec(http("request_0")
+	object Home {
+		val home = exec(http("Home")
 			.get("/")
-			.headers(headers_0)
-			.resources(http("request_1")
-			.get("/resources/images/favicon.png")
-			.headers(headers_1)))
-		.pause(5)
-		// Home
-		.exec(http("request_2")
+			.headers(headers_0))
+		.pause(8)
+	}
+
+	object LoginAsAdmin {
+		val loginAsAdmin = exec(http("LoginAsVet1")
 			.get("/login")
 			.headers(headers_0)
-			.resources(http("request_3")
-			.get("/favicon.ico")
-			.headers(headers_3)))
-		.pause(8)
-		// Login
-		.exec(http("request_4")
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
+		.pause(15)
+		.exec(http("LoginAsVet2")
 			.post("/login")
 			.headers(headers_4)
 			.formParam("username", "admin1")
 			.formParam("password", "4dm1n")
-			.formParam("_csrf", "ee28a628-1940-4608-8378-d3b7fd2ebde5"))
-		.pause(9)
-		// LoggedInAsAdmin
-		.exec(http("request_5")
+			.formParam("_csrf", "${stoken}"))
+		.pause(12)
+	}
+
+	object ShowAllVisits {
+		val showAllVisits = exec(http("ShowAllVisits")
 			.get("/admin/visits")
 			.headers(headers_0))
-		.pause(9)
-		// AllVisits
+		.pause(10)
+	}
 
-	setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
+	object AttemptToShowAllVisitsWithoutLogin {
+		val attemptToShowAllVisitsWithoutLogin = exec(http("AttemptToShowAllVisitsWithoutLogin")
+			.get("/admin/visits")
+			.headers(headers_0))
+		.pause(10)
+	}
+
+	val positiveScn = scenario("LoginAndShowAllVisits").exec(
+		Home.home, 
+		LoginAsAdmin.loginAsAdmin,
+		ShowAllVisits.showAllVisits
+	)
+
+	val negativeScn = scenario("DontLoginAndAttemptToShowAllVisits").exec(
+		AttemptToShowAllVisitsWithoutLogin.attemptToShowAllVisitsWithoutLogin
+	)
+
+	setUp(
+		positiveScn.inject(rampUsers(5000) during (100 seconds)),
+		negativeScn.inject(rampUsers(5000) during (100 seconds))
+	).protocols(httpProtocol)
 }
