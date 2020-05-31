@@ -121,7 +121,7 @@ class UserStory13Diagnosis extends Simulation {
 		AddDiagnosis.addDiagnosis
 	)
 
-	val positiveScn = scenario("AttemptToAddDiagnosisToVisitWithDiagnosis").exec(
+	val negativeScn = scenario("AttemptToAddDiagnosisToVisitWithDiagnosis").exec(
 		Home.home, 
 		LoginAsVet.loginAsVet,
 		VisitsView.visitsView,
