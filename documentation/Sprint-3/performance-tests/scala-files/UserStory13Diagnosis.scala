@@ -6,11 +6,11 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class US13 extends Simulation {
+class UserStory13Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
 		.acceptHeader("image/webp,image/apng,image/*,*/*;q=0.8")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -34,50 +34,51 @@ class US13 extends Simulation {
 		"Upgrade-Insecure-Requests" -> "1")
 
 
-
-	val scn = scenario("US13")
-		.exec(http("request_0")
+	object Home {
+		val home = exec(http("Home")
 			.get("/")
-			.headers(headers_0)
-			.resources(http("request_1")
-			.get("/resources/images/favicon.png")
-			.headers(headers_1)))
-		.pause(1)
-		.exec(http("request_2")
+			.headers(headers_0))
+		.pause(8)
+	}
+
+	object LoginAsVet {
+		val loginAsVet = exec(http("LoginAsVet1")
 			.get("/login")
 			.headers(headers_0)
-			.resources(http("request_3")
-			.get("/favicon.ico")
-			.headers(headers_3)))
-		.pause(9)
-		// Login
-		.exec(http("request_4")
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
+		.pause(15)
+		.exec(http("LoginAsVet2")
 			.post("/login")
 			.headers(headers_4)
 			.formParam("username", "vet1")
 			.formParam("password", "v3t")
-			.formParam("_csrf", "ab9e21f4-754f-461b-b763-3a79a4da5a8f"))
-		.pause(11)
-		// LoggedAsVet
-		.exec(http("request_5")
+			.formParam("_csrf", "${stoken}"))
+		.pause(12)
+	}
+
+	object VisitsView {
+		val visitsView = exec(http("VisitsView")
 			.get("/vet/visits")
 			.headers(headers_0))
-		.pause(25)
-		// VisitsView
-		.exec(http("request_6")
+		.pause(10)
+	}
+
+	object ShowVisitWithoutDiagnosis {
+		val showVisitWithoutDiagnosis = exec(http("ShowVisitWithoutDiagnosis")
 			.get("/vet/visits/6")
 			.headers(headers_0))
-		.pause(25)
-		// VisitWithoutDiagnosis
-		.exec(http("request_7")
+		.pause(10)
+	}
+
+	object AddDiagnosis {
+		val addDiagnosis = exec(http("AddDiagnosis")
 			.get("/vet/visits/6/diagnosis/new")
 			.headers(headers_0)
 			.resources(http("request_8")
 			.get("/webjars/jquery-ui/1.11.4/images/ui-bg_highlight-soft_100_eeeeee_1x100.png")
 			.headers(headers_3)))
+			.check(css("input[name=_csrf]", 
 		.pause(8)
-		// AddDiagnosis
-		.exec(http("request_9")
 			.get("/webjars/jquery-ui/1.11.4/images/ui-bg_gloss-wave_35_f6a828_500x100.png")
 			.headers(headers_3)
 			.resources(http("request_10")
@@ -100,9 +101,35 @@ class US13 extends Simulation {
 			.formParam("date", "2020/05/25")
 			.formParam("description", "description")
 			.formParam("diagnosis.id", "")
-			.formParam("_csrf", "925a74f2-86db-46a4-9ffb-68285502ee3f"))
+			.formParam("_csrf", "${stoken}"))
 		.pause(10)
-		// AddedDiagnosis
+	}
 
-	setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
+	object ShowVisitWithDiagnosis {
+		val showVisitWithDiagnosis = exec(http("ShowVisitWithDiagnosis")
+			.get("/vet/visits/3")
+			.headers(headers_0))
+		.pause(10)
+	}
+
+
+	val positiveScn = scenario("CorrectlyAddDiagnosis").exec(
+		Home.home, 
+		LoginAsVet.loginAsVet,
+		VisitsView.visitsView,
+		ShowVisitWithoutDiagnosis.showVisitWithoutDiagnosis,
+		AddDiagnosis.addDiagnosis
+	)
+
+	val positiveScn = scenario("AttemptToAddDiagnosisToVisitWithDiagnosis").exec(
+		Home.home, 
+		LoginAsVet.loginAsVet,
+		VisitsView.visitsView,
+		ShowVisitWithDiagnosis.showVisitWithDiagnosis
+	)
+
+	setUp(
+		positiveScn.inject(rampUsers(5000) during (100 seconds)),
+		negativeScn.inject(rampUsers(5000) during (100 seconds))
+	).protocols(httpProtocol)
 }
