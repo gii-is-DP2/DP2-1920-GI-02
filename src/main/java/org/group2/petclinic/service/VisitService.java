@@ -52,13 +52,11 @@ public class VisitService {
 	}
 
 	@Transactional(readOnly = true)
-	@Cacheable("futureVisitsByVet")
 	public List<Visit> findFutureVisitsByVet(final Vet vet) throws DataAccessException {
 		return this.visitRepository.findFutureVisitsByVet(vet, LocalDateTime.now());
 	}
 
 	@Transactional(readOnly = true)
-	@Cacheable("pastVisitsByVet")
 	public List<Visit> findPastVisitsByVet(final Vet vet) throws DataAccessException {
 		return this.visitRepository.findPastVisitsByVet(vet, LocalDateTime.now());
 	}

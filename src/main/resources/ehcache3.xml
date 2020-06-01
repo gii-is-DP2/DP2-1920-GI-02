@@ -33,13 +33,9 @@
 	        <value-type>org.group2.petclinic.model.Visit</value-type>
 	    </cache>        
 	    
-	    <cache alias="futureVisitsByVet" uses-template="default">
-	        <key-type>org.group2.petclinic.model.Vet</key-type>
-	        <value-type>java.util.List</value-type>
-	    </cache>        
-	    
-	    <cache alias="pastVisitsByVet" uses-template="default">
-	        <key-type>org.group2.petclinic.model.Vet</key-type>
-	        <value-type>java.util.List</value-type>
-	    </cache>        
+	     <cache alias="ownerById" uses-template="default">
+	        <key-type>java.lang.Integer</key-type>
+	        <value-type>org.group2.petclinic.model.Owner</value-type>
+	    </cache> 
+    
     </config>
