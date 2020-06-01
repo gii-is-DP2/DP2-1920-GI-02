@@ -12,6 +12,8 @@ import org.group2.petclinic.model.Visit;
 import org.group2.petclinic.model.VisitType;
 import org.group2.petclinic.repository.VisitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ public class VisitService {
 	// SAVE VISITS ------------------------------------------------------------
 
 	@Transactional
+	@CacheEvict(cacheNames="visitById", allEntries=true)
 	public void saveVisit(final Visit visit) throws DataAccessException {
 		this.visitRepository.save(visit);
 	}
@@ -78,6 +81,7 @@ public class VisitService {
 	// FIND VISIT -------------------------------------------------------------
 
 	@Transactional(readOnly = true)
+	@Cacheable("visitById")
 	public Visit findVisitById(int id) throws DataAccessException {
 		return visitRepository.findById(id);
 	}
