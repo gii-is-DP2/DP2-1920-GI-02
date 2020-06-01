@@ -10,7 +10,7 @@ class UserStory20Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png""", """.*.jpg"""), WhiteList())
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -45,7 +45,7 @@ class UserStory20Diagnosis extends Simulation {
 		.pause(15)
 		.exec(http("LoginAsVet2")
 			.post("/login")
-			.headers(headers_4)
+			.headers(headers_3)
 			.formParam("username", "admin1")
 			.formParam("password", "4dm1n")
 			.formParam("_csrf", "${stoken}"))
@@ -55,16 +55,17 @@ class UserStory20Diagnosis extends Simulation {
 	object ShowVisitTypes {
 		val showVisitTypes = exec(http("ShowVisitTypes")
 			.get("/admin/visitTypes")
-			.headers(headers_0)
+			.headers(headers_0))
 		.pause(10)
 	}
 
 	object AddVisitType {
-		val addVisitType = exec(http("AddVisitType")
+		val addVisitType = exec(http("AddVisitType1")
 			.get("/admin/visitTypes/new")
-			.headers(headers_0))
+			.headers(headers_0)
 			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(10)
+		.exec(http("AddVisitType2")
 		.post("/admin/visitTypes/new")
 			.headers(headers_3)
 			.formParam("name", "VisitaTipo")
@@ -76,11 +77,12 @@ class UserStory20Diagnosis extends Simulation {
 	}
 
 	object AttemptToAddInvalidVisitType {
-		val attemptToAddInvalidVisitType = exec(http("AttemptToAddInvalidVisitType")
+		val attemptToAddInvalidVisitType = exec(http("AttemptToAddInvalidVisitType1")
 			.get("/admin/visitTypes/new")
-			.headers(headers_0))
+			.headers(headers_0)
 			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(10)
+		.exec(http("AttemptToAddInvalidVisitType2")
 		.post("/admin/visitTypes/new")
 			.headers(headers_3)
 			.formParam("name", "hola")
@@ -106,7 +108,7 @@ class UserStory20Diagnosis extends Simulation {
 	)
 
 	setUp(
-		positiveScn.inject(rampUsers(5000) during (100 seconds)),
-		negativeScn.inject(rampUsers(5000) during (100 seconds))
+		positiveScn.inject(rampUsers(75000) during (10 seconds)),
+		negativeScn.inject(rampUsers(75000) during (10 seconds))
 	).protocols(httpProtocol)
 }

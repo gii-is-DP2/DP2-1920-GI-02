@@ -10,7 +10,7 @@ class UserStory19Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png""", """.*.jpg"""), WhiteList())
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -81,7 +81,7 @@ class UserStory19Diagnosis extends Simulation {
 	)
 
 	setUp(
-		positiveScn.inject(rampUsers(5000) during (100 seconds)),
-		negativeScn.inject(rampUsers(5000) during (100 seconds))
+		positiveScn.inject(rampUsers(75000) during (10 seconds)),
+		negativeScn.inject(rampUsers(75000) during (10 seconds))
 	).protocols(httpProtocol)
 }

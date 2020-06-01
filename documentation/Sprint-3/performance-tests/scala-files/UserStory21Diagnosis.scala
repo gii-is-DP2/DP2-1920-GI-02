@@ -10,7 +10,7 @@ class UserStory21Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png""", """.*.jpg"""), WhiteList())
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -38,7 +38,7 @@ class UserStory21Diagnosis extends Simulation {
 		.pause(15)
 		.exec(http("LoginAsVet2")
 			.post("/login")
-			.headers(headers_4)
+			.headers(headers_2)
 			.formParam("username", "admin1")
 			.formParam("password", "4dm1n")
 			.formParam("_csrf", "${stoken}"))
@@ -48,17 +48,18 @@ class UserStory21Diagnosis extends Simulation {
 	object ShowVisitTypes {
 		val showVisitTypes = exec(http("ShowVisitTypes")
 			.get("/admin/visitTypes")
-			.headers(headers_0)
+			.headers(headers_0))
 		.pause(10)
 	}
 
 	object EditVisitType {
-		val editVisitType = exec(http("EditVisitType")
+		val editVisitType = exec(http("EditVisitType1")
 			.get("/admin/visitTypes/3/edit")
-			.headers(headers_0))
+			.headers(headers_0)
 			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(10)
-			post("/admin/visitTypes/3/edit")
+		.exec(http("EditVisitType2")
+			.post("/admin/visitTypes/3/edit")
 			.headers(headers_2)
 			.formParam("name", "operationHola")
 			.formParam("duration", "60")
@@ -67,12 +68,13 @@ class UserStory21Diagnosis extends Simulation {
 	}
 
 	object AttemptInvalidEditOfVisitType {
-		val attemptInvalidEditOfVisitType = exec(http("AttemptInvalidEditOfVisitType")
+		val attemptInvalidEditOfVisitType = exec(http("AttemptInvalidEditOfVisitType1")
 			.get("/admin/visitTypes/3/edit")
-			.headers(headers_0))
+			.headers(headers_0)
 			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(10)
-			post("/admin/visitTypes/3/edit")
+		.exec(http("AttemptInvalidEditOfVisitType2")
+			.post("/admin/visitTypes/3/edit")
 			.headers(headers_2)
 			.formParam("name", "operationHola")
 			.formParam("duration", "60hola")
@@ -95,7 +97,7 @@ class UserStory21Diagnosis extends Simulation {
 	)
 
 	setUp(
-		positiveScn.inject(rampUsers(5000) during (100 seconds)),
-		negativeScn.inject(rampUsers(5000) during (100 seconds))
+		positiveScn.inject(rampUsers(75000) during (10 seconds)),
+		negativeScn.inject(rampUsers(75000) during (10 seconds))
 	).protocols(httpProtocol)
 }
