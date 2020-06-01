@@ -10,7 +10,7 @@ class UserStory15Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png""", """.*.jpg"""), WhiteList())
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -68,11 +68,12 @@ class UserStory15Diagnosis extends Simulation {
 	}
 
 	object AddPrescription {
-		val addPrescription = exec(http("AddPrescription")
+		val addPrescription = exec(http("AddPrescription1")
 			.get("/vet/visits/3/prescriptions/new")
-			.headers(headers_0))
+			.headers(headers_0)
 			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(15)
+		.exec(http("AddPrescription2")
 			.post("/vet/visits/3/prescriptions/new")
 			.headers(headers_4)
 			.formParam("frequency", "Frecuencia")
@@ -84,11 +85,12 @@ class UserStory15Diagnosis extends Simulation {
 	}
 
 	object AttemptToAddEmptyPrescription {
-		val attemptToAddEmptyPrescription = exec(http("AttemptToAddEmptyPrescription")
+		val attemptToAddEmptyPrescription = exec(http("AttemptToAddEmptyPrescription1")
 			.get("/vet/visits/3/prescriptions/new")
-			.headers(headers_0))
+			.headers(headers_0)
 			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(15)
+		.exec(http("AttemptToAddEmptyPrescription2")
 			.post("/vet/visits/3/prescriptions/new")
 			.headers(headers_4)
 			.formParam("frequency", "")
@@ -104,7 +106,7 @@ class UserStory15Diagnosis extends Simulation {
 		LoginAsVet.loginAsVet,
 		VisitsView.visitsView,
 		ShowVisitWithDiagnosis.showVisitWithDiagnosis,
-		AddDiagnosis.addDiagnosis
+		AddPrescription.addPrescription
 	)
 
 	val negativeScn = scenario("AttemptToAddIncorrectPrescription").exec(
@@ -115,7 +117,7 @@ class UserStory15Diagnosis extends Simulation {
 	)
 
 	setUp(
-		positiveScn.inject(rampUsers(5000) during (100 seconds)),
-		negativeScn.inject(rampUsers(5000) during (100 seconds))
+		positiveScn.inject(rampUsers(60000) during (10 seconds)),
+		negativeScn.inject(rampUsers(60000) during (10 seconds))
 	).protocols(httpProtocol)
 }

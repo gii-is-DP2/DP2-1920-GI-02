@@ -10,7 +10,7 @@ class UserStory13Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png""", """.*.jpg"""), WhiteList())
 		.acceptHeader("image/webp,image/apng,image/*,*/*;q=0.8")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -71,31 +71,12 @@ class UserStory13Diagnosis extends Simulation {
 	}
 
 	object AddDiagnosis {
-		val addDiagnosis = exec(http("AddDiagnosis")
+		val addDiagnosis = exec(http("AddDiagnosis1")
 			.get("/vet/visits/6/diagnosis/new")
 			.headers(headers_0)
-			.resources(http("request_8")
-			.get("/webjars/jquery-ui/1.11.4/images/ui-bg_highlight-soft_100_eeeeee_1x100.png")
-			.headers(headers_3)))
-			.check(css("input[name=_csrf]", 
+			.check(css("input[name=_csrf]", "value").saveAs("stoken")))
 		.pause(8)
-			.get("/webjars/jquery-ui/1.11.4/images/ui-bg_gloss-wave_35_f6a828_500x100.png")
-			.headers(headers_3)
-			.resources(http("request_10")
-			.get("/webjars/jquery-ui/1.11.4/images/ui-bg_glass_100_f6f6f6_1x400.png")
-			.headers(headers_3),
-            http("request_11")
-			.get("/webjars/jquery-ui/1.11.4/images/ui-bg_highlight-soft_75_ffe45c_1x100.png")
-			.headers(headers_3),
-            http("request_12")
-			.get("/webjars/jquery-ui/1.11.4/images/ui-icons_ffffff_256x240.png")
-			.headers(headers_3)))
-		.pause(3)
-		.exec(http("request_13")
-			.get("/webjars/jquery-ui/1.11.4/images/ui-bg_glass_100_fdf5ce_1x400.png")
-			.headers(headers_3))
-		.pause(16)
-		.exec(http("request_14")
+		.exec(http("AddDiagnosis2")
 			.post("/vet/visits/6/diagnosis/new")
 			.headers(headers_4)
 			.formParam("date", "2020/05/25")

@@ -10,7 +10,7 @@ class UserStory17Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png""", """.*.jpg"""), WhiteList())
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -44,7 +44,7 @@ class UserStory17Diagnosis extends Simulation {
 		.pause(15)
 		.exec(http("LoginAsVet2")
 			.post("/login")
-			.headers(headers_4)
+			.headers(headers_3)
 			.formParam("username", "admin1")
 			.formParam("password", "4dm1n")
 			.formParam("_csrf", "${stoken}"))
@@ -54,14 +54,14 @@ class UserStory17Diagnosis extends Simulation {
 	object ShowMedicines {
 		val showMedicines = exec(http("ShowMedicines")
 			.get("/admin/medicines")
-			.headers(headers_0)
+			.headers(headers_0))
 		.pause(10)
 	}
 
 	object DeleteMedicine {
 		val deleteMedicine = exec(http("DeleteMedicine")
 			.get("/admin/medicines/5/delete")
-			.headers(headers_0)
+			.headers(headers_0))
 		.pause(10)
 	}
 
@@ -79,7 +79,7 @@ class UserStory17Diagnosis extends Simulation {
 	)
 
 	setUp(
-		positiveScn.inject(rampUsers(5000) during (100 seconds)),
-		negativeScn.inject(rampUsers(5000) during (100 seconds))
+		positiveScn.inject(rampUsers(75000) during (10 seconds)),
+		negativeScn.inject(rampUsers(75000) during (10 seconds))
 	).protocols(httpProtocol)
 }
