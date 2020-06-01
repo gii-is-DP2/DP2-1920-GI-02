@@ -6,11 +6,11 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class AddMedicinePositiveAndNegativeDiagnosis extends Simulation {
+class UserStory16Diagnosis extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
-		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png"""), WhiteList())
+		.inferHtmlResources(BlackList(""".*.css""", """.*.js""", """.*.ico""", """.*.png""", """.*.jpg"""), WhiteList())
 		.acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 		.acceptEncodingHeader("gzip, deflate")
 		.acceptLanguageHeader("es-ES,es;q=0.9,en;q=0.8")
@@ -109,7 +109,7 @@ class AddMedicinePositiveAndNegativeDiagnosis extends Simulation {
 
 
 	setUp(
-        adminsScn.inject(rampUsers(100000) during (10 seconds)),
-        vetsScn.inject(rampUsers(100000) during (10 seconds))
+        adminsScn.inject(rampUsers(5000) during (100 seconds)),
+        vetsScn.inject(rampUsers(5000) during (100 seconds))
         ).protocols(httpProtocol)
 }
