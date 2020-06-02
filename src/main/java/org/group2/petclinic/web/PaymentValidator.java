@@ -32,10 +32,8 @@ public class PaymentValidator implements Validator {
 		}
 
 		// Validate that finalPrice is a Positive
-		if (!errors.hasFieldErrors("finalPrice")) {
-			if (payment.getFinalPrice() <= 0) {
-				errors.rejectValue("finalPrice", "Final price must be bigger than 0.", "Final price must be bigger than 0.");
-			}
+		if (!errors.hasFieldErrors("finalPrice") && payment.getFinalPrice() <= 0) {
+			errors.rejectValue("finalPrice", "Final price must be bigger than 0.", "Final price must be bigger than 0.");
 		}
 	}
 

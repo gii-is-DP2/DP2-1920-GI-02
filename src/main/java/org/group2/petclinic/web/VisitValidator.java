@@ -52,10 +52,8 @@ public class VisitValidator implements Validator {
 		}
 
 		//Validate that visit isnt in the past
-		if (!errors.hasFieldErrors("moment")) {
-			if (visit.getMoment().isBefore(LocalDateTime.now())) {
-				errors.rejectValue("moment", "Visit cannot be in the past.", "Visit cannot be in the past.");
-			}
+		if (!errors.hasFieldErrors("moment") && visit.getMoment().isBefore(LocalDateTime.now())) {
+			errors.rejectValue("moment", "Visit cannot be in the past.", "Visit cannot be in the past.");
 		}
 
 		//Validate that the visit is during opening hours (Mon-Fri: 8am-8pm)
@@ -64,16 +62,13 @@ public class VisitValidator implements Validator {
 			LocalDateTime end = beginning.plusMinutes(visit.getVisitType().getDuration());
 
 			if (beginning.getHour() < 8) {
-				errors.rejectValue("moment", "Visit cannot begin before 8 a.m.",
-					"Visit cannot begin before 8 a.m.");
+				errors.rejectValue("moment", "Visit cannot begin before 8 a.m.", "Visit cannot begin before 8 a.m.");
 			}
 			if (end.getHour() > 20 || end.getHour() == 20 && end.getMinute() > 0) {
-				errors.rejectValue("moment", "Visit cannot end after 8 p.m.",
-					"Visit cannot end after 8 p.m.");
+				errors.rejectValue("moment", "Visit cannot end after 8 p.m.", "Visit cannot end after 8 p.m.");
 			}
 			if (beginning.getDayOfWeek().getValue() > 5) {
-				errors.rejectValue("moment", "Visit cannot be during the weekend.",
-					"Visit cannot be during the weekend.");
+				errors.rejectValue("moment", "Visit cannot be during the weekend.", "Visit cannot be during the weekend.");
 			}
 		}
 
@@ -82,15 +77,13 @@ public class VisitValidator implements Validator {
 			LocalDateTime visitBeginning = visit.getMoment();
 			LocalDateTime visitEnd = visitBeginning.plusMinutes(visit.getVisitType().getDuration());
 
-			List<Visit> visitsByVetOnSameDay = this.visitService.findVisitsByVetOnDate(visit.getVet(),
-				visit.getMoment().toLocalDate());
+			List<Visit> visitsByVetOnSameDay = this.visitService.findVisitsByVetOnDate(visit.getVet(), visit.getMoment().toLocalDate());
 			for (Visit v : visitsByVetOnSameDay) {
 				LocalDateTime vBeginning = v.getMoment();
 				LocalDateTime vEnd = vBeginning.plusMinutes(v.getVisitType().getDuration());
 				if (!visitBeginning.isBefore(vBeginning) && !visitBeginning.isAfter(vEnd) ||//
 					!visitEnd.isBefore(vBeginning) && !visitEnd.isAfter(vEnd)) {
-					errors.rejectValue("moment", "Vet is occupied during the given slot.",
-						"Vet is occupied during the given slot.");
+					errors.rejectValue("moment", "Vet is occupied during the given slot.", "Vet is occupied during the given slot.");
 				}
 
 			}

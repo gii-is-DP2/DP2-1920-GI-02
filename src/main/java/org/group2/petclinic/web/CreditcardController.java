@@ -75,20 +75,7 @@ public class CreditcardController {
 		Creditcard creditcard = new Creditcard();
 		model.addAttribute("creditcard", creditcard);
 
-		List<Integer> listExpMonth = new ArrayList<Integer>();
-		listExpMonth.add(1);
-		listExpMonth.add(2);
-		listExpMonth.add(3);
-		listExpMonth.add(4);
-		listExpMonth.add(5);
-		listExpMonth.add(6);
-		listExpMonth.add(7);
-		listExpMonth.add(8);
-		listExpMonth.add(9);
-		listExpMonth.add(10);
-		listExpMonth.add(11);
-		listExpMonth.add(12);
-		model.addAttribute("expMonth", listExpMonth);
+		listExpMonth(model);
 
 		paymentNew = this.findPayment(payment.getId());
 		this.paymentService.deletePayment(payment.getId());
@@ -99,20 +86,7 @@ public class CreditcardController {
 	@PostMapping(value = "/creditcards/new")
 	public String processCreationForm(final Visit visit, @Valid final Creditcard creditcard, final BindingResult result, final ModelMap model) {
 
-		List<Integer> listExpMonth = new ArrayList<Integer>();
-		listExpMonth.add(1);
-		listExpMonth.add(2);
-		listExpMonth.add(3);
-		listExpMonth.add(4);
-		listExpMonth.add(5);
-		listExpMonth.add(6);
-		listExpMonth.add(7);
-		listExpMonth.add(8);
-		listExpMonth.add(9);
-		listExpMonth.add(10);
-		listExpMonth.add(11);
-		listExpMonth.add(12);
-		model.addAttribute("expMonth", listExpMonth);
+		listExpMonth(model);
 
 		if (result.hasErrors()) {
 			model.addAttribute("creditcard", creditcard);
@@ -129,6 +103,24 @@ public class CreditcardController {
 
 			return "redirect:/secretary/visits";
 		}
+	}
+
+	public List<Integer> listExpMonth(final ModelMap model) {
+		List<Integer> listExpMonth = new ArrayList<>();
+		listExpMonth.add(1);
+		listExpMonth.add(2);
+		listExpMonth.add(3);
+		listExpMonth.add(4);
+		listExpMonth.add(5);
+		listExpMonth.add(6);
+		listExpMonth.add(7);
+		listExpMonth.add(8);
+		listExpMonth.add(9);
+		listExpMonth.add(10);
+		listExpMonth.add(11);
+		listExpMonth.add(12);
+		model.addAttribute("expMonth", listExpMonth);
+		return listExpMonth;
 	}
 
 }
