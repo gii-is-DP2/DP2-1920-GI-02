@@ -88,8 +88,8 @@ public class PaymentController {
 			return PaymentController.VIEWS_PAYMENTS_CREATE_FORM;
 		} else {
 			LocalDateTime actualMoment = LocalDateTime.now();
-			actualMoment.minusSeconds(1);
-			payment.setMoment(actualMoment);
+			LocalDateTime actualMomentMinus = actualMoment.minusSeconds(1);
+			payment.setMoment(actualMomentMinus);
 
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			UserDetails userDetail = (UserDetails) auth.getPrincipal();

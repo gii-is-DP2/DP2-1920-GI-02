@@ -90,13 +90,11 @@ public class CreditcardValidator implements Validator {
 		}
 
 		// Validate the number creditcard
-		if (!errors.hasFieldErrors("number")) {
-			// Number valid
-			if (!(Pattern.matches("^4[0-9]{12}(?:[0-9]{3}){0,2}$", creditcard.getNumber()) == true) && !(Pattern.matches("^(?:5[1-5]|2(?!2([01]|20)|7(2[1-9]|3))[2-7])\\d{14}$", creditcard.getNumber()) == true)
-				&& !(Pattern.matches("^3[47][0-9]{13}$", creditcard.getNumber()) == true) && !(Pattern.matches("^6(?:011|[45][0-9]{2})[0-9]{12}$", creditcard.getNumber()) == true)
-				&& !(Pattern.matches("^(?:2131|1800|35\\d{3})\\d{11}$", creditcard.getNumber()) == true)) {
-				errors.rejectValue("number", "Number is not valid.", "Number is not valid.");
-			}
+		// Number valid
+		if (!errors.hasFieldErrors("number") && !(Pattern.matches("^4[0-9]{12}(?:[0-9]{3}){0,2}$", creditcard.getNumber()) == true) && !(Pattern.matches("^(?:5[1-5]|2(?!2([01]|20)|7(2[1-9]|3))[2-7])\\d{14}$", creditcard.getNumber()) == true)
+			&& !(Pattern.matches("^3[47][0-9]{13}$", creditcard.getNumber()) == true) && !(Pattern.matches("^6(?:011|[45][0-9]{2})[0-9]{12}$", creditcard.getNumber()) == true)
+			&& !(Pattern.matches("^(?:2131|1800|35\\d{3})\\d{11}$", creditcard.getNumber()) == true)) {
+			errors.rejectValue("number", "Number is not valid.", "Number is not valid.");
 		}
 	}
 
